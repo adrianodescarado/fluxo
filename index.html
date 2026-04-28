@@ -832,12 +832,18 @@ function doSignup(){
 function doDemo(){loginUser({id:'demo',name:'Usuário Demo',email:'demo@mandrake.app',pw:''})}
 function loginUser(u){
   CU=u;localStorage.setItem('nbs',JSON.stringify(u));
-  closeModal();loadFlows();renderDash();showPage('dashboard');
+  closeModal();loadFlows();renderDash();
+  setTimeout(()=>showPage('dashboard'),100);
 }
 function logout(){CU=null;localStorage.removeItem('nbs');showPage('landing');toast('Você saiu','ℹ')}
 function checkSession(){
   const s=localStorage.getItem('nbs');
-  if(s){CU=JSON.parse(s);loadFlows()}
+  if(s){
+    CU=JSON.parse(s);
+    loadFlows();
+    renderDash();
+    showPage('dashboard');
+  }
 }
 
 // ─── FLOWS DATA ───
