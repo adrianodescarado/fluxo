@@ -832,17 +832,30 @@ function doSignup(){
 function doDemo(){loginUser({id:'demo',name:'Usuário Demo',email:'demo@mandrake.app',pw:''})}
 function loginUser(u){
   CU=u;localStorage.setItem('nbs',JSON.stringify(u));
-  closeModal();loadFlows();renderDash();
-  setTimeout(()=>showPage('dashboard'),100);
+  closeModal();
+  loadFlows();
+  renderDash();
+  // Forçar a exibição do dashboard removendo a classe ativa de outras páginas
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  const dash = document.getElementById('page-dashboard');
+  if(dash) dash.classList.add('active');
+  toast('Bem-vindo, ' + u.name, '👋');
 }
 function logout(){CU=null;localStorage.removeItem('nbs');showPage('landing');toast('Você saiu','ℹ')}
 function checkSession(){
   const s=localStorage.getItem('nbs');
   if(s){
-    CU=JSON.parse(s);
-    loadFlows();
-    renderDash();
-    showPage('dashboard');
+    try {
+      CU=JSON.parse(s);
+      loadFlows();
+      renderDash();
+      // Se estiver na landing page, redireciona para o dashboard
+      if(document.getElementById('page-landing').classList.contains('active')) {
+        showPage('dashboard');
+      }
+    } catch(e) {
+      localStorage.removeItem('nbs');
+    }
   }
 }
 
