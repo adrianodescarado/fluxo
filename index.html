@@ -632,6 +632,14 @@ footer{border-top:1px solid var(--bdr);padding:48px 40px 28px;position:relative;
       </div>
       <h2 id="prev-flow-name">Meu Fluxo</h2>
       <p>Visualização exata de como seu fluxo aparece para o usuário final.</p>
+      <!-- Avatar customizável -->
+      <div class="pis">
+        <h3>👤 Avatar do Bot</h3>
+        <div style="display:flex;gap:8px;margin-bottom:10px">
+          <input type="text" class="pi" id="avatar-url" placeholder="URL da imagem ou emoji" style="flex:1;padding:8px 10px;border-radius:6px;border:1px solid var(--bdr);background:rgba(0,0,0,.2);color:var(--txt);font-size:13px" oninput="updateAvatarPreview()">
+          <button class="btn btn-primary btn-sm" onclick="updateAvatarPreview()">Atualizar</button>
+        </div>
+      </div>
       <!-- Channel switcher -->
       <div class="pis">
         <h3>🎨 Tema do Canal</h3>
@@ -752,7 +760,11 @@ footer{border-top:1px solid var(--bdr);padding:48px 40px 28px;position:relative;
   </div>
 </div>
  
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
+const SB_URL = 'https://mkpjgywvjxexlubthezj.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1rcGpneXd2anhleGx1YnRoZXpcontinuação do que enviei acima. qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczMzQ1NzcsImV4cCI6MjA5MjkxMDU3N30.2GVZ2EiJXRheMk51_b2GCccA9BCoh7FVHm1K8xJcOb4';
+const supabase = window.supabase ? window.supabase.createClient(SB_URL, SB_KEY) : null;
 // ─── STARS ───
 (()=>{
   const c=document.getElementById('starfield'),ctx=c.getContext('2d');
@@ -827,7 +839,7 @@ function doSignup(){
 function doDemo(){loginUser({id:'demo',name:'Usuário Demo',email:'demo@mandrake.app',pw:''})}
 function loginUser(u){
   CU=u;localStorage.setItem('nbs',JSON.stringify(u));
-  closeModal();loadFlows();renderDash();showPage('dashboard');
+  closeModal();loadFlows();if(supabase)loadFlowsFromSupabase().then(()=>{renderDash();showPage('dashboard')});else{renderDash();showPage('dashboard')}
   toast('Bem-vindo, '+u.name.split(' ')[0]+'! 🚀','✓');
 }
 function logout(){CU=null;localStorage.removeItem('nbs');showPage('landing');toast('Você saiu','ℹ')}
@@ -838,7 +850,21 @@ function checkSession(){
  
 // ─── FLOWS DATA ───
 function loadFlows(){if(!CU)return;flows=JSON.parse(localStorage.getItem('nbf_'+CU.id)||'[]')}
-function saveFlows(){if(!CU)return;localStorage.setItem('nbf_'+CU.id,JSON.stringify(flows))}
+function saveFlows(){if(!CU)return;localStorage.setItem('nbf_'+CU.id,JSON.stringify(flows));if(supabase)saveFlowsToSupabase()}
+async function saveFlowsToSupabase(){
+  if(!supabase||!CU)return;
+  try{
+    const{error}=await supabase.from('flows').upsert({user_id:CU.id,data:flows,updated_at:new Date()},{onConflict:'user_id'});
+    if(error)console.error('Erro ao salvar no Supabase:',error);
+  }catch(e){console.error('Erro Supabase:',e)}
+}
+async function loadFlowsFromSupabase(){
+  if(!supabase||!CU)return;
+  try{
+    const{data,error}=await supabase.from('flows').select('data').eq('user_id',CU.id).single();
+    if(data&&data.data)flows=data.data;
+  }catch(e){console.log('Primeira vez no Supabase')}
+}
  
 // ─── CHANNEL SELECTOR ───
 function openChannelSelector(){
@@ -1238,9 +1264,26 @@ function setTheme(theme,emoji,name,status){
   curTheme=theme;
   const ph=document.getElementById('prev-phone');
   ph.className='prev-phone '+theme;
-  document.getElementById('prev-av').textContent=emoji||'🤖';
+  updateAvatarPreview();
   document.getElementById('prev-name').textContent=name||'Assistente';
   document.getElementById('prev-status').textContent=status||'online';
+}
+function updateAvatarPreview(){
+  const av=document.getElementById('avatar-url');
+  const avatarEl=document.getElementById('prev-av');
+  const val=av?av.value.trim():'';
+  if(!val){
+    const ci=CH_INFO[curChannel||'wpp'];
+    avatarEl.textContent=ci?.emoji||'🤖';
+    avatarEl.innerHTML=ci?.emoji||'🤖';
+    return;
+  }
+  if(val.startsWith('http')){
+    avatarEl.innerHTML=`<img src="${val}" alt="Avatar" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;
+  }else{
+    avatarEl.textContent=val;
+    avatarEl.innerHTML=val;
+  }
 }
 function restartPreview(){
   prevNodes=nodes.filter(n=>n);prevIdx=0;
