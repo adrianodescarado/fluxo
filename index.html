@@ -763,8 +763,15 @@ footer{border-top:1px solid var(--bdr);padding:48px 40px 28px;position:relative;
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 const SB_URL = 'https://mkpjgywvjxexlubthezj.supabase.co';
-const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1rcGpneXd2anhleGx1YnRoZXpcontinuação do que enviei acima. qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczMzQ1NzcsImV4cCI6MjA5MjkxMDU3N30.2GVZ2EiJXRheMk51_b2GCccA9BCoh7FVHm1K8xJcOb4';
-const supabase = window.supabase ? window.supabase.createClient(SB_URL, SB_KEY) : null;
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1rcGpneXd2anhleGx1YnRoZXpjaWkiLCJyb2xlIjoiYW5vbiIsImlhdCI6MTc3NzMzNDU3NywiZXhwIjoyMDkyOTEwNTc3fQ.2GVZ2EiJXRheMk51_b2GCccA9BCoh7FVHm1K8xJcOb4';
+let supabase = null;
+try {
+  if (window.supabase) {
+    supabase = window.supabase.createClient(SB_URL, SB_KEY);
+  }
+} catch (e) {
+  console.error('Erro ao inicializar Supabase:', e);
+}
 // ─── STARS ───
 (()=>{
   const c=document.getElementById('starfield'),ctx=c.getContext('2d');
@@ -839,7 +846,8 @@ function doSignup(){
 function doDemo(){loginUser({id:'demo',name:'Usuário Demo',email:'demo@mandrake.app',pw:''})}
 function loginUser(u){
   CU=u;localStorage.setItem('nbs',JSON.stringify(u));
-  closeModal();loadFlows();if(supabase)loadFlowsFromSupabase().then(()=>{renderDash();showPage('dashboard')});else{renderDash();showPage('dashboard')}
+  closeModal();loadFlows();renderDash();showPage('dashboard');
+  if(supabase)loadFlowsFromSupabase().catch(e=>console.log('Supabase offline'));
   toast('Bem-vindo, '+u.name.split(' ')[0]+'! 🚀','✓');
 }
 function logout(){CU=null;localStorage.removeItem('nbs');showPage('landing');toast('Você saiu','ℹ')}
