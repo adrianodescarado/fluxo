@@ -124,161 +124,173 @@ footer{border-top:1px solid var(--bdr);padding:48px 40px 28px;position:relative;
 .mfooter{text-align:center;margin-top:18px;font-size:13px;color:var(--muted)}
 .mfooter a{color:var(--acc);text-decoration:none;cursor:pointer}.mfooter a:hover{text-decoration:underline}
 /* ─── CHANNEL SELECTOR ─── */
-.ch-modal{position:fixed;inset:0;z-index:250;background:rgba(0,0,0,.72);display:none;align-items:center;justify-content:center;backdrop-filter:blur(8px)}
+.ch-modal{position:fixed;inset:0;z-index:250;background:rgba(0,0,0,.75);display:none;align-items:center;justify-content:center;backdrop-filter:blur(8px)}
 .ch-modal.open{display:flex}
-.ch-box{background:var(--deep);border:1px solid var(--bdr2);border-radius:20px;padding:38px;width:100%;max-width:520px;position:relative;animation:mi .25s ease}
-.ch-box h2{font-family:var(--fd);font-size:22px;font-weight:700;margin-bottom:8px}
-.ch-box p{color:var(--muted);font-size:14px;margin-bottom:24px;font-weight:300}
-.ch-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:20px}
-.ch-opt{display:flex;align-items:center;gap:12px;padding:14px;background:rgba(0,0,0,.2);border:1px solid var(--bdr);border-radius:12px;cursor:pointer;transition:all .2s}
-.ch-opt:hover{border-color:var(--bdr2);background:rgba(0,0,0,.3)}
-.ch-opt.sel{border-color:var(--acc);background:rgba(92,111,255,.1)}
-.ch-ico{font-size:28px}
-.ch-name{font-weight:600;font-size:14px}
-.ch-desc{font-size:12px;color:var(--muted)}
+.ch-box{background:var(--deep);border:1px solid var(--bdr2);border-radius:20px;padding:36px;width:100%;max-width:560px;position:relative;animation:mi .25s ease}
+.ch-box h2{font-family:var(--fd);font-size:22px;font-weight:700;margin-bottom:6px}
+.ch-box>p{color:var(--muted);font-size:14px;margin-bottom:26px;font-weight:300}
+.ch-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px}
+.ch-opt{display:flex;align-items:center;gap:13px;padding:15px 16px;background:var(--mid);border:2px solid var(--bdr);border-radius:12px;cursor:pointer;transition:all .2s;user-select:none}
+.ch-opt:hover{border-color:var(--bdr2);background:var(--surf)}
+.ch-opt.sel{border-color:var(--acc);background:rgba(92,111,255,0.08)}
+.ch-ico{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.ico-wpp{background:rgba(37,211,102,.15)}.ico-ig{background:rgba(225,48,108,.15)}.ico-msg{background:rgba(0,132,255,.15)}.ico-tg{background:rgba(42,171,238,.15)}.ico-web{background:rgba(92,111,255,.15)}
+.ch-name{font-size:14px;font-weight:600}
+.ch-desc{font-size:11px;color:var(--muted);margin-top:2px}
 /* ─── SHARE MODAL ─── */
-.share-modal{position:fixed;inset:0;z-index:250;background:rgba(0,0,0,.72);display:none;align-items:center;justify-content:center;backdrop-filter:blur(8px)}
+.share-modal{position:fixed;inset:0;z-index:250;background:rgba(0,0,0,.75);display:none;align-items:center;justify-content:center;backdrop-filter:blur(8px)}
 .share-modal.open{display:flex}
-.sbox{background:var(--deep);border:1px solid var(--bdr2);border-radius:20px;padding:38px;width:100%;max-width:420px;position:relative;animation:mi .25s ease}
-.sbox h2{font-family:var(--fd);font-size:22px;font-weight:700;margin-bottom:8px}
-.sbox p{color:var(--muted);font-size:14px;margin-bottom:20px;font-weight:300}
+.sbox{background:var(--deep);border:1px solid var(--bdr2);border-radius:20px;padding:36px;width:100%;max-width:460px;position:relative;animation:mi .25s ease}
+.sbox h2{font-family:var(--fd);font-size:20px;font-weight:700;margin-bottom:6px}
+.sbox>p{color:var(--muted);font-size:13px;margin-bottom:20px;font-weight:300}
 .slink-row{display:flex;gap:8px;margin-bottom:20px}
-.slink-field{flex:1;background:rgba(0,0,0,.3);border:1px solid var(--bdr);border-radius:8px;padding:10px 12px;font-size:12px;color:var(--muted);word-break:break-all;font-family:monospace}
-.sqr{text-align:center;margin:20px 0}
-.sbtns{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
-.sbtn{padding:10px;background:rgba(0,0,0,.2);border:1px solid var(--bdr);border-radius:8px;color:var(--txt);cursor:pointer;font-size:13px;transition:all .2s;font-weight:500}.sbtn:hover{border-color:var(--bdr2);background:rgba(0,0,0,.3)}
+.slink-field{flex:1;padding:10px 12px;background:rgba(0,0,0,.5);border:1px solid var(--bdr);border-radius:8px;color:var(--txt);font-size:12px;font-family:monospace;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sqr{width:110px;height:110px;background:white;border-radius:10px;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;padding:8px}
+.sqr canvas{width:100%;height:100%}
+.sbtns{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.sbtn{display:flex;align-items:center;gap:6px;padding:8px 14px;border-radius:8px;font-size:12px;font-weight:500;cursor:pointer;border:1px solid var(--bdr);background:var(--mid);color:var(--txt);transition:all .2s}.sbtn:hover{background:var(--surf);border-color:var(--bdr2)}
 /* ─── DASHBOARD ─── */
-.dbg{position:relative;z-index:1;display:flex;height:100vh}
-.dside{width:260px;border-right:1px solid var(--bdr);background:var(--deep);padding:20px;display:flex;flex-direction:column;overflow-y:auto}
-.dlogo{font-family:var(--fd);font-weight:800;font-size:18px;display:flex;align-items:center;gap:6px;margin-bottom:28px;cursor:pointer}
-.dlm{width:24px;height:24px;background:linear-gradient(135deg,var(--acc),var(--grn));border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
-.dmenu{display:flex;flex-direction:column;gap:4px;flex:1}
-.dni{padding:10px 14px;border-radius:10px;cursor:pointer;font-size:13px;color:var(--muted);transition:all .2s;display:flex;align-items:center;gap:8px}.dni:hover{color:var(--txt);background:rgba(92,111,255,.1)}.dni.on{color:var(--txt);background:rgba(92,111,255,.15);border-left:2px solid var(--acc)}
-.duser{margin-top:auto;padding-top:14px;border-top:1px solid var(--bdr)}
-.duav{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--acc),var(--grn));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:14px;margin-bottom:10px}
-.duname{font-size:13px;font-weight:600;margin-bottom:2px}
-.duemail{font-size:11px;color:var(--dim)}
-.dbody{flex:1;display:flex;flex-direction:column;overflow:hidden}
-.dhdr{padding:20px 28px;border-bottom:1px solid var(--bdr);display:flex;justify-content:space-between;align-items:center}
-.dpanel-title{font-family:var(--fd);font-size:20px;font-weight:700}
-.dcontent{flex:1;overflow-y:auto;padding:28px}
+#page-dashboard{display:none}
+#page-dashboard.active{display:flex;min-height:100vh}
+.dside{width:240px;flex-shrink:0;background:var(--deep);border-right:1px solid var(--bdr);display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;z-index:50}
+.dside-top{padding:18px 16px;border-bottom:1px solid var(--bdr);display:flex;align-items:center;gap:10px}
+.dnav{flex:1;padding:14px 10px;display:flex;flex-direction:column;gap:3px;overflow-y:auto}
+.dni{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;font-size:14px;color:var(--muted);cursor:pointer;transition:all .2s;user-select:none}
+.dni:hover{background:rgba(92,111,255,.07);color:var(--txt)}
+.dni.on{background:rgba(92,111,255,.12);color:var(--acc);font-weight:500}
+.dni .ni{font-size:15px;width:20px;text-align:center;flex-shrink:0}
+.dside-bot{padding:10px;border-top:1px solid var(--bdr)}
+.uchip{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;cursor:pointer;transition:background .2s}
+.uchip:hover{background:rgba(255,255,255,.04)}
+.prev-av{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--acc),var(--grn));display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;flex-shrink:0;overflow:hidden}
+.prev-av img{width:100%;height:100%;object-fit:cover}}
+.uinfo p{font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:148px}
+.uinfo span{font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:148px;display:block}
+.dmain{flex:1;margin-left:240px;display:flex;flex-direction:column;min-width:0}
+.dtop{padding:0 28px;height:64px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--bdr);position:sticky;top:0;background:rgba(5,7,20,.95);backdrop-filter:blur(12px);z-index:40}
+.dtop h1{font-family:var(--fd);font-size:19px;font-weight:700}
+.dcontent{padding:28px;flex:1;overflow-y:auto}
+/* DASH PANELS */
 .dpanel{display:none}
 .dpanel.on{display:block}
-.fgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px}
-.fcard{background:var(--deep);border:1px solid var(--bdr);border-radius:16px;padding:18px;transition:all .3s;cursor:pointer}
-.fcard:hover{border-color:var(--bdr2);transform:translateY(-2px)}
-.ftop{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px}
-.fico{font-size:28px}
-.fstat{font-size:11px;padding:4px 10px;border-radius:6px;font-weight:600}
-.s-act{background:rgba(0,229,195,.15);color:var(--grn)}
-.s-dft{background:rgba(160,175,230,.15);color:var(--muted)}
-.fch-badge{font-size:11px;color:var(--acc);margin-bottom:8px}
-.fcard h3{font-size:15px;font-weight:600;margin-bottom:4px}
-.fcard p{font-size:13px;color:var(--muted);margin-bottom:12px;line-height:1.5}
-.fmeta{display:flex;gap:14px;font-size:12px;color:var(--dim);margin-bottom:12px}
-.fbtns{display:flex;gap:6px}
-.fbtns .btn{flex:1;justify-content:center}
-.empty{text-align:center;padding:40px 20px}
-.ei{font-size:48px;margin-bottom:12px}
-.empty h3{font-size:16px;font-weight:600;margin-bottom:6px}
-.empty p{font-size:13px;color:var(--muted);margin-bottom:16px}
-.pis{margin-bottom:24px}
-.pis h3{font-size:14px;font-weight:600;margin-bottom:12px}
-.pnlist{display:flex;flex-direction:column;gap:8px;max-height:200px;overflow-y:auto}
-.pni{display:flex;align-items:center;gap:8px;padding:8px 10px;background:rgba(0,0,0,.2);border-radius:8px;font-size:12px;color:var(--muted)}
-.pnidot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+/* METRICS */
+.mgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:14px;margin-bottom:28px}
+.mcard{background:var(--deep);border:1px solid var(--bdr);border-radius:14px;padding:18px}
+.mlbl{font-size:10px;color:var(--dim);letter-spacing:.5px;margin-bottom:7px;text-transform:uppercase}
+.mval{font-family:var(--fd);font-size:28px;font-weight:800;margin-bottom:2px}
+.mdelta{font-size:11px;color:var(--grn)}
+/* FLOWS */
+.fhdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;gap:12px}
+.fhdr h2{font-family:var(--fd);font-size:17px;font-weight:700}
+.fgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px}
+.fcard{background:var(--deep);border:1px solid var(--bdr);border-radius:14px;padding:18px;cursor:pointer;transition:all .25s;position:relative;overflow:hidden}
+.fcard::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--acc),var(--grn));opacity:0;transition:opacity .3s}
+.fcard:hover{border-color:var(--bdr2);transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,0,0,.4)}
+.fcard:hover::before{opacity:1}
+.ftop{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px}
+.fico{width:34px;height:34px;border-radius:9px;background:rgba(92,111,255,.12);display:flex;align-items:center;justify-content:center;font-size:15px}
+.fstat{font-size:10px;font-weight:600;letter-spacing:.5px;padding:3px 8px;border-radius:100px}
+.s-act{background:rgba(0,229,195,.12);color:var(--grn)}
+.s-dft{background:rgba(245,166,35,.12);color:var(--warn)}
+.fcard h3{font-size:14px;font-weight:600;margin-bottom:3px}
+.fcard p{color:var(--muted);font-size:12px;margin-bottom:12px;font-weight:300}
+.fmeta{display:flex;gap:14px}
+.fmeta span{font-size:11px;color:var(--dim)}
+.fbtns{display:flex;gap:7px;margin-top:12px;padding-top:12px;border-top:1px solid var(--bdr)}
+.fch-badge{display:inline-flex;align-items:center;gap:5px;font-size:10px;padding:2px 8px;border-radius:100px;background:rgba(92,111,255,.1);color:var(--acc);border:1px solid rgba(92,111,255,.2);margin-bottom:6px}
+/* EMPTY */
+.empty{text-align:center;padding:70px 20px;color:var(--muted)}
+.empty .ei{font-size:44px;margin-bottom:14px;opacity:.4}
+.empty h3{font-family:var(--fd);font-size:17px;font-weight:700;color:var(--txt);margin-bottom:7px}
+.empty p{font-size:14px;margin-bottom:22px;font-weight:300}
 /* ─── EDITOR ─── */
-.ehdr{position:fixed;top:0;left:0;right:0;z-index:99;height:60px;padding:0 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--bdr);background:var(--deep);backdrop-filter:blur(12px)}
-.etitle{background:transparent;border:none;color:var(--txt);font-size:15px;font-family:var(--fb);outline:none;flex:1;max-width:300px}
-.etitle::placeholder{color:var(--dim)}
-.ebody{display:flex;height:calc(100vh - 60px);margin-top:60px}
-.epal{width:220px;border-right:1px solid var(--bdr);padding:14px;display:flex;flex-direction:column;gap:8px;overflow-y:auto;background:var(--deep)}
-.eptitle{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--dim);font-weight:600;margin-bottom:8px}
-.epi{padding:10px 12px;border-radius:8px;background:rgba(0,0,0,.2);border:1px solid var(--bdr);cursor:grab;font-size:13px;display:flex;align-items:center;gap:8px;transition:all .2s;user-select:none}.epi:hover{border-color:var(--bdr2);background:rgba(0,0,0,.3)}.epi:active{cursor:grabbing}
-.edot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
-.ecanvas{flex:1;position:relative;background:var(--void);overflow:hidden;cursor:default}
-.ecanvas svg{position:absolute;inset:0;pointer-events:none}
-#enodes{position:absolute;transform-origin:0 0}
-.fnode{position:absolute;width:174px;background:var(--deep);border:1px solid var(--bdr);border-radius:10px;padding:10px;cursor:move;transition:all .15s;user-select:none}
-.fnode.sel{border-color:var(--acc);box-shadow:0 0 0 2px rgba(92,111,255,.2)}
-.fnh{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-.fntype{display:flex;align-items:center;gap:4px;font-size:11px;font-weight:600}
-.fndel{background:none;border:none;color:var(--red);cursor:pointer;font-size:14px;padding:0;opacity:.6;transition:opacity .2s}.fndel:hover{opacity:1}
-.fnbody{font-size:12px;color:var(--muted);margin-bottom:8px;line-height:1.4;word-break:break-word}
-.fnhandles{display:flex;justify-content:space-between;align-items:center;font-size:9px;color:var(--dim)}
-.fnh2{width:8px;height:8px;border-radius:50%;cursor:crosshair;transition:all .15s}.fnh2:hover{transform:scale(1.3)}
-.fhlbl{font-size:9px;letter-spacing:.5px;text-transform:uppercase;font-weight:600}
-.chint{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;color:var(--dim);pointer-events:none}
-.chint div{font-size:14px;line-height:1.6}
-.ezoom{position:absolute;bottom:14px;right:14px;display:flex;gap:4px;background:var(--deep);border:1px solid var(--bdr);border-radius:8px;padding:6px;z-index:10}
-.ezoom button{background:none;border:none;color:var(--muted);cursor:pointer;width:28px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:6px;transition:all .2s;font-size:14px}.ezoom button:hover{background:rgba(92,111,255,.1);color:var(--txt)}
-.eprops{width:280px;border-left:1px solid var(--bdr);padding:14px;display:flex;flex-direction:column;gap:12px;overflow-y:auto;background:var(--deep)}
-.pepmt{display:flex;align-items:center;justify-content:center;text-align:center;color:var(--dim);min-height:200px}
-.pepmt div{font-size:13px;line-height:1.5}
-#pcontent{display:none;flex-direction:column;gap:12px}
-.psec{display:flex;flex-direction:column;gap:8px}
-.pstitle{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--acc);font-weight:600}
+#page-editor{display:none}
+#page-editor.active{display:flex;flex-direction:column;height:100vh;overflow:hidden}
+.ehdr{padding:0 18px;height:54px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--bdr);background:var(--deep);flex-shrink:0;gap:14px}
+.etitle{background:transparent;border:none;color:var(--txt);font-family:var(--fd);font-size:16px;font-weight:700;outline:none;min-width:180px}.etitle::placeholder{color:var(--dim)}
+.ebody{flex:1;display:grid;grid-template-columns:192px 1fr 252px;overflow:hidden}
+/* Palette */
+.epal{background:var(--deep);border-right:1px solid var(--bdr);padding:14px;overflow-y:auto;display:flex;flex-direction:column;gap:3px}
+.eptitle{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--dim);font-weight:600;margin-bottom:7px;margin-top:4px}
+.epi{display:flex;align-items:center;gap:8px;padding:9px 10px;border-radius:7px;cursor:grab;font-size:12px;font-weight:500;transition:all .2s;border:1px solid transparent;user-select:none}
+.epi:hover{background:rgba(92,111,255,.07);border-color:var(--bdr)}
+.epi:active{cursor:grabbing}
+.edot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+/* Canvas */
+.ecanvas{position:relative;flex:1;overflow:hidden;background:var(--void);background-image:radial-gradient(rgba(100,120,255,0.07) 1px,transparent 1px);background-size:28px 28px}
+#esvg{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1}
+#enodes{position:absolute;top:0;left:0;width:100%;height:100%;z-index:2;transform-origin:0 0}
+.chint{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;z-index:0;text-align:center}
+.chint p{font-size:13px;color:var(--dim);margin-top:6px}
+.ezoom{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);display:flex;gap:6px;background:var(--deep);border:1px solid var(--bdr);border-radius:8px;padding:5px;z-index:10}
+.ezoom button{background:none;border:none;color:var(--muted);cursor:pointer;padding:4px 8px;border-radius:4px;font-size:13px;transition:all .2s}.ezoom button:hover{background:rgba(255,255,255,.07);color:var(--txt)}
+/* Nodes */
+.fnode{position:absolute;background:var(--deep);border:1px solid var(--bdr);border-radius:10px;padding:12px;min-width:174px;cursor:default;user-select:none;transition:border-color .15s,box-shadow .15s}
+.fnode:hover{border-color:var(--bdr2)}
+.fnode.sel{border-color:var(--acc);box-shadow:0 0 0 3px var(--acc-g)}
+.fnh{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px}
+.fntype{font-size:9px;letter-spacing:1.2px;text-transform:uppercase;font-weight:600;display:flex;align-items:center;gap:5px}
+.fndel{background:none;border:none;color:var(--dim);cursor:pointer;font-size:14px;line-height:1;padding:2px;border-radius:3px;transition:all .2s}.fndel:hover{color:var(--red);background:rgba(255,91,91,.1)}
+.fnbody{font-size:12px;color:var(--muted);line-height:1.5;word-break:break-word}
+.fnhandles{display:flex;align-items:center;justify-content:space-between;margin-top:9px}
+.fnh2{width:11px;height:11px;border-radius:50%;border:2px solid;cursor:crosshair;transition:transform .15s;flex-shrink:0}
+.fnh2:hover{transform:scale(1.5)}
+.fnh2.inp{border-color:rgba(92,111,255,.6);background:rgba(92,111,255,.2)}
+.fnh2.out{border-color:rgba(0,229,195,.6);background:rgba(0,229,195,.2)}
+.fhlbl{font-size:9px;color:var(--dim)}
+/* Props */
+.eprops{background:var(--deep);border-left:1px solid var(--bdr);padding:14px;overflow-y:auto;display:flex;flex-direction:column;gap:14px}
+.pepmt{flex:1;display:flex;align-items:center;justify-content:center;text-align:center;color:var(--dim);font-size:13px;padding:20px}
+.psec{display:flex;flex-direction:column;gap:9px}
+.pstitle{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--dim);font-weight:600;margin-bottom:3px}
 .pf{display:flex;flex-direction:column;gap:4px}
 .pl{font-size:11px;color:var(--muted);font-weight:500}
-.pi{background:rgba(0,0,0,.3);border:1px solid var(--bdr);border-radius:6px;padding:8px 10px;color:var(--txt);font-size:12px;font-family:var(--fb);outline:none;transition:border-color .2s}.pi:focus{border-color:var(--acc)}
-.pta{background:rgba(0,0,0,.3);border:1px solid var(--bdr);border-radius:6px;padding:8px 10px;color:var(--txt);font-size:12px;font-family:var(--fb);outline:none;transition:border-color .2s;resize:vertical;min-height:60px}.pta:focus{border-color:var(--acc)}
-.connlist{display:flex;flex-direction:column;gap:6px;max-height:120px;overflow-y:auto}
-.connitem{display:flex;align-items:center;gap:6px;padding:6px 8px;background:rgba(0,0,0,.2);border-radius:6px;font-size:11px;color:var(--muted)}
+.pi,.pta,.psel{background:rgba(0,0,0,.4);border:1px solid var(--bdr);border-radius:7px;color:var(--txt);font-family:var(--fb);font-size:13px;outline:none;transition:border-color .2s;width:100%}
+.pi{padding:8px 10px}.pta{padding:8px 10px;min-height:76px;resize:vertical;line-height:1.5}.psel{padding:8px 10px}
+.pi:focus,.pta:focus,.psel:focus{border-color:var(--acc)}
+.pi::placeholder,.pta::placeholder{color:var(--dim);font-size:12px}
+.connlist{display:flex;flex-direction:column;gap:4px}
+.connitem{font-size:11px;color:var(--muted);padding:5px 8px;background:rgba(0,0,0,.2);border-radius:5px;display:flex;align-items:center;gap:5px}
 .connitem-del{background:none;border:none;color:var(--red);cursor:pointer;margin-left:auto;opacity:.6;transition:opacity .2s;font-size:12px;padding:0}.connitem-del:hover{opacity:1}
-/* ─── PREVIEW ─── */
-.prev-wrap{display:flex;gap:28px;align-items:flex-start;justify-content:center;padding:28px;max-width:1200px;margin:0 auto}
-.prev-phone{width:320px;height:640px;border:12px solid #000;border-radius:40px;background:#fff;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.3);position:relative}
-.prev-phone::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:150px;height:28px;background:#000;border-radius:0 0 20px 20px;z-index:10}
-.prev-bar{background:#fff;padding:12px 16px;border-bottom:1px solid #e0e0e0;display:flex;align-items:center;gap:10px}
-.prev-av{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--acc),var(--grn));display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;flex-shrink:0;overflow:hidden}
-.prev-av img{width:100%;height:100%;object-fit:cover}
-.prev-info{flex:1}
-.prev-info p{font-size:13px;font-weight:600;color:#000;margin:0}
-.prev-info span{font-size:11px;color:#999}
-.prev-msgs{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:8px;background:#fff}
-.pbub{padding:10px 14px;border-radius:12px;max-width:85%;word-wrap:break-word;font-size:13px;line-height:1.4}
-.pbub.bot{align-self:flex-start;background:#e0e0e0;color:#000}
-.pbub.usr{align-self:flex-end;background:#007AFF;color:#fff}
-.pbub a{color:inherit;text-decoration:underline;cursor:pointer}
-.pbub.bot a{color:#0066cc}
-.pbub.usr a{color:#fff}
-.prev-in{display:flex;gap:8px;padding:12px;border-top:1px solid #e0e0e0;background:#fff}
-.prev-ti{flex:1;border:1px solid #e0e0e0;border-radius:20px;padding:8px 14px;font-size:13px;outline:none;font-family:var(--fb)}
-.prev-ti:focus{border-color:#007AFF}
-.prev-sb{background:#007AFF;border:none;color:#fff;width:32px;height:32px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;transition:all .2s}.prev-sb:hover{background:#0056b3}
-.prev-info-panel{background:var(--deep);border:1px solid var(--bdr);border-radius:14px;padding:20px;width:280px;max-height:640px;overflow-y:auto}
-/* Theme variants */
-.prev-phone.tw .prev-bar{background:#128C7E}
-.prev-phone.tw .prev-info p{color:#fff}
-.prev-phone.tw .prev-info span{color:rgba(255,255,255,.7)}
-.prev-phone.tw .pbub.bot{background:#e0e0e0;color:#000}
-.prev-phone.ti .prev-bar{background:#E1306C}
-.prev-phone.ti .prev-info p{color:#fff}
-.prev-phone.ti .prev-info span{color:rgba(255,255,255,.7)}
-.prev-phone.tm .prev-bar{background:#0084FF}
-.prev-phone.tm .prev-info p{color:#fff}
-.prev-phone.tm .prev-info span{color:rgba(255,255,255,.7)}
-.prev-phone.tg .prev-bar{background:#0088cc}
-.prev-phone.tg .prev-info p{color:#fff}
-.prev-phone.tg .prev-info span{color:rgba(255,255,255,.7)}
-.prev-phone.twb .prev-bar{background:#f0f0f0}
-.prev-phone.twb .prev-info p{color:#000}
-.prev-phone.twb .prev-info span{color:#999}
-/* ─── 404 PAGE ─── */
-.page-404{display:flex;align-items:center;justify-content:center;text-align:center}
-.err-box{background:var(--deep);border:1px solid var(--bdr2);border-radius:16px;padding:48px;max-width:420px}
-.err-code{font-family:var(--fd);font-size:72px;font-weight:800;color:var(--acc);line-height:1}
-.err-title{font-family:var(--fd);font-size:24px;font-weight:700;margin:14px 0}
-.err-msg{color:var(--muted);font-size:14px;margin-bottom:28px;line-height:1.6}
+/* ─── PREVIEW PAGE ─── */
+#page-preview{display:none;min-height:100vh;align-items:center;justify-content:center;padding:32px}
+#page-preview.active{display:flex}
+.prev-wrap{display:flex;gap:28px;align-items:flex-start;max-width:920px;width:100%}
+.prev-phone{width:340px;flex-shrink:0;border-radius:32px;overflow:hidden;border:7px solid var(--surf);box-shadow:0 28px 72px rgba(0,0,0,.65)}
+.prev-bar{padding:10px 18px;display:flex;align-items:center;gap:9px}
+.prev-av{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+.prev-info p{font-size:13px;font-weight:600}
+.prev-info span{font-size:10px;opacity:.7}
+.prev-msgs{padding:11px;display:flex;flex-direction:column;gap:8px;min-height:400px;max-height:480px;overflow-y:auto}
+.pbub{max-width:80%;padding:8px 12px;border-radius:12px;font-size:13px;line-height:1.5;word-break:break-word}
+.pbub.bot{border-bottom-left-radius:3px;align-self:flex-start}
+.pbub.usr{border-bottom-right-radius:3px;align-self:flex-end}
+.prev-in{padding:10px 12px;display:flex;gap:8px;align-items:center}
+.prev-ti{flex:1;padding:8px 14px;border-radius:20px;border:none;font-size:13px;outline:none;font-family:var(--fb)}
+.prev-sb{width:35px;height:35px;border-radius:50%;border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;flex-shrink:0}
+/* themes */
+.tw .prev-bar{background:#075e54}.tw .prev-msgs{background:#ece5dd}.tw .pbub.bot{background:white;color:#333}.tw .pbub.usr{background:#dcf8c6;color:#333}.tw .prev-in{background:white}.tw .prev-ti{background:#f0f0f0;color:#333}.tw .prev-sb{background:#25d366;color:white}
+.ti .prev-bar{background:linear-gradient(135deg,#833ab4,#fd1d1d,#f77737)}.ti .prev-msgs{background:#fafafa}.ti .pbub.bot{background:#efefef;color:#262626}.ti .pbub.usr{background:#3797f0;color:white}.ti .prev-in{background:white;border-top:1px solid #dbdbdb}.ti .prev-ti{background:#fafafa;color:#262626;border:1px solid #dbdbdb}.ti .prev-sb{background:transparent;color:#3797f0;font-weight:700;font-size:13px;width:auto;padding:0 8px}
+.tm .prev-bar{background:linear-gradient(135deg,#0084ff,#0099ff)}.tm .prev-msgs{background:#fff}.tm .pbub.bot{background:#f0f0f0;color:#333}.tm .pbub.usr{background:linear-gradient(135deg,#0084ff,#0099ff);color:white}.tm .prev-in{background:white;border-top:1px solid #eee}.tm .prev-ti{background:#f5f5f5;color:#333}.tm .prev-sb{background:#0084ff;color:white}
+.tg .prev-bar{background:#2aabee}.tg .prev-msgs{background:#efeff1}.tg .pbub.bot{background:white;color:#333}.tg .pbub.usr{background:#5288c1;color:white}.tg .prev-in{background:white}.tg .prev-ti{background:#f4f4f5;color:#333}.tg .prev-sb{background:#2aabee;color:white}
+.twb .prev-bar{background:var(--surf)}.twb .prev-msgs{background:var(--void)}.twb .pbub.bot{background:var(--deep);color:var(--txt);border:1px solid var(--bdr)}.twb .pbub.usr{background:var(--acc);color:white}.twb .prev-in{background:var(--deep);border-top:1px solid var(--bdr)}.twb .prev-ti{background:var(--mid);color:var(--txt)}.twb .prev-sb{background:var(--acc);color:white}
+.prev-info-panel{flex:1}
+.prev-info-panel h2{font-family:var(--fd);font-size:21px;font-weight:700;margin-bottom:7px}
+.prev-info-panel>p{color:var(--muted);font-size:14px;margin-bottom:18px;font-weight:300;line-height:1.6}
+.pis{background:var(--deep);border:1px solid var(--bdr);border-radius:12px;padding:18px;margin-bottom:14px}
+.pis h3{font-size:13px;font-weight:600;margin-bottom:10px}
+.pnlist{display:flex;flex-direction:column;gap:5px}
+.pni{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted)}
+.pnidot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
 /* TOAST */
-.toast{position:fixed;bottom:20px;right:20px;z-index:9999;background:var(--deep);border:1px solid var(--bdr2);border-radius:10px;padding:12px 16px;display:flex;align-items:center;gap:10px;font-size:13px;animation:ts .25s ease}
-@keyframes ts{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
-.tsi{font-size:16px}
+.toast{position:fixed;bottom:22px;right:22px;z-index:999;background:var(--mid);border:1px solid var(--bdr2);border-radius:10px;padding:12px 18px;font-size:13px;display:flex;align-items:center;gap:9px;box-shadow:0 8px 28px rgba(0,0,0,.5);animation:ti2 .3s ease;max-width:300px}
+@keyframes ti2{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.tsi{font-size:15px}
 </style>
 </head>
 <body>
-<canvas id="starfield" width="1920" height="1080"></canvas>
-
+<canvas id="starfield"></canvas>
+ 
 <!-- ═══════════════════════════════════════
      LANDING PAGE
 ════════════════════════════════════════ -->
@@ -286,265 +298,246 @@ footer{border-top:1px solid var(--bdr);padding:48px 40px 28px;position:relative;
   <nav class="lnav">
     <div class="logo" onclick="goHome()"><div class="lm">M</div>Mandrake</div>
     <div class="lnav-links">
-      <a onclick="openModal('login')">Entrar</a>
-      <a onclick="openModal('signup')">Criar conta</a>
+      <a>Recursos</a><a>Canais</a><a>Como Funciona</a>
+    </div>
+    <div style="display:flex;gap:9px">
+      <button class="btn btn-ghost" onclick="openModal('login')">Entrar</button>
+      <button class="btn btn-primary" onclick="openModal('signup')">Começar Grátis</button>
     </div>
   </nav>
-  <section class="hero">
-    <div class="badge"><div class="pulse"></div>Fluxos Conversacionais Inteligentes</div>
-    <h1>Automatize suas <span class="grad">vendas</span> com IA</h1>
-    <p>Crie fluxos conversacionais sem código. Integre com WhatsApp, Instagram, Telegram e mais.</p>
+ 
+  <div class="hero">
+    <div class="badge"><span class="pulse"></span>Plataforma #1 de Automação Conversacional</div>
+    <h1>Fluxos que<br><span class="grad">vendem enquanto<br>você dorme</span></h1>
+    <p>Crie automações de conversas inteligentes para WhatsApp, Instagram e mais. Sem código, resultados reais.</p>
     <div class="hero-cta">
-      <button class="btn btn-primary btn-lg" onclick="openModal('login')">Começar Grátis →</button>
-      <button class="btn btn-ghost btn-lg">Ver Demo</button>
+      <button class="btn btn-primary btn-lg" onclick="openModal('signup')">Começar Gratuitamente →</button>
+      <button class="btn btn-ghost btn-lg" onclick="openModal('login')">Ver Demo</button>
     </div>
     <div class="hero-stats">
-      <div><div class="stat-n">10K+</div><div class="stat-l">Usuários Ativos</div></div>
-      <div><div class="stat-n">500K+</div><div class="stat-l">Mensagens/Dia</div></div>
-      <div><div class="stat-n">99.9%</div><div class="stat-l">Uptime</div></div>
+      <div><div class="stat-n">12k+</div><div class="stat-l">Fluxos criados</div></div>
+      <div><div class="stat-n">98%</div><div class="stat-l">Satisfação</div></div>
+      <div><div class="stat-n">5</div><div class="stat-l">Canais</div></div>
+      <div><div class="stat-n">∞</div><div class="stat-l">Mensagens / mês</div></div>
     </div>
-  </section>
-  <section class="hero-vis">
+  </div>
+ 
+  <!-- Mockup Editor Visual -->
+  <div class="hero-vis">
     <div class="mframe">
-      <div class="mbar"><div class="mdot" style="background:#ff5f56"></div><div class="mdot" style="background:#ffbd2e"></div><div class="mdot" style="background:#27c93f"></div><div class="murl"><span>mandrake.app/flow/abc123</span></div></div>
+      <div class="mbar">
+        <div class="mdot" style="background:#ff5f57"></div>
+        <div class="mdot" style="background:#ffbd2e"></div>
+        <div class="mdot" style="background:#28c840"></div>
+        <div class="murl"><span>app.mandrake.com.br/editor/fluxo-vendas</span></div>
+      </div>
       <div class="mbody">
         <div class="mside">
-          <div class="mchip" style="border-color:rgba(92,111,255,.3);background:rgba(92,111,255,.05)">💬 Mensagem</div>
-          <div class="mchip" style="border-color:rgba(128,232,208,.3);background:rgba(128,232,208,.05)">❓ Pergunta</div>
-          <div class="mchip" style="border-color:rgba(255,208,128,.3);background:rgba(255,208,128,.05)">⚡ Condição</div>
-          <div class="mchip" style="border-color:rgba(192,128,255,.3);background:rgba(192,128,255,.05)">🔗 Link</div>
+          <div style="font-size:10px;letter-spacing:1.5px;color:var(--dim);font-weight:600;margin-bottom:4px;text-transform:uppercase">Nós</div>
+          <div class="mchip" style="color:#a3b1ff;border-color:rgba(163,177,255,.2);background:rgba(92,111,255,.08)">💬 Mensagem</div>
+          <div class="mchip" style="color:#80e8d0;border-color:rgba(0,229,195,.2);background:rgba(0,229,195,.06)">❓ Pergunta</div>
+          <div class="mchip" style="color:#ffd080;border-color:rgba(255,208,128,.2);background:rgba(255,208,128,.06)">🖼️ Imagem</div>
+          <div class="mchip" style="color:#ff9080;border-color:rgba(255,144,128,.2);background:rgba(255,144,128,.06)">🔗 Link</div>
+          <div class="mchip" style="color:#c080ff;border-color:rgba(192,128,255,.2);background:rgba(192,128,255,.06)">⚡ Condição</div>
+          <div class="mchip" style="color:#80c8ff;border-color:rgba(128,200,255,.2);background:rgba(128,200,255,.06)">⏳ Delay</div>
         </div>
         <div class="mcanvas">
-          <div class="mnode" style="left:20px;top:30px"><div class="t">Início</div><div class="c">Olá! Como posso ajudar?</div><div class="h"><div class="mhd" style="background:#a3b1ff"></div></div></div>
-          <div class="mnode" style="left:20px;top:140px"><div class="t">Pergunta</div><div class="c">Qual é sua dúvida?</div><div class="h"><div class="mhd" style="background:#80e8d0"></div></div></div>
-          <div class="mnode" style="left:160px;top:80px"><div class="t">Condição</div><div class="c">resposta = "venda"</div><div class="h"><div class="mhd" style="background:#80c8ff"></div></div></div>
-          <div class="mnode" style="left:160px;top:180px"><div class="t">Link</div><div class="c">Clique aqui</div><div class="h"><div class="mhd" style="background:#c080ff"></div></div></div>
+          <svg width="100%" height="100%">
+            <defs><marker id="ma" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="rgba(92,111,255,.6)"/></marker></defs>
+            <path d="M 185 78 C 230 78 230 148 275 148" stroke="rgba(92,111,255,.45)" stroke-width="1.5" fill="none" marker-end="url(#ma)"/>
+            <path d="M 185 78 C 230 78 230 248 275 248" stroke="rgba(0,229,195,.4)" stroke-width="1.5" fill="none" stroke-dasharray="4,3" marker-end="url(#ma)"/>
+            <path d="M 455 148 C 500 148 500 308 545 308" stroke="rgba(92,111,255,.45)" stroke-width="1.5" fill="none" marker-end="url(#ma)"/>
+          </svg>
+          <div class="mnode" style="left:18px;top:42px"><div class="t">💬 Mensagem</div><div class="c">Olá! Vi que você se interessou. Posso ajudar?</div><div class="h"><div class="mhd" style="background:rgba(92,111,255,.7)"></div><div class="mhd" style="background:rgba(0,229,195,.7)"></div></div></div>
+          <div class="mnode" style="left:278px;top:114px"><div class="t">❓ Pergunta</div><div class="c">Qual produto te interessa mais?</div><div class="h"><div class="mhd" style="background:rgba(92,111,255,.7)"></div><div class="mhd" style="background:rgba(0,229,195,.7)"></div></div></div>
+          <div class="mnode" style="left:278px;top:218px"><div class="t">🖼️ Imagem</div><div class="c">Catálogo completo</div><div class="h"><div class="mhd" style="background:rgba(92,111,255,.7)"></div><div class="mhd" style="background:rgba(0,229,195,.7)"></div></div></div>
+          <div class="mnode" style="left:548px;top:278px;border-color:rgba(0,229,195,.4)"><div class="t">🔗 Link</div><div class="c">checkout.loja.com/oferta</div><div class="h"><div class="mhd" style="background:rgba(92,111,255,.7)"></div><div class="mhd" style="background:rgba(0,229,195,.7)"></div></div></div>
         </div>
         <div class="mprop">
-          <div class="mplbl">Propriedades</div>
-          <div class="mpf">ID: n1234567890</div>
-          <div class="mpf">Tipo: Mensagem</div>
-          <div class="mpf">Conteúdo: Olá! Como...</div>
-        </div>
-      </div>
-    </div>
-  </section>
-  <section class="sec">
-    <div class="sec-lbl">Como Funciona</div>
-    <h2 class="sec-title">3 passos simples</h2>
-    <p class="sec-sub">Crie fluxos poderosos sem escrever uma linha de código.</p>
-    <div class="steps">
-      <div class="step">
-        <div class="step-n">1</div>
-        <div class="step-i" style="background:rgba(92,111,255,.1);color:#a3b1ff">⊕</div>
-        <h3>Crie seu fluxo</h3>
-        <p>Arraste nós de mensagem, pergunta, condição e mais para montar seu fluxo conversacional.</p>
-      </div>
-      <div class="step">
-        <div class="step-n">2</div>
-        <div class="step-i" style="background:rgba(0,229,195,.1);color:#80e8d0">👁</div>
-        <h3>Visualize em tempo real</h3>
-        <p>Veja como o fluxo funciona em um simulador de WhatsApp, Telegram ou qualquer canal.</p>
-      </div>
-      <div class="step">
-        <div class="step-n">3</div>
-        <div class="step-i" style="background:rgba(192,128,255,.1);color:#c080ff">🚀</div>
-        <h3>Compartilhe e automatize</h3>
-        <p>Gere um link compartilhável e integre com seus canais favoritos em minutos.</p>
-      </div>
-    </div>
-  </section>
-  <section class="sec">
-    <div class="sec-lbl">Funcionalidades</div>
-    <h2 class="sec-title">Tudo que você precisa</h2>
-    <div class="feats">
-      <div class="feat">
-        <div class="feat-i" style="background:rgba(92,111,255,.1);color:#a3b1ff">💬</div>
-        <h3>Mensagens</h3>
-        <p>Envie mensagens de texto, imagens, vídeos e links em sequência.</p>
-      </div>
-      <div class="feat">
-        <div class="feat-i" style="background:rgba(128,232,208,.1);color:#80e8d0">❓</div>
-        <h3>Perguntas</h3>
-        <p>Faça perguntas e capture respostas dos usuários automaticamente.</p>
-      </div>
-      <div class="feat">
-        <div class="feat-i" style="background:rgba(255,208,128,.1);color:#ffd080">⚡</div>
-        <h3>Condições</h3>
-        <p>Crie ramificações baseadas em respostas e dados do usuário.</p>
-      </div>
-      <div class="feat">
-        <div class="feat-i" style="background:rgba(192,128,255,.1);color:#c080ff">🔗</div>
-        <h3>Links</h3>
-        <p>Adicione links clicáveis que levam a páginas externas.</p>
-      </div>
-      <div class="feat">
-        <div class="feat-i" style="background:rgba(128,200,255,.1);color:#80c8ff">⏳</div>
-        <h3>Delays</h3>
-        <p>Adicione pausas entre mensagens para uma conversa mais natural.</p>
-      </div>
-      <div class="feat">
-        <div class="feat-i" style="background:rgba(128,255,176,.1);color:#80ffb0">📊</div>
-        <h3>Analytics</h3>
-        <p>Acompanhe métricas de engajamento e conversão dos seus fluxos.</p>
-      </div>
-    </div>
-  </section>
-  <section class="sec">
-    <div class="sec-lbl">Canais Suportados</div>
-    <h2 class="sec-title">Integrado com os principais canais</h2>
-    <div class="ch-row">
-      <div class="ch-pill"><div class="chd" style="background:#25D366"></div>💬 WhatsApp</div>
-      <div class="ch-pill"><div class="chd" style="background:#E1306C"></div>📸 Instagram</div>
-      <div class="ch-pill"><div class="chd" style="background:#0084FF"></div>💙 Messenger</div>
-      <div class="ch-pill"><div class="chd" style="background:#0088cc"></div>✈️ Telegram</div>
-      <div class="ch-pill"><div class="chd" style="background:#999"></div>🌐 Web Chat</div>
-    </div>
-  </section>
-  <section class="cta-sec">
-    <div class="cta-box">
-      <h2>Pronto para automatizar?</h2>
-      <p>Crie sua primeira conversa em menos de 5 minutos. Sem cartão de crédito necessário.</p>
-      <button class="btn btn-primary btn-lg" onclick="openModal('login')" style="width:100%">Começar Grátis →</button>
-    </div>
-  </section>
-  <footer>
-    <div class="foot-in">
-      <div class="foot-brand">
-        <div class="logo"><div class="lm">M</div>Mandrake</div>
-        <p>Automatize suas vendas com fluxos conversacionais inteligentes.</p>
-      </div>
-      <div class="foot-links">
-        <div class="foot-col">
-          <h4>Produto</h4>
-          <a>Funcionalidades</a>
-          <a>Preços</a>
-          <a>Segurança</a>
-        </div>
-        <div class="foot-col">
-          <h4>Empresa</h4>
-          <a>Blog</a>
-          <a>Sobre</a>
-          <a>Contato</a>
-        </div>
-        <div class="foot-col">
-          <h4>Legal</h4>
-          <a>Privacidade</a>
-          <a>Termos</a>
-          <a>Cookies</a>
-        </div>
-      </div>
-    </div>
-    <div class="foot-bot">
-      <span>© 2026 Mandrake. Todos os direitos reservados.</span>
-      <span>Feito com ❤️ para vendedores</span>
-    </div>
-  </footer>
-</div>
-
-<!-- ═══════════════════════════════════════
-     DASHBOARD
-════════════════════════════════════════ -->
-<div id="page-dashboard" class="page">
-  <div class="dbg">
-    <!-- Sidebar -->
-    <div class="dside">
-      <div class="dlogo" onclick="goHome()"><div class="dlm">M</div>Mandrake</div>
-      <div class="dmenu">
-        <div class="dni on" onclick="showPanel('overview',this)">📊 Visão Geral</div>
-        <div class="dni" onclick="showPanel('flows',this)">⚡ Meus Fluxos</div>
-        <div class="dni" onclick="showPanel('analytics',this)">📈 Analytics</div>
-        <div class="dni" onclick="showPanel('channels',this)">💬 Canais</div>
-        <div class="dni" onclick="showPanel('settings',this)">⚙️ Configurações</div>
-      </div>
-      <div class="duser">
-        <div class="duav" id="uav">US</div>
-        <div class="duname" id="uname">Usuário</div>
-        <div class="duemail" id="uemail">user@email.com</div>
-      </div>
-    </div>
-    <!-- Main -->
-    <div class="dbody">
-      <div class="dhdr">
-        <div class="dpanel-title" id="panel-title">Visão Geral</div>
-        <div style="display:flex;gap:8px">
-          <button class="btn btn-ghost btn-sm" onclick="importFlow()">📥 Importar</button>
-          <button class="btn btn-primary btn-sm" onclick="openChannelSelector()">+ Novo Fluxo</button>
-        </div>
-      </div>
-      <div class="dcontent">
-        <!-- OVERVIEW -->
-        <div class="dpanel on" id="panel-overview">
-          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:28px">
-            <div style="background:var(--deep);border:1px solid var(--bdr);border-radius:12px;padding:16px">
-              <div style="font-size:11px;color:var(--dim);margin-bottom:4px;text-transform:uppercase;letter-spacing:1px">Fluxos Ativos</div>
-              <div style="font-family:var(--fd);font-size:28px;font-weight:800" id="m-active">0</div>
-            </div>
-            <div style="background:var(--deep);border:1px solid var(--bdr);border-radius:12px;padding:16px">
-              <div style="font-size:11px;color:var(--dim);margin-bottom:4px;text-transform:uppercase;letter-spacing:1px">Total de Fluxos</div>
-              <div style="font-family:var(--fd);font-size:28px;font-weight:800" id="m-total">0</div>
-            </div>
-            <div style="background:var(--deep);border:1px solid var(--bdr);border-radius:12px;padding:16px">
-              <div style="font-size:11px;color:var(--dim);margin-bottom:4px;text-transform:uppercase;letter-spacing:1px">Mensagens</div>
-              <div style="font-family:var(--fd);font-size:28px;font-weight:800" id="m-msgs">0</div>
-            </div>
-            <div style="background:var(--deep);border:1px solid var(--bdr);border-radius:12px;padding:16px">
-              <div style="font-size:11px;color:var(--dim);margin-bottom:4px;text-transform:uppercase;letter-spacing:1px">Taxa de Conversão</div>
-              <div style="font-family:var(--fd);font-size:28px;font-weight:800" id="m-cvr">—</div>
-            </div>
-          </div>
-          <h3 style="font-family:var(--fd);margin-bottom:14px">Fluxos Recentes</h3>
-          <div id="overview-list"></div>
-        </div>
-
-        <!-- FLOWS -->
-        <div class="dpanel" id="panel-flows">
-          <h3 style="font-family:var(--fd);margin-bottom:14px">Todos os Fluxos</h3>
-          <div id="flows-list"></div>
-        </div>
-
-        <!-- ANALYTICS -->
-        <div class="dpanel" id="panel-analytics">
-          <div style="background:var(--deep);border:1px solid var(--bdr);border-radius:14px;padding:28px;text-align:center">
-            <div style="font-size:48px;opacity:.25;margin-bottom:14px">📊</div>
-            <h3 style="font-size:16px;margin-bottom:6px">Sem dados ainda</h3>
-            <p style="color:var(--muted);font-size:13px">Compartilhe seus fluxos para ver métricas.</p>
-          </div>
-        </div>
-
-        <!-- CHANNELS -->
-        <div class="dpanel" id="panel-channels">
-          <h2 style="font-family:var(--fd);margin-bottom:22px">Canais Conectados</h2>
-          <div class="fgrid">
-            <div class="fcard" style="cursor:default"><div class="ftop"><div class="fico">💬</div><div class="fstat s-dft">Não conectado</div></div><h3>WhatsApp Business</h3><p>Conecte sua conta WhatsApp Business API</p><button class="btn btn-sec btn-sm" style="width:100%;margin-top:8px">Conectar →</button></div>
-            <div class="fcard" style="cursor:default"><div class="ftop"><div class="fico">📸</div><div class="fstat s-dft">Não conectado</div></div><h3>Instagram</h3><p>Automatize DMs e comentários</p><button class="btn btn-sec btn-sm" style="width:100%;margin-top:8px">Conectar →</button></div>
-            <div class="fcard" style="cursor:default"><div class="ftop"><div class="fico">💙</div><div class="fstat s-dft">Não conectado</div></div><h3>Facebook Messenger</h3><p>Gerencie conversas do Messenger</p><button class="btn btn-sec btn-sm" style="width:100%;margin-top:8px">Conectar →</button></div>
-            <div class="fcard" style="cursor:default"><div class="ftop"><div class="fico">✈️</div><div class="fstat s-dft">Não conectado</div></div><h3>Telegram</h3><p>Crie bots e fluxos para Telegram</p><button class="btn btn-sec btn-sm" style="width:100%;margin-top:8px">Conectar →</button></div>
-          </div>
-        </div>
-
-        <!-- SETTINGS -->
-        <div class="dpanel" id="panel-settings">
-          <h2 style="font-family:var(--fd);margin-bottom:22px">Configurações</h2>
-          <div style="max-width:460px;display:flex;flex-direction:column;gap:18px">
-            <div style="background:var(--deep);border:1px solid var(--bdr);border-radius:14px;padding:22px">
-              <h3 style="font-size:15px;margin-bottom:14px">Perfil</h3>
-              <div class="fg"><label class="fl">Nome</label><input type="text" class="fi" id="sname" placeholder="Seu nome"></div>
-              <div class="fg"><label class="fl">Email</label><input type="email" class="fi" id="semail" placeholder="seu@email.com"></div>
-              <button class="btn btn-primary btn-sm" onclick="saveSettings()">Salvar</button>
-            </div>
-            <div style="background:var(--deep);border:1px solid var(--bdr);border-radius:14px;padding:22px">
-              <h3 style="font-size:15px;margin-bottom:7px">Conta</h3>
-              <p style="font-size:13px;color:var(--muted);margin-bottom:14px;font-weight:300">Ações permanentes</p>
-              <button class="btn btn-danger btn-sm" onclick="logout()">Sair da conta</button>
-            </div>
-          </div>
+          <div><div class="mplbl">Tipo</div><div class="mpf">💬 Mensagem</div></div>
+          <div><div class="mplbl">Conteúdo</div><div class="mpf" style="min-height:56px;line-height:1.4">Olá! Vi que você se interessou pelo nosso produto...</div></div>
+          <div><div class="mplbl">Delay (seg)</div><div class="mpf">1.5</div></div>
+          <div><div class="mplbl">Canal</div><div class="mpf">WhatsApp</div></div>
         </div>
       </div>
     </div>
   </div>
+ 
+  <!-- Como Funciona -->
+  <div class="sec">
+    <div class="sec-lbl">⚡ Processo Simples</div>
+    <div class="sec-title">3 passos para automatizar</div>
+    <div class="steps">
+      <div class="step"><div class="step-n">01</div><div class="step-i" style="background:rgba(92,111,255,.12)">🎨</div><h3>Monte seu fluxo</h3><p>Interface drag-and-drop. Conecte nós de mensagem, perguntas, imagens e condições sem código.</p></div>
+      <div class="step"><div class="step-n">02</div><div class="step-i" style="background:rgba(0,229,195,.1)">⚙️</div><h3>Configure gatilhos</h3><p>Defina palavras-chave, condições, delays e ações automáticas baseadas no comportamento do usuário.</p></div>
+      <div class="step"><div class="step-n">03</div><div class="step-i" style="background:rgba(245,166,35,.1)">🔗</div><h3>Compartilhe por link</h3><p>Gere um link único e compartilhe. Qualquer pessoa acessa seu fluxo direto pelo navegador.</p></div>
+    </div>
+  </div>
+ 
+  <!-- Recursos -->
+  <div class="sec">
+    <div class="sec-lbl">✨ Funcionalidades</div>
+    <div class="sec-title">Tudo para automatizar</div>
+    <div class="sec-sub">Mandrake oferece todas as ferramentas para criar fluxos conversacionais profissionais.</div>
+    <div class="feats">
+      <div class="feat"><div class="feat-i">🎯</div><h3>Editor Visual</h3><p>Drag-and-drop com nós inteligentes e visualização em tempo real.</p></div>
+      <div class="feat"><div class="feat-i">📱</div><h3>5 Canais</h3><p>WhatsApp, Instagram, Messenger, Telegram e Web em uma plataforma.</p></div>
+      <div class="feat"><div class="feat-i">🔗</div><h3>Links Compartilháveis</h3><p>URLs únicas para cada fluxo. Compartilhe por QR code ou bio.</p></div>
+      <div class="feat"><div class="feat-i">👁️</div><h3>Preview por Canal</h3><p>Visualize exatamente como vai aparecer no WhatsApp, Instagram e mais.</p></div>
+      <div class="feat"><div class="feat-i">📊</div><h3>Analytics</h3><p>Taxas de abertura, conversão e heatmaps de interação.</p></div>
+      <div class="feat"><div class="feat-i">⚡</div><h3>Gatilhos Inteligentes</h3><p>Condições avançadas para personalizar cada interação.</p></div>
+    </div>
+  </div>
+ 
+  <!-- Canais -->
+  <div class="sec" style="text-align:center">
+    <div class="sec-lbl" style="display:inline-block">📡 Canais</div>
+    <div class="sec-title">Onde seus clientes estão</div>
+    <div class="ch-row">
+      <div class="ch-pill"><div class="chd" style="background:#25d366"></div>WhatsApp</div>
+      <div class="ch-pill"><div class="chd" style="background:#e1306c"></div>Instagram</div>
+      <div class="ch-pill"><div class="chd" style="background:#0084ff"></div>Messenger</div>
+      <div class="ch-pill"><div class="chd" style="background:#2aabee"></div>Telegram</div>
+      <div class="ch-pill"><div class="chd" style="background:#5c6fff"></div>Web Chat</div>
+    </div>
+  </div>
+ 
+  <!-- CTA -->
+  <div class="cta-sec">
+    <div class="cta-box">
+      <h2>Pronto para automatizar<br>suas conversas?</h2>
+      <p>Comece gratuitamente. Sem cartão de crédito. Resultado em minutos.</p>
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;position:relative">
+        <button class="btn btn-primary btn-lg" onclick="openModal('signup')">Criar conta grátis →</button>
+        <button class="btn btn-ghost btn-lg" onclick="openModal('login')">Fazer login</button>
+      </div>
+    </div>
+  </div>
+ 
+  <footer>
+    <div class="foot-in">
+      <div class="foot-brand">
+        <div class="logo" style="cursor:default"><div class="lm">M</div>Mandrake</div>
+        <p>Automação de conversas sem código. Construído para quem quer vender mais.</p>
+      </div>
+      <div class="foot-links">
+        <div class="foot-col"><h4>Produto</h4><a>Recursos</a><a>Preços</a><a>Changelog</a></div>
+        <div class="foot-col"><h4>Empresa</h4><a>Sobre</a><a>Blog</a><a>Contato</a></div>
+        <div class="foot-col"><h4>Suporte</h4><a>Docs</a><a>Tutoriais</a><a>Status</a></div>
+      </div>
+    </div>
+    <div class="foot-bot">
+      <span>© 2026 Mandrake. Todos os direitos reservados.</span>
+      <span style="color:var(--acc);font-size:11px">Feito com ♥ no Brasil</span>
+    </div>
+  </footer>
 </div>
-
+ 
+<!-- ═══════════════════════════════════════
+     DASHBOARD
+════════════════════════════════════════ -->
+<div id="page-dashboard" class="page">
+  <!-- SIDEBAR FIXO -->
+  <div class="dside">
+    <div class="dside-top">
+      <div class="logo" style="font-size:17px;cursor:pointer" onclick="goHome()">
+        <div class="lm" style="width:24px;height:24px;font-size:11px">N</div>Mandrake
+      </div>
+    </div>
+    <nav class="dnav">
+      <div class="dni on" id="nav-overview" onclick="showPanel('overview',this)"><span class="ni">⊞</span>Visão Geral</div>
+      <div class="dni" id="nav-flows" onclick="showPanel('flows',this)"><span class="ni">⚡</span>Meus Fluxos</div>
+      <div class="dni" id="nav-analytics" onclick="showPanel('analytics',this)"><span class="ni">📊</span>Analytics</div>
+      <div class="dni" id="nav-channels" onclick="showPanel('channels',this)"><span class="ni">📡</span>Canais</div>
+      <div class="dni" id="nav-settings" onclick="showPanel('settings',this)"><span class="ni">⚙️</span>Configurações</div>
+    </nav>
+    <div class="dside-bot">
+      <div class="uchip" onclick="logout()">
+        <div class="uav" id="uav">U</div>
+        <div class="uinfo"><p id="uname">Usuário</p><span id="uemail">email@exemplo.com</span></div>
+      </div>
+    </div>
+  </div>
+ 
+  <!-- MAIN CONTENT -->
+  <div class="dmain">
+    <div class="dtop">
+      <h1 id="panel-title">Visão Geral</h1>
+      <div style="display:flex;gap:9px">
+        <button class="btn btn-sec btn-sm" onclick="openChannelSelector()">+ Novo Fluxo</button>
+        <button class="btn btn-ghost btn-sm" onclick="logout()">Sair</button>
+      </div>
+    </div>
+    <div class="dcontent">
+ 
+      <!-- OVERVIEW -->
+      <div class="dpanel on" id="panel-overview">
+        <div class="mgrid">
+          <div class="mcard"><div class="mlbl">Fluxos Ativos</div><div class="mval" style="color:var(--acc)" id="m-active">0</div><div class="mdelta">de <span id="m-total">0</span> criados</div></div>
+          <div class="mcard"><div class="mlbl">Mensagens Enviadas</div><div class="mval" style="color:var(--grn)" id="m-msgs">0</div><div class="mdelta">↑ Este mês</div></div>
+          <div class="mcard"><div class="mlbl">Taxa de Conversão</div><div class="mval" style="color:var(--warn)" id="m-cvr">—</div><div class="mdelta">Baseado nos fluxos</div></div>
+          <div class="mcard"><div class="mlbl">Links Gerados</div><div class="mval" id="m-links">0</div><div class="mdelta">compartilháveis</div></div>
+        </div>
+        <div class="fhdr"><h2>Fluxos Recentes</h2><button class="btn btn-primary btn-sm" onclick="openChannelSelector()">+ Criar Fluxo</button></div>
+        <div id="overview-list"></div>
+      </div>
+ 
+      <!-- FLOWS -->
+      <div class="dpanel" id="panel-flows">
+        <div class="fhdr">
+          <h2>Meus Fluxos</h2>
+          <div style="display:flex;gap:8px">
+            <button class="btn btn-ghost btn-sm" onclick="importFlow()">📥 Importar</button>
+            <button class="btn btn-primary btn-sm" onclick="openChannelSelector()">+ Novo Fluxo</button>
+          </div>
+        </div>
+        <div id="flows-list" class="fgrid"></div>
+      </div>
+ 
+      <!-- ANALYTICS -->
+      <div class="dpanel" id="panel-analytics">
+        <h2 style="font-family:var(--fd);margin-bottom:22px">Analytics</h2>
+        <div class="mgrid">
+          <div class="mcard"><div class="mlbl">Aberturas</div><div class="mval" style="color:var(--acc)">—</div></div>
+          <div class="mcard"><div class="mlbl">Cliques</div><div class="mval" style="color:var(--grn)">—</div></div>
+          <div class="mcard"><div class="mlbl">Conversões</div><div class="mval" style="color:var(--warn)">—</div></div>
+        </div>
+        <div class="empty" style="margin-top:32px"><div class="ei">📊</div><h3>Sem dados ainda</h3><p>Compartilhe seus fluxos para ver métricas.</p></div>
+      </div>
+ 
+      <!-- CHANNELS -->
+      <div class="dpanel" id="panel-channels">
+        <h2 style="font-family:var(--fd);margin-bottom:22px">Canais Conectados</h2>
+        <div class="fgrid">
+          <div class="fcard" style="cursor:default"><div class="ftop"><div class="fico">💬</div><div class="fstat s-dft">Não conectado</div></div><h3>WhatsApp Business</h3><p>Conecte sua conta WhatsApp Business API</p><button class="btn btn-sec btn-sm" style="width:100%;margin-top:8px">Conectar →</button></div>
+          <div class="fcard" style="cursor:default"><div class="ftop"><div class="fico">📸</div><div class="fstat s-dft">Não conectado</div></div><h3>Instagram</h3><p>Automatize DMs e comentários</p><button class="btn btn-sec btn-sm" style="width:100%;margin-top:8px">Conectar →</button></div>
+          <div class="fcard" style="cursor:default"><div class="ftop"><div class="fico">💙</div><div class="fstat s-dft">Não conectado</div></div><h3>Facebook Messenger</h3><p>Gerencie conversas do Messenger</p><button class="btn btn-sec btn-sm" style="width:100%;margin-top:8px">Conectar →</button></div>
+          <div class="fcard" style="cursor:default"><div class="ftop"><div class="fico">✈️</div><div class="fstat s-dft">Não conectado</div></div><h3>Telegram</h3><p>Crie bots e fluxos para Telegram</p><button class="btn btn-sec btn-sm" style="width:100%;margin-top:8px">Conectar →</button></div>
+        </div>
+      </div>
+ 
+      <!-- SETTINGS -->
+      <div class="dpanel" id="panel-settings">
+        <h2 style="font-family:var(--fd);margin-bottom:22px">Configurações</h2>
+        <div style="max-width:460px;display:flex;flex-direction:column;gap:18px">
+          <div style="background:var(--deep);border:1px solid var(--bdr);border-radius:14px;padding:22px">
+            <h3 style="font-size:15px;margin-bottom:14px">Perfil</h3>
+            <div class="fg"><label class="fl">Nome</label><input type="text" class="fi" id="sname" placeholder="Seu nome"></div>
+            <div class="fg"><label class="fl">Email</label><input type="email" class="fi" id="semail" placeholder="seu@email.com"></div>
+            <button class="btn btn-primary btn-sm" onclick="saveSettings()">Salvar</button>
+          </div>
+          <div style="background:var(--deep);border:1px solid var(--bdr);border-radius:14px;padding:22px">
+            <h3 style="font-size:15px;margin-bottom:7px">Conta</h3>
+            <p style="font-size:13px;color:var(--muted);margin-bottom:14px;font-weight:300">Ações permanentes</p>
+            <button class="btn btn-danger btn-sm" onclick="logout()">Sair da conta</button>
+          </div>
+        </div>
+      </div>
+ 
+    </div>
+  </div>
+</div>
+ 
 <!-- ═══════════════════════════════════════
      EDITOR
 ════════════════════════════════════════ -->
@@ -613,7 +606,7 @@ footer{border-top:1px solid var(--bdr);padding:48px 40px 28px;position:relative;
     </div>
   </div>
 </div>
-
+ 
 <!-- ═══════════════════════════════════════
      PREVIEW PAGE
 ════════════════════════════════════════ -->
@@ -637,7 +630,9 @@ footer{border-top:1px solid var(--bdr);padding:48px 40px 28px;position:relative;
         <button class="btn btn-ghost btn-sm" onclick="showPage('editor')">← Editor</button>
         <button class="btn btn-ghost btn-sm" onclick="shareFlow()">🔗 Compartilhar</button>
       </div>
-      <h2 id="prev-flow-name" style="font-family:var(--fd);font-size:16px;margin-bottom:16px">Meu Fluxo</h2>
+      <h2 id="prev-flow-name">Meu Fluxo</h2>
+      <p>Visualização exata de como seu fluxo aparece para o usuário final.</p>
+      <!-- Channel switcher -->
       <div class="pis">
         <h3>🎨 Tema do Canal</h3>
         <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
@@ -658,16 +653,16 @@ footer{border-top:1px solid var(--bdr);padding:48px 40px 28px;position:relative;
     </div>
   </div>
 </div>
-
+ 
 <!-- ═══════════════════════════════════════
      404 PAGE
 ════════════════════════════════════════ -->
-<div id="page-404" class="page page-404">
-  <div class="err-box">
-    <div class="err-code">404</div>
-    <h2 class="err-title">Fluxo não encontrado</h2>
-    <p class="err-msg">O fluxo que você está procurando não existe ou foi removido. Verifique o link e tente novamente.</p>
-    <button class="btn btn-primary" onclick="goHome()" style="width:100%">← Voltar ao Início</button>
+<div id="page-404" class="page" style="display:none;min-height:100vh;align-items:center;justify-content:center;text-align:center;padding:40px">
+  <div style="background:var(--deep);border:1px solid var(--bdr2);border-radius:20px;padding:60px 40px;max-width:440px;width:100%">
+    <div style="font-family:var(--fd);font-size:80px;font-weight:800;color:var(--acc);line-height:1;margin-bottom:20px">404</div>
+    <h2 style="font-family:var(--fd);font-size:24px;font-weight:700;margin-bottom:12px">Fluxo não encontrado</h2>
+    <p style="color:var(--muted);font-size:15px;line-height:1.6;margin-bottom:32px">O fluxo que você está procurando não existe ou foi removido. Verifique o link e tente novamente.</p>
+    <button class="btn btn-primary btn-lg" onclick="goHome()" style="width:100%">← Voltar ao Início</button>
   </div>
 </div>
 
@@ -698,7 +693,7 @@ footer{border-top:1px solid var(--bdr);padding:48px 40px 28px;position:relative;
     </div>
   </div>
 </div>
-
+ 
 <!-- ═══════════════════════════════════════
      CHANNEL SELECTOR MODAL
 ════════════════════════════════════════ -->
@@ -732,7 +727,7 @@ footer{border-top:1px solid var(--bdr);padding:48px 40px 28px;position:relative;
     <button class="btn btn-primary" style="width:100%" onclick="createFlowFromChannel()">Criar Fluxo →</button>
   </div>
 </div>
-
+ 
 <!-- ═══════════════════════════════════════
      SHARE MODAL
 ════════════════════════════════════════ -->
@@ -756,7 +751,7 @@ footer{border-top:1px solid var(--bdr);padding:48px 40px 28px;position:relative;
     </div>
   </div>
 </div>
-
+ 
 <script>
 // ─── STARS ───
 (()=>{
@@ -766,12 +761,12 @@ footer{border-top:1px solid var(--bdr);padding:48px 40px 28px;position:relative;
   function draw(){ctx.clearRect(0,0,W,H);S.forEach(s=>{s.a+=s.s;if(s.a>1||s.a<0)s.s*=-1;ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle=`rgba(180,200,255,${s.a*.55})`;ctx.fill()})}
   setInterval(draw,55);addEventListener('resize',init);init();
 })();
-
+ 
 // ─── STATE ───
 let CU=null,flows=[],curFId=null,nodes=[],edges=[],selId=null;
 let dragType=null,conFrom=null,cZoom=1,cOff={x:0,y:0},panning=false,panSt={x:0,y:0};
 let curChannel='wpp'; // default channel
-
+ 
 const NC={
   message:{dot:'#a3b1ff',lbl:'Mensagem'},
   question:{dot:'#80e8d0',lbl:'Pergunta'},
@@ -789,7 +784,7 @@ const CH_INFO={
   tg:{lbl:'Telegram',emoji:'✈️',theme:'tg',name:'Bot',status:'online'},
   web:{lbl:'Web Chat',emoji:'🌐',theme:'twb',name:'Assistente',status:'online'}
 };
-
+ 
 // ─── PAGES ───
 function showPage(name){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
@@ -797,7 +792,7 @@ function showPage(name){
 }
 function goHome(){showPage('landing')}
 function backToDash(){showPage('dashboard');renderDash()}
-
+ 
 // ─── AUTH MODAL ───
 function openModal(t){
   document.getElementById('auth-overlay').classList.add('open');
@@ -840,11 +835,11 @@ function checkSession(){
   const s=localStorage.getItem('nbs');
   if(s){CU=JSON.parse(s);loadFlows()}
 }
-
+ 
 // ─── FLOWS DATA ───
 function loadFlows(){if(!CU)return;flows=JSON.parse(localStorage.getItem('nbf_'+CU.id)||'[]')}
 function saveFlows(){if(!CU)return;localStorage.setItem('nbf_'+CU.id,JSON.stringify(flows))}
-
+ 
 // ─── CHANNEL SELECTOR ───
 function openChannelSelector(){
   document.getElementById('ch-modal').classList.add('open');
@@ -861,7 +856,7 @@ function createFlowFromChannel(){
   document.getElementById('ch-modal').classList.remove('open');
   openEditor(null,curChannel);
 }
-
+ 
 // ─── DASHBOARD ───
 function renderDash(){
   if(!CU)return;
@@ -927,7 +922,7 @@ function saveSettings(){
   if(i>=0){us[i]={...us[i],...CU};localStorage.setItem('nbu',JSON.stringify(us))}
   renderDash();toast('Perfil atualizado','✓');
 }
-
+ 
 // ─── EDITOR ───
 function openEditor(fid,ch){
   nodes=[];edges=[];selId=null;cZoom=1;cOff={x:0,y:0};
@@ -964,7 +959,7 @@ function saveFlow(){
   if(ex>=0)flows[ex]=f;else flows.push(f);
   saveFlows();toast('Fluxo salvo!','✓');
 }
-
+ 
 // ─── SHARE ───
 function shareFlow(){
   saveFlow();
@@ -1005,7 +1000,7 @@ function copyLink(){
 function shareWpp(){const l=document.getElementById('share-link-field').textContent;window.open(`https://wa.me/?text=Acesse+meu+fluxo+${encodeURIComponent(l)}`,'_blank')}
 function shareIG(){copyLink();toast('Link copiado! Cole na bio do Instagram.','✓')}
 function shareTG(){const l=document.getElementById('share-link-field').textContent;window.open(`https://t.me/share/url?url=${encodeURIComponent(l)}`,'_blank')}
-
+ 
 // ─── IMPORT ───
 function importFlow(){
   const inp=document.createElement('input');inp.type='file';inp.accept='.json';
@@ -1021,7 +1016,7 @@ function importFlow(){
     };r.readAsText(f);
   };inp.click();
 }
-
+ 
 // ─── CANVAS / NODES ───
 // Palette drag via mousedown (works in sandboxed/iframe environments)
 function palMD(e,type){
@@ -1071,7 +1066,8 @@ function renderNode(n){
   const layer=document.getElementById('enodes');
   const c=NC[n.type]||{dot:'#aaa',lbl:'Nó'};
   const el=document.createElement('div');
-  el.id='fn-'+n.id;el.className='fnode';el.style.left=n.x+'px';el.style.top=n.y+'px';
+  el.className='fnode';el.id='fn-'+n.id;
+  el.style.left=n.x+'px';el.style.top=n.y+'px';
   const prev=n.content.length>55?n.content.slice(0,52)+'...':n.content;
   el.innerHTML=`
     <div class="fnh">
@@ -1219,7 +1215,7 @@ function applyT(){
 }
 function zoom(d){cZoom=Math.min(2,Math.max(.3,cZoom+d));document.getElementById('zlbl').textContent=Math.round(cZoom*100)+'%';applyT();redrawEdges()}
 function resetZ(){cZoom=1;cOff={x:0,y:0};applyT();redrawEdges();document.getElementById('zlbl').textContent='100%'}
-
+ 
 // ─── PREVIEW ───
 let prevNodes=[],prevIdx=0,curTheme='tw';
 function openPreview(){
@@ -1270,22 +1266,21 @@ function addPrevBubble(txt,who){
   const c=document.getElementById('prev-msgs');
   const b=document.createElement('div');
   b.className='pbub '+who;
-  // Detectar URLs e convertê-las em links clicáveis
   const urlRegex=/(https?:\/\/[^\s]+)/g;
   const htmlContent=txt.replace(urlRegex,'<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>');
   b.innerHTML=htmlContent;
   c.appendChild(b);c.scrollTop=c.scrollHeight;
 }
-
+ 
 // ─── EXPORT ───
 function exportCurFlow(){
   const name=document.getElementById('flow-title').value||'fluxo';
   const d={id:curFId,name,channel:curChannel,nodes,edges,exportedAt:new Date().toISOString()};
-  const blob=new Blob([JSON.stringify(d,null,2)],{type:'application/json'});
-  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name.replace(/\s+/g,'-').toLowerCase()+'.json';a.click();
+  const b=new Blob([JSON.stringify(d,null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=name.replace(/\s+/g,'-').toLowerCase()+'.json';a.click();
   toast('Exportado!','✓');
 }
-
+ 
 // ─── TOAST ───
 let tt;
 function toast(msg,icon='ℹ'){
@@ -1295,7 +1290,7 @@ function toast(msg,icon='ℹ'){
   document.body.appendChild(el);
   tt=setTimeout(()=>{if(el.parentNode)el.parentNode.removeChild(el)},2800);
 }
-
+ 
 // ─── KEYBOARD ───
 document.addEventListener('keydown',e=>{
   if(e.key==='Escape'){
@@ -1308,7 +1303,7 @@ document.addEventListener('keydown',e=>{
     if(document.activeElement.tagName!=='INPUT'&&document.activeElement.tagName!=='TEXTAREA')delSelNode();
   }
 });
-
+ 
 // ─── CANVAS EVENTS ───
 document.addEventListener('DOMContentLoaded',()=>{
   const wr=document.getElementById('ecanvas');
