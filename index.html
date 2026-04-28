@@ -162,8 +162,7 @@ footer{border-top:1px solid var(--bdr);padding:48px 40px 28px;position:relative;
 .dside-bot{padding:10px;border-top:1px solid var(--bdr)}
 .uchip{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;cursor:pointer;transition:background .2s}
 .uchip:hover{background:rgba(255,255,255,.04)}
-.prev-av{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--acc),var(--grn));display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;flex-shrink:0;overflow:hidden}
-.prev-av img{width:100%;height:100%;object-fit:cover}}
+.uav{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--acc),var(--grn));display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0}
 .uinfo p{font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:148px}
 .uinfo span{font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:148px;display:block}
 .dmain{flex:1;margin-left:240px;display:flex;flex-direction:column;min-width:0}
@@ -251,7 +250,6 @@ footer{border-top:1px solid var(--bdr);padding:48px 40px 28px;position:relative;
 .pi::placeholder,.pta::placeholder{color:var(--dim);font-size:12px}
 .connlist{display:flex;flex-direction:column;gap:4px}
 .connitem{font-size:11px;color:var(--muted);padding:5px 8px;background:rgba(0,0,0,.2);border-radius:5px;display:flex;align-items:center;gap:5px}
-.connitem-del{background:none;border:none;color:var(--red);cursor:pointer;margin-left:auto;opacity:.6;transition:opacity .2s;font-size:12px;padding:0}.connitem-del:hover{opacity:1}
 /* ─── PREVIEW PAGE ─── */
 #page-preview{display:none;min-height:100vh;align-items:center;justify-content:center;padding:32px}
 #page-preview.active{display:flex}
@@ -265,6 +263,9 @@ footer{border-top:1px solid var(--bdr);padding:48px 40px 28px;position:relative;
 .pbub{max-width:80%;padding:8px 12px;border-radius:12px;font-size:13px;line-height:1.5;word-break:break-word}
 .pbub.bot{border-bottom-left-radius:3px;align-self:flex-start}
 .pbub.usr{border-bottom-right-radius:3px;align-self:flex-end}
+.prev-msg-row{display:flex;align-items:flex-end;gap:6px}
+.prev-msg-row.usr-row{flex-direction:row-reverse}
+.prev-uav{width:24px;height:24px;border-radius:50%;flex-shrink:0;background-size:cover;background-position:center;display:flex;align-items:center;justify-content:center;font-size:11px}
 .prev-in{padding:10px 12px;display:flex;gap:8px;align-items:center}
 .prev-ti{flex:1;padding:8px 14px;border-radius:20px;border:none;font-size:13px;outline:none;font-family:var(--fb)}
 .prev-sb{width:35px;height:35px;border-radius:50%;border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;flex-shrink:0}
@@ -290,7 +291,7 @@ footer{border-top:1px solid var(--bdr);padding:48px 40px 28px;position:relative;
 </head>
 <body>
 <canvas id="starfield"></canvas>
- 
+
 <!-- ═══════════════════════════════════════
      LANDING PAGE
 ════════════════════════════════════════ -->
@@ -305,7 +306,7 @@ footer{border-top:1px solid var(--bdr);padding:48px 40px 28px;position:relative;
       <button class="btn btn-primary" onclick="openModal('signup')">Começar Grátis</button>
     </div>
   </nav>
- 
+
   <div class="hero">
     <div class="badge"><span class="pulse"></span>Plataforma #1 de Automação Conversacional</div>
     <h1>Fluxos que<br><span class="grad">vendem enquanto<br>você dorme</span></h1>
@@ -321,7 +322,7 @@ footer{border-top:1px solid var(--bdr);padding:48px 40px 28px;position:relative;
       <div><div class="stat-n">∞</div><div class="stat-l">Mensagens / mês</div></div>
     </div>
   </div>
- 
+
   <!-- Mockup Editor Visual -->
   <div class="hero-vis">
     <div class="mframe">
@@ -362,7 +363,7 @@ footer{border-top:1px solid var(--bdr);padding:48px 40px 28px;position:relative;
       </div>
     </div>
   </div>
- 
+
   <!-- Como Funciona -->
   <div class="sec">
     <div class="sec-lbl">⚡ Processo Simples</div>
@@ -373,7 +374,7 @@ footer{border-top:1px solid var(--bdr);padding:48px 40px 28px;position:relative;
       <div class="step"><div class="step-n">03</div><div class="step-i" style="background:rgba(245,166,35,.1)">🔗</div><h3>Compartilhe por link</h3><p>Gere um link único e compartilhe. Qualquer pessoa acessa seu fluxo direto pelo navegador.</p></div>
     </div>
   </div>
- 
+
   <!-- Recursos -->
   <div class="sec">
     <div class="sec-lbl">✨ Funcionalidades</div>
@@ -388,7 +389,7 @@ footer{border-top:1px solid var(--bdr);padding:48px 40px 28px;position:relative;
       <div class="feat"><div class="feat-i">⚡</div><h3>Gatilhos Inteligentes</h3><p>Condições avançadas para personalizar cada interação.</p></div>
     </div>
   </div>
- 
+
   <!-- Canais -->
   <div class="sec" style="text-align:center">
     <div class="sec-lbl" style="display:inline-block">📡 Canais</div>
@@ -401,7 +402,7 @@ footer{border-top:1px solid var(--bdr);padding:48px 40px 28px;position:relative;
       <div class="ch-pill"><div class="chd" style="background:#5c6fff"></div>Web Chat</div>
     </div>
   </div>
- 
+
   <!-- CTA -->
   <div class="cta-sec">
     <div class="cta-box">
@@ -413,7 +414,7 @@ footer{border-top:1px solid var(--bdr);padding:48px 40px 28px;position:relative;
       </div>
     </div>
   </div>
- 
+
   <footer>
     <div class="foot-in">
       <div class="foot-brand">
@@ -432,7 +433,7 @@ footer{border-top:1px solid var(--bdr);padding:48px 40px 28px;position:relative;
     </div>
   </footer>
 </div>
- 
+
 <!-- ═══════════════════════════════════════
      DASHBOARD
 ════════════════════════════════════════ -->
@@ -458,7 +459,7 @@ footer{border-top:1px solid var(--bdr);padding:48px 40px 28px;position:relative;
       </div>
     </div>
   </div>
- 
+
   <!-- MAIN CONTENT -->
   <div class="dmain">
     <div class="dtop">
@@ -469,7 +470,7 @@ footer{border-top:1px solid var(--bdr);padding:48px 40px 28px;position:relative;
       </div>
     </div>
     <div class="dcontent">
- 
+
       <!-- OVERVIEW -->
       <div class="dpanel on" id="panel-overview">
         <div class="mgrid">
@@ -481,7 +482,7 @@ footer{border-top:1px solid var(--bdr);padding:48px 40px 28px;position:relative;
         <div class="fhdr"><h2>Fluxos Recentes</h2><button class="btn btn-primary btn-sm" onclick="openChannelSelector()">+ Criar Fluxo</button></div>
         <div id="overview-list"></div>
       </div>
- 
+
       <!-- FLOWS -->
       <div class="dpanel" id="panel-flows">
         <div class="fhdr">
@@ -493,7 +494,7 @@ footer{border-top:1px solid var(--bdr);padding:48px 40px 28px;position:relative;
         </div>
         <div id="flows-list" class="fgrid"></div>
       </div>
- 
+
       <!-- ANALYTICS -->
       <div class="dpanel" id="panel-analytics">
         <h2 style="font-family:var(--fd);margin-bottom:22px">Analytics</h2>
@@ -504,7 +505,7 @@ footer{border-top:1px solid var(--bdr);padding:48px 40px 28px;position:relative;
         </div>
         <div class="empty" style="margin-top:32px"><div class="ei">📊</div><h3>Sem dados ainda</h3><p>Compartilhe seus fluxos para ver métricas.</p></div>
       </div>
- 
+
       <!-- CHANNELS -->
       <div class="dpanel" id="panel-channels">
         <h2 style="font-family:var(--fd);margin-bottom:22px">Canais Conectados</h2>
@@ -515,13 +516,22 @@ footer{border-top:1px solid var(--bdr);padding:48px 40px 28px;position:relative;
           <div class="fcard" style="cursor:default"><div class="ftop"><div class="fico">✈️</div><div class="fstat s-dft">Não conectado</div></div><h3>Telegram</h3><p>Crie bots e fluxos para Telegram</p><button class="btn btn-sec btn-sm" style="width:100%;margin-top:8px">Conectar →</button></div>
         </div>
       </div>
- 
+
       <!-- SETTINGS -->
       <div class="dpanel" id="panel-settings">
         <h2 style="font-family:var(--fd);margin-bottom:22px">Configurações</h2>
         <div style="max-width:460px;display:flex;flex-direction:column;gap:18px">
           <div style="background:var(--deep);border:1px solid var(--bdr);border-radius:14px;padding:22px">
-            <h3 style="font-size:15px;margin-bottom:14px">Perfil</h3>
+            <h3 style="font-size:15px;margin-bottom:16px">Foto de Perfil</h3>
+            <div style="display:flex;align-items:center;gap:16px;margin-bottom:18px">
+              <div id="settings-avatar" style="width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,var(--acc),var(--grn));display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;flex-shrink:0;cursor:pointer;border:2px solid var(--bdr2)" onclick="triggerAvatarUpload()" title="Clique para alterar foto">U</div>
+              <div>
+                <p style="font-size:13px;font-weight:500;margin-bottom:4px">Foto do perfil</p>
+                <p style="font-size:12px;color:var(--muted);margin-bottom:8px">Aparece no preview dos fluxos como foto do usuário</p>
+                <button class="btn btn-ghost btn-sm" onclick="triggerAvatarUpload()">📷 Alterar foto</button>
+              </div>
+            </div>
+            <h3 style="font-size:15px;margin-bottom:14px">Dados</h3>
             <div class="fg"><label class="fl">Nome</label><input type="text" class="fi" id="sname" placeholder="Seu nome"></div>
             <div class="fg"><label class="fl">Email</label><input type="email" class="fi" id="semail" placeholder="seu@email.com"></div>
             <button class="btn btn-primary btn-sm" onclick="saveSettings()">Salvar</button>
@@ -531,13 +541,38 @@ footer{border-top:1px solid var(--bdr);padding:48px 40px 28px;position:relative;
             <p style="font-size:13px;color:var(--muted);margin-bottom:14px;font-weight:300">Ações permanentes</p>
             <button class="btn btn-danger btn-sm" onclick="logout()">Sair da conta</button>
           </div>
+          <div style="background:rgba(92,111,255,0.06);border:1px solid rgba(92,111,255,0.2);border-radius:14px;padding:22px">
+            <h3 style="font-size:14px;margin-bottom:8px;color:var(--acc)">⚙️ Setup Supabase</h3>
+            <p style="font-size:12px;color:var(--muted);margin-bottom:12px;line-height:1.6">Execute este SQL no <b>Supabase SQL Editor</b> para criar a tabela e o bucket de avatares:</p>
+            <pre id="sql-block" style="background:rgba(0,0,0,0.5);border:1px solid var(--bdr);border-radius:8px;padding:12px;font-size:11px;color:#80e8d0;overflow-x:auto;white-space:pre;line-height:1.6;font-family:monospace">create table if not exists mandrake_flows (
+  id text primary key,
+  user_id text not null,
+  name text not null,
+  channel text default 'wpp',
+  status text default 'draft',
+  desc text default '',
+  nodes_json text default '[]',
+  edges_json text default '[]',
+  created_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+alter table mandrake_flows enable row level security;
+create policy "Users see own flows"
+  on mandrake_flows for all
+  using (auth.uid()::text = user_id);
+-- Storage bucket para avatares:
+insert into storage.buckets (id, name, public)
+  values ('mandrake-avatars', 'mandrake-avatars', true)
+  on conflict do nothing;</pre>
+            <button class="btn btn-ghost btn-sm" style="margin-top:10px" onclick="navigator.clipboard.writeText(document.getElementById('sql-block').textContent);toast('SQL copiado!','✓')">📋 Copiar SQL</button>
+          </div>
         </div>
       </div>
- 
+
     </div>
   </div>
 </div>
- 
+
 <!-- ═══════════════════════════════════════
      EDITOR
 ════════════════════════════════════════ -->
@@ -606,7 +641,7 @@ footer{border-top:1px solid var(--bdr);padding:48px 40px 28px;position:relative;
     </div>
   </div>
 </div>
- 
+
 <!-- ═══════════════════════════════════════
      PREVIEW PAGE
 ════════════════════════════════════════ -->
@@ -620,6 +655,7 @@ footer{border-top:1px solid var(--bdr);padding:48px 40px 28px;position:relative;
       </div>
       <div class="prev-msgs" id="prev-msgs"></div>
       <div class="prev-in" id="prev-in">
+        <div id="prev-user-av" style="width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;background-size:cover;background-position:center">👤</div>
         <input class="prev-ti" id="prev-input" placeholder="Digite uma mensagem..." onkeypress="if(event.key==='Enter')prevSend()">
         <button class="prev-sb" id="prev-sb" onclick="prevSend()">➤</button>
       </div>
@@ -632,14 +668,6 @@ footer{border-top:1px solid var(--bdr);padding:48px 40px 28px;position:relative;
       </div>
       <h2 id="prev-flow-name">Meu Fluxo</h2>
       <p>Visualização exata de como seu fluxo aparece para o usuário final.</p>
-      <!-- Avatar customizável -->
-      <div class="pis">
-        <h3>👤 Avatar do Bot</h3>
-        <div style="display:flex;gap:8px;margin-bottom:10px">
-          <input type="text" class="pi" id="avatar-url" placeholder="URL da imagem ou emoji" style="flex:1;padding:8px 10px;border-radius:6px;border:1px solid var(--bdr);background:rgba(0,0,0,.2);color:var(--txt);font-size:13px" oninput="updateAvatarPreview()">
-          <button class="btn btn-primary btn-sm" onclick="updateAvatarPreview()">Atualizar</button>
-        </div>
-      </div>
       <!-- Channel switcher -->
       <div class="pis">
         <h3>🎨 Tema do Canal</h3>
@@ -659,18 +687,6 @@ footer{border-top:1px solid var(--bdr);padding:48px 40px 28px;position:relative;
       <!-- Restart -->
       <button class="btn btn-primary" onclick="restartPreview()" style="width:100%">↺ Reiniciar Conversa</button>
     </div>
-  </div>
-</div>
- 
-<!-- ═══════════════════════════════════════
-     404 PAGE
-════════════════════════════════════════ -->
-<div id="page-404" class="page" style="display:none;min-height:100vh;align-items:center;justify-content:center;text-align:center;padding:40px">
-  <div style="background:var(--deep);border:1px solid var(--bdr2);border-radius:20px;padding:60px 40px;max-width:440px;width:100%">
-    <div style="font-family:var(--fd);font-size:80px;font-weight:800;color:var(--acc);line-height:1;margin-bottom:20px">404</div>
-    <h2 style="font-family:var(--fd);font-size:24px;font-weight:700;margin-bottom:12px">Fluxo não encontrado</h2>
-    <p style="color:var(--muted);font-size:15px;line-height:1.6;margin-bottom:32px">O fluxo que você está procurando não existe ou foi removido. Verifique o link e tente novamente.</p>
-    <button class="btn btn-primary btn-lg" onclick="goHome()" style="width:100%">← Voltar ao Início</button>
   </div>
 </div>
 
@@ -701,7 +717,7 @@ footer{border-top:1px solid var(--bdr);padding:48px 40px 28px;position:relative;
     </div>
   </div>
 </div>
- 
+
 <!-- ═══════════════════════════════════════
      CHANNEL SELECTOR MODAL
 ════════════════════════════════════════ -->
@@ -735,7 +751,7 @@ footer{border-top:1px solid var(--bdr);padding:48px 40px 28px;position:relative;
     <button class="btn btn-primary" style="width:100%" onclick="createFlowFromChannel()">Criar Fluxo →</button>
   </div>
 </div>
- 
+
 <!-- ═══════════════════════════════════════
      SHARE MODAL
 ════════════════════════════════════════ -->
@@ -759,12 +775,8 @@ footer{border-top:1px solid var(--bdr);padding:48px 40px 28px;position:relative;
     </div>
   </div>
 </div>
- 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script>
-const SB_URL = 'https://mkpjgywvjxexlubthezj.supabase.co';
-const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1rcGpneXd2anhleGx1YnRoZXpjaWkiLCJyb2xlIjoiYW5vbiIsImlhdCI6MTc3NzMzNDU3NywiZXhwIjoyMDkyOTEwNTc3fQ.2GVZ2EiJXRheMk51_b2GCccA9BCoh7FVHm1K8xJcOb4';
-let supabase = null;
 // ─── STARS ───
 (()=>{
   const c=document.getElementById('starfield'),ctx=c.getContext('2d');
@@ -773,12 +785,66 @@ let supabase = null;
   function draw(){ctx.clearRect(0,0,W,H);S.forEach(s=>{s.a+=s.s;if(s.a>1||s.a<0)s.s*=-1;ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle=`rgba(180,200,255,${s.a*.55})`;ctx.fill()})}
   setInterval(draw,55);addEventListener('resize',init);init();
 })();
- 
+
 // ─── STATE ───
-let CU=null,flows=[],curFId=null,nodes=[],edges=[],selId=null;
+// ─── SUPABASE ───
+const SB_URL='https://mkpjgywvjxexlubthezj.supabase.co';
+const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1rcGpneXd2anhleGx1YnRoZXpqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczMzQ1NzcsImV4cCI6MjA5MjkxMDU3N30.2GVZ2EiJXRheMk51_b2GCccA9BCoh7FVHm1K8xJcOb4';
+async function sbReq(path,opts={}){
+  const hdrs={'apikey':SB_KEY,'Authorization':'Bearer '+(SB_TOKEN||SB_KEY),'Content-Type':'application/json','Prefer':'return=representation',...(opts.headers||{})};
+  const r=await fetch(SB_URL+path,{...opts,headers:hdrs});
+  if(!r.ok){const t=await r.text();console.error('SB',r.status,t);return null;}
+  const txt=await r.text();return txt?JSON.parse(txt):null;
+}
+async function sbSignUp(email,password,name){
+  const r=await fetch(SB_URL+'/auth/v1/signup',{method:'POST',headers:{'apikey':SB_KEY,'Content-Type':'application/json'},body:JSON.stringify({email,password,options:{data:{name}}})});
+  return r.json();
+}
+async function sbSignIn(email,password){
+  const r=await fetch(SB_URL+'/auth/v1/token?grant_type=password',{method:'POST',headers:{'apikey':SB_KEY,'Content-Type':'application/json'},body:JSON.stringify({email,password})});
+  return r.json();
+}
+async function sbGetUser(token){
+  const r=await fetch(SB_URL+'/auth/v1/user',{headers:{'apikey':SB_KEY,'Authorization':'Bearer '+token}});
+  return r.ok?r.json():null;
+}
+async function sbLoadFlows(userId){
+  const d=await sbReq('/rest/v1/mandrake_flows?user_id=eq.'+userId+'&order=created_at.desc');
+  return(d||[]).map(f=>({...f,nodes:JSON.parse(f.nodes_json||'[]'),edges:JSON.parse(f.edges_json||'[]')}));
+}
+async function sbSaveFlow(flow){
+  const body={user_id:CU.id,name:flow.name,channel:flow.channel||'wpp',status:flow.status||'draft',
+    nodes_json:JSON.stringify(flow.nodes||[]),edges_json:JSON.stringify(flow.edges||[]),
+    updated_at:new Date().toISOString(),desc:flow.desc||''};
+  // try patch first
+  const patch=await sbReq('/rest/v1/mandrake_flows?id=eq.'+flow.id,{method:'PATCH',body:JSON.stringify(body)});
+  if(patch&&patch.length)return patch;
+  // insert
+  body.id=flow.id;body.created_at=flow.createdAt||new Date().toISOString();
+  return sbReq('/rest/v1/mandrake_flows',{method:'POST',body:JSON.stringify(body)});
+}
+async function sbDeleteFlow(id){
+  return sbReq('/rest/v1/mandrake_flows?id=eq.'+id,{method:'DELETE'});
+}
+async function sbGetPublicFlow(id){
+  // public read — no token needed
+  const r=await fetch(SB_URL+'/rest/v1/mandrake_flows?id=eq.'+id+'&select=*',{headers:{'apikey':SB_KEY}});
+  if(!r.ok)return null;const d=await r.json();
+  if(!d||!d.length)return null;
+  return{...d[0],nodes:JSON.parse(d[0].nodes_json||'[]'),edges:JSON.parse(d[0].edges_json||'[]')};
+}
+async function sbUploadAvatar(file,userId){
+  const ext=file.name.split('.').pop();const path='avatars/'+userId+'.'+ext;
+  const r=await fetch(SB_URL+'/storage/v1/object/mandrake-avatars/'+path,{method:'POST',
+    headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_TOKEN,'Content-Type':file.type,'x-upsert':'true'},body:file});
+  if(!r.ok)return null;
+  return SB_URL+'/storage/v1/object/public/mandrake-avatars/'+path;
+}
+
+let CU=null,SB_TOKEN=null,flows=[],curFId=null,nodes=[],edges=[],selId=null;
 let dragType=null,conFrom=null,cZoom=1,cOff={x:0,y:0},panning=false,panSt={x:0,y:0};
 let curChannel='wpp'; // default channel
- 
+
 const NC={
   message:{dot:'#a3b1ff',lbl:'Mensagem'},
   question:{dot:'#80e8d0',lbl:'Pergunta'},
@@ -796,7 +862,7 @@ const CH_INFO={
   tg:{lbl:'Telegram',emoji:'✈️',theme:'tg',name:'Bot',status:'online'},
   web:{lbl:'Web Chat',emoji:'🌐',theme:'twb',name:'Assistente',status:'online'}
 };
- 
+
 // ─── PAGES ───
 function showPage(name){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
@@ -804,7 +870,7 @@ function showPage(name){
 }
 function goHome(){showPage('landing')}
 function backToDash(){showPage('dashboard');renderDash()}
- 
+
 // ─── AUTH MODAL ───
 function openModal(t){
   document.getElementById('auth-overlay').classList.add('open');
@@ -815,61 +881,83 @@ function switchModal(t){
   document.getElementById('mlg').style.display=t==='lg'?'block':'none';
   document.getElementById('msu').style.display=t==='su'?'block':'none';
 }
-function doLogin(){
+async function doLogin(){
   const e=document.getElementById('lg-email').value.trim();
   const p=document.getElementById('lg-pass').value;
   if(!e||!p){toast('Preencha email e senha','❌');return}
-  const us=JSON.parse(localStorage.getItem('nbu')||'[]');
-  const u=us.find(x=>x.email===e&&x.pw===p);
-  if(!u){toast('Email ou senha incorretos','❌');return}
+  toast('Entrando...','ℹ');
+  const res=await sbSignIn(e,p);
+  if(res.error||!res.access_token){toast(res.error?.message||'Email ou senha incorretos','❌');return}
+  SB_TOKEN=res.access_token;
+  const meta=res.user?.user_metadata||{};
+  const u={id:res.user.id,name:meta.name||e.split('@')[0],email:res.user.email,avatar:meta.avatar||''};
   loginUser(u);
 }
-function doSignup(){
+async function doSignup(){
   const n=document.getElementById('su-name').value.trim();
   const e=document.getElementById('su-email').value.trim();
   const p=document.getElementById('su-pass').value;
   if(!n||!e||!p){toast('Preencha todos os campos','❌');return}
   if(p.length<6){toast('Senha mínimo 6 caracteres','❌');return}
-  const us=JSON.parse(localStorage.getItem('nbu')||'[]');
-  if(us.find(x=>x.email===e)){toast('Email já cadastrado','❌');return}
-  const u={id:'u'+Date.now(),name:n,email:e,pw:p};
-  us.push(u);localStorage.setItem('nbu',JSON.stringify(us));
-  loginUser(u);
+  toast('Criando conta...','ℹ');
+  const res=await sbSignUp(e,p,n);
+  if(res.error){toast(res.error.message||'Erro ao criar conta','❌');return}
+  if(res.access_token){
+    SB_TOKEN=res.access_token;
+    const u={id:res.user.id,name:n,email:e,avatar:''};
+    loginUser(u);
+  } else {
+    toast('Conta criada! Verifique seu email para confirmar.','✓');
+    switchModal('lg');
+  }
 }
-function doDemo(){loginUser({id:'demo',name:'Usuário Demo',email:'demo@mandrake.app',pw:''})}
+function doDemo(){
+  SB_TOKEN=null;
+  loginUser({id:'demo-'+Date.now(),name:'Usuário Demo',email:'demo@mandrake.app',avatar:''});
+}
 function loginUser(u){
-  CU=u;localStorage.setItem('nbs',JSON.stringify(u));
-  showPage('dashboard');
-  closeModal();
-  loadFlows();
-  renderDash();
-  if(supabase)loadFlowsFromSupabase().catch(e=>console.log('Supabase offline'));
+  CU=u;localStorage.setItem('mdk_session',JSON.stringify({u,t:SB_TOKEN}));
+  closeModal();loadFlows().then(()=>{renderDash();showPage('dashboard')});
   toast('Bem-vindo, '+u.name.split(' ')[0]+'! 🚀','✓');
 }
-function logout(){CU=null;localStorage.removeItem('nbs');showPage('landing');toast('Você saiu','ℹ')}
-function checkSession(){
-  const s=localStorage.getItem('nbs');
-  if(s){CU=JSON.parse(s);loadFlows()}
+async function logout(){
+  if(SB_TOKEN)await fetch(SB_URL+'/auth/v1/logout',{method:'POST',headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_TOKEN}});
+  CU=null;SB_TOKEN=null;localStorage.removeItem('mdk_session');
+  showPage('landing');toast('Você saiu','ℹ');
 }
- 
+async function checkSession(){
+  const s=localStorage.getItem('mdk_session');
+  if(!s)return;
+  try{
+    const {u,t}=JSON.parse(s);
+    if(t){
+      const fresh=await sbGetUser(t);
+      if(!fresh){localStorage.removeItem('mdk_session');return}
+      SB_TOKEN=t;CU={...u,...(fresh.user_metadata||{})};
+      if(fresh.user_metadata?.avatar)CU.avatar=fresh.user_metadata.avatar;
+    } else {CU=u;}
+    await loadFlows();renderDash();renderAvatarUI();showPage('dashboard');
+  }catch(e){console.error(e);localStorage.removeItem('mdk_session')}
+}
+
 // ─── FLOWS DATA ───
-function loadFlows(){if(!CU)return;flows=JSON.parse(localStorage.getItem('nbf_'+CU.id)||'[]')}
-function saveFlows(){if(!CU)return;localStorage.setItem('nbf_'+CU.id,JSON.stringify(flows));if(supabase)saveFlowsToSupabase()}
-async function saveFlowsToSupabase(){
-  if(!supabase||!CU)return;
-  try{
-    const{error}=await supabase.from('flows').upsert({user_id:CU.id,data:flows,updated_at:new Date()},{onConflict:'user_id'});
-    if(error)console.error('Erro ao salvar no Supabase:',error);
-  }catch(e){console.error('Erro Supabase:',e)}
+async function loadFlows(){
+  if(!CU)return;
+  if(SB_TOKEN){
+    try{flows=await sbLoadFlows(CU.id)||[];}catch{flows=[];}
+  } else {
+    flows=JSON.parse(localStorage.getItem('mdk_flows_'+CU.id)||'[]');
+  }
 }
-async function loadFlowsFromSupabase(){
-  if(!supabase||!CU)return;
-  try{
-    const{data,error}=await supabase.from('flows').select('data').eq('user_id',CU.id).single();
-    if(data&&data.data)flows=data.data;
-  }catch(e){console.log('Primeira vez no Supabase')}
+async function saveFlows(){
+  if(!CU)return;
+  if(SB_TOKEN){
+    // saved per-flow in saveFlow()
+  } else {
+    localStorage.setItem('mdk_flows_'+CU.id,JSON.stringify(flows));
+  }
 }
- 
+
 // ─── CHANNEL SELECTOR ───
 function openChannelSelector(){
   document.getElementById('ch-modal').classList.add('open');
@@ -886,16 +974,15 @@ function createFlowFromChannel(){
   document.getElementById('ch-modal').classList.remove('open');
   openEditor(null,curChannel);
 }
- 
+
 // ─── DASHBOARD ───
 function renderDash(){
   if(!CU)return;
-  const ini=CU.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
-  document.getElementById('uav').textContent=ini;
   document.getElementById('uname').textContent=CU.name;
   document.getElementById('uemail').textContent=CU.email;
   document.getElementById('sname').value=CU.name;
   document.getElementById('semail').value=CU.email;
+  renderAvatarUI();
   const active=flows.filter(f=>f.status==='active').length;
   document.getElementById('m-active').textContent=active;
   document.getElementById('m-total').textContent=flows.length;
@@ -930,9 +1017,12 @@ function renderFlowsIn(cid,list){
     </div>`;
   }).join('');
 }
-function delFlow(id){
+async function delFlow(id){
   if(!confirm('Excluir este fluxo?'))return;
-  flows=flows.filter(f=>f.id!==id);saveFlows();renderDash();toast('Fluxo excluído','ℹ');
+  flows=flows.filter(f=>f.id!==id);
+  if(SB_TOKEN)await sbDeleteFlow(id);
+  else localStorage.setItem('mdk_flows_'+CU.id,JSON.stringify(flows));
+  renderDash();toast('Fluxo excluído','ℹ');
 }
 function showPanel(name,el){
   document.querySelectorAll('.dpanel').forEach(p=>p.classList.remove('on'));
@@ -952,7 +1042,7 @@ function saveSettings(){
   if(i>=0){us[i]={...us[i],...CU};localStorage.setItem('nbu',JSON.stringify(us))}
   renderDash();toast('Perfil atualizado','✓');
 }
- 
+
 // ─── EDITOR ───
 function openEditor(fid,ch){
   nodes=[];edges=[];selId=null;cZoom=1;cOff={x:0,y:0};
@@ -972,10 +1062,9 @@ function openEditor(fid,ch){
   document.getElementById('flow-ch-badge').textContent=ci?ci.emoji+' '+ci.lbl:'';
   clearSel();renderCanvas();updateHint();showPage('editor');
 }
-function saveFlow(){
+async function saveFlow(){
   if(!CU){toast('Faça login para salvar','❌');return}
   const name=document.getElementById('flow-title').value.trim()||'Sem título';
-  const ci=CH_INFO[curChannel];
   const ex=flows.findIndex(f=>f.id===curFId);
   const f={
     id:curFId,name,channel:curChannel,
@@ -987,14 +1076,16 @@ function saveFlow(){
     createdAt:ex>=0?flows[ex].createdAt:new Date().toISOString()
   };
   if(ex>=0)flows[ex]=f;else flows.push(f);
-  saveFlows();toast('Fluxo salvo!','✓');
+  if(SB_TOKEN){await sbSaveFlow(f);}
+  else{localStorage.setItem('mdk_flows_'+CU.id,JSON.stringify(flows));}
+  toast('Fluxo salvo!','✓');
 }
- 
+
 // ─── SHARE ───
-function shareFlow(){
-  saveFlow();
-  const name=document.getElementById('flow-title').value||'fluxo';
-  const link=`mandrake.app/flow/${curFId}`;
+async function shareFlow(){
+  await saveFlow();
+  const baseUrl=location.href.split('?')[0];
+  const link=baseUrl+'?flow='+curFId;
   document.getElementById('share-link-field').textContent=link;
   // Draw simple QR placeholder
   const cv=document.getElementById('qr-canvas');
@@ -1027,10 +1118,10 @@ function copyLink(){
   navigator.clipboard?.writeText(txt).catch(()=>{});
   toast('Link copiado!','✓');
 }
-function shareWpp(){const l=document.getElementById('share-link-field').textContent;window.open(`https://wa.me/?text=Acesse+meu+fluxo+${encodeURIComponent(l)}`,'_blank')}
+function shareWpp(){const l=document.getElementById('share-link-field').textContent;window.open('https://wa.me/?text='+encodeURIComponent('Acesse meu fluxo: '+l),'_blank')}
 function shareIG(){copyLink();toast('Link copiado! Cole na bio do Instagram.','✓')}
-function shareTG(){const l=document.getElementById('share-link-field').textContent;window.open(`https://t.me/share/url?url=${encodeURIComponent(l)}`,'_blank')}
- 
+function shareTG(){const l=document.getElementById('share-link-field').textContent;window.open('https://t.me/share/url?url='+encodeURIComponent(l),'_blank')}
+
 // ─── IMPORT ───
 function importFlow(){
   const inp=document.createElement('input');inp.type='file';inp.accept='.json';
@@ -1046,45 +1137,50 @@ function importFlow(){
     };r.readAsText(f);
   };inp.click();
 }
- 
+
 // ─── CANVAS / NODES ───
-// Palette drag via mousedown (works in sandboxed/iframe environments)
+// Palette drag via mousedown
+let _palDragged=false;
 function palMD(e,type){
   e.preventDefault();
+  _palDragged=false;
   const wr=document.getElementById('ecanvas');
-  const wrRect=wr.getBoundingClientRect();
-  // Create ghost element following the cursor
-  const ghost=document.createElement('div');
-  ghost.style.cssText=`position:fixed;pointer-events:none;z-index:9999;padding:8px 14px;background:var(--deep);border:1px solid var(--bdr2);border-radius:8px;font-size:12px;color:var(--txt);opacity:.85;font-family:var(--fb);white-space:nowrap`;
-  ghost.textContent='+ '+NC[type]?.lbl||type;
-  document.body.appendChild(ghost);
+  const startX=e.clientX,startY=e.clientY;
+  let ghost=null;
   function moveGhost(ev){
-    ghost.style.left=(ev.clientX+12)+'px';
-    ghost.style.top=(ev.clientY-12)+'px';
+    if(!ghost&&(Math.abs(ev.clientX-startX)>5||Math.abs(ev.clientY-startY)>5)){
+      _palDragged=true;
+      ghost=document.createElement('div');
+      ghost.style.cssText='position:fixed;pointer-events:none;z-index:9999;padding:7px 13px;background:var(--deep);border:1px solid var(--bdr2);border-radius:8px;font-size:12px;color:var(--txt);opacity:.88;font-family:var(--fb);white-space:nowrap;box-shadow:0 4px 16px rgba(0,0,0,.5)';
+      ghost.textContent='+ '+(NC[type]?.lbl||type);
+      document.body.appendChild(ghost);
+    }
+    if(ghost){ghost.style.left=(ev.clientX+14)+'px';ghost.style.top=(ev.clientY-14)+'px';}
   }
-  moveGhost(e);
-  document.addEventListener('mousemove',moveGhost);
-  document.addEventListener('mouseup',function drop(ev){
+  function drop(ev){
     document.removeEventListener('mousemove',moveGhost);
     document.removeEventListener('mouseup',drop);
-    ghost.remove();
-    // Check if dropped on canvas
+    if(ghost)ghost.remove();
+    if(!_palDragged)return; // click without drag — palClick handles it
     const r=wr.getBoundingClientRect();
     if(ev.clientX>=r.left&&ev.clientX<=r.right&&ev.clientY>=r.top&&ev.clientY<=r.bottom){
       const x=(ev.clientX-r.left-cOff.x)/cZoom;
       const y=(ev.clientY-r.top-cOff.y)/cZoom;
       addNode(type,x,y);
     }
-  });
+  }
+  document.addEventListener('mousemove',moveGhost);
+  document.addEventListener('mouseup',drop);
 }
-// Palette click fallback — single click adds node to center of visible canvas
+// Click = add to canvas center (only fires when no drag happened)
 function palClick(type){
+  if(_palDragged){_palDragged=false;return;} // drag already handled it
   const wr=document.getElementById('ecanvas');
   const r=wr.getBoundingClientRect();
   const x=(r.width/2-cOff.x)/cZoom;
   const y=(r.height/2-cOff.y)/cZoom;
-  addNode(type,x+Math.random()*60-30,y+Math.random()*60-30);
-  toast(NC[type]?.lbl+' adicionado — arraste para posicionar','ℹ');
+  addNode(type,x+Math.random()*80-40,y+Math.random()*80-40);
+  toast((NC[type]?.lbl||type)+' adicionado — arraste para posicionar','ℹ');
 }
 function addNode(type,x,y){
   const id='n'+Date.now()+Math.random().toString(36).slice(2,5);
@@ -1158,18 +1254,9 @@ function showProps(n){
   const inp=edges.filter(e=>e.to===n.id);
   if(!out.length&&!inp.length){cl.innerHTML='<div style="font-size:12px;color:var(--dim)">Sem conexões</div>';return}
   cl.innerHTML=[
-    ...inp.map(e=>{const s=nodes.find(x=>x.id===e.from);return`<div class="connitem"><span style="color:var(--acc)">←</span>${s?NC[s.type]?.lbl+' ('+e.from.slice(-5)+')':'?'}<button class="connitem-del" onclick="delConnection('${e.id}')">✕</button></div>`}),
-    ...out.map(e=>{const t=nodes.find(x=>x.id===e.to);return`<div class="connitem"><span style="color:var(--grn)">→</span>${t?NC[t.type]?.lbl+' ('+e.to.slice(-5)+')':'?'}<button class="connitem-del" onclick="delConnection('${e.id}')">✕</button></div>`})
+    ...inp.map(e=>{const s=nodes.find(x=>x.id===e.from);return`<div class="connitem"><span style="color:var(--acc)">←</span>${s?NC[s.type]?.lbl+' ('+e.from.slice(-5)+')':'?'}</div>`}),
+    ...out.map(e=>{const t=nodes.find(x=>x.id===e.to);return`<div class="connitem"><span style="color:var(--grn)">→</span>${t?NC[t.type]?.lbl+' ('+e.to.slice(-5)+')':'?'}</div>`})
   ].join('');
-}
-function delConnection(edgeId){
-  edges=edges.filter(e=>e.id!==edgeId);
-  if(selId){
-    const n=nodes.find(x=>x.id===selId);
-    if(n)showProps(n);
-  }
-  redrawEdges();
-  toast('Conexão removida','✓');
 }
 function updCont(){if(!selId)return;const n=nodes.find(x=>x.id===selId);if(!n)return;n.content=document.getElementById('pcont').value;const b=document.getElementById('fb-'+selId);if(b){const p=n.content.length>55?n.content.slice(0,52)+'...':n.content;b.innerHTML=p||'<span style="opacity:.35;font-style:italic">Sem conteúdo</span>'}}
 function updUrl(){if(!selId)return;const n=nodes.find(x=>x.id===selId);if(n)n.url=document.getElementById('purl').value}
@@ -1221,6 +1308,8 @@ function redrawEdges(){
   const poly=document.createElementNS('http://www.w3.org/2000/svg','polygon');
   poly.setAttribute('points','0 0, 8 3, 0 6');poly.setAttribute('fill','rgba(92,111,255,.7)');
   mk.appendChild(poly);defs.appendChild(mk);svg.appendChild(defs);
+  // pointer-events must be on SVG
+  svg.style.pointerEvents='all';
   const wr=document.getElementById('ecanvas').getBoundingClientRect();
   edges.forEach(ed=>{
     const fe=document.getElementById('out-'+ed.from);
@@ -1230,11 +1319,21 @@ function redrawEdges(){
     const fx=fr.left+fr.width/2-wr.left,fy=fr.top+fr.height/2-wr.top;
     const tx=tr.left+tr.width/2-wr.left,ty=tr.top+tr.height/2-wr.top;
     const mx=(fx+tx)/2;
-    const p=document.createElementNS('http://www.w3.org/2000/svg','path');
-    p.setAttribute('d',`M${fx},${fy} C${mx},${fy} ${mx},${ty} ${tx},${ty}`);
-    p.setAttribute('stroke','rgba(92,111,255,.55)');p.setAttribute('stroke-width','1.5');
-    p.setAttribute('fill','none');p.setAttribute('marker-end','url(#arr)');
-    svg.appendChild(p);
+    const d=`M${fx},${fy} C${mx},${fy} ${mx},${ty} ${tx},${ty}`;
+    // Invisible fat hit area
+    const hit=document.createElementNS('http://www.w3.org/2000/svg','path');
+    hit.setAttribute('d',d);hit.setAttribute('stroke','transparent');
+    hit.setAttribute('stroke-width','12');hit.setAttribute('fill','none');
+    hit.style.cursor='pointer';
+    hit.addEventListener('mouseenter',()=>{vis.setAttribute('stroke','rgba(255,91,91,.8)');vis.setAttribute('stroke-width','2.5')});
+    hit.addEventListener('mouseleave',()=>{vis.setAttribute('stroke','rgba(92,111,255,.55)');vis.setAttribute('stroke-width','1.5')});
+    hit.addEventListener('click',()=>{if(confirm('Excluir esta conexão?')){edges=edges.filter(x=>x.id!==ed.id);redrawEdges();if(selId)showProps(nodes.find(n=>n.id===selId));toast('Conexão removida','ℹ')}});
+    // Visible line
+    const vis=document.createElementNS('http://www.w3.org/2000/svg','path');
+    vis.setAttribute('d',d);vis.setAttribute('stroke','rgba(92,111,255,.55)');
+    vis.setAttribute('stroke-width','1.5');vis.setAttribute('fill','none');
+    vis.setAttribute('marker-end','url(#arr)');vis.style.pointerEvents='none';
+    svg.appendChild(vis);svg.appendChild(hit);
   });
 }
 // Zoom / pan
@@ -1245,16 +1344,17 @@ function applyT(){
 }
 function zoom(d){cZoom=Math.min(2,Math.max(.3,cZoom+d));document.getElementById('zlbl').textContent=Math.round(cZoom*100)+'%';applyT();redrawEdges()}
 function resetZ(){cZoom=1;cOff={x:0,y:0};applyT();redrawEdges();document.getElementById('zlbl').textContent='100%'}
- 
+
 // ─── PREVIEW ───
 let prevNodes=[],prevIdx=0,curTheme='tw';
 function openPreview(){
   if(!nodes.length){toast('Adicione nós ao fluxo','❌');return}
   const ci=CH_INFO[curChannel||'wpp'];
   setTheme(ci.theme,ci.emoji,ci.name,ci.status);
-  document.getElementById('prev-flow-name').textContent=document.getElementById('flow-title').value||'Meu Fluxo';
+  document.getElementById('prev-flow-name').textContent=document.getElementById('flow-title')?.value||'Meu Fluxo';
   const nl=document.getElementById('prev-nodes-list');
-  nl.innerHTML=nodes.map(n=>`<div class="pni"><div class="pnidot" style="background:${NC[n.type]?.dot||'#aaa'}"></div>${NC[n.type]?.lbl||n.type}: ${n.content.slice(0,40)}${n.content.length>40?'...':''}</div>`).join('');
+  nl.innerHTML=nodes.map(n=>`<div class="pni"><div class="pnidot" style="background:${NC[n.type]?.dot||'#aaa'}"></div>${NC[n.type]?.lbl||n.type}: ${(n.content||'').slice(0,40)}${(n.content||'').length>40?'...':''}</div>`).join('');
+  updatePrevUserAvatar();
   restartPreview();showPage('preview');
 }
 function openPreviewFor(fid){
@@ -1268,26 +1368,9 @@ function setTheme(theme,emoji,name,status){
   curTheme=theme;
   const ph=document.getElementById('prev-phone');
   ph.className='prev-phone '+theme;
-  updateAvatarPreview();
+  document.getElementById('prev-av').textContent=emoji||'🤖';
   document.getElementById('prev-name').textContent=name||'Assistente';
   document.getElementById('prev-status').textContent=status||'online';
-}
-function updateAvatarPreview(){
-  const av=document.getElementById('avatar-url');
-  const avatarEl=document.getElementById('prev-av');
-  const val=av?av.value.trim():'';
-  if(!val){
-    const ci=CH_INFO[curChannel||'wpp'];
-    avatarEl.textContent=ci?.emoji||'🤖';
-    avatarEl.innerHTML=ci?.emoji||'🤖';
-    return;
-  }
-  if(val.startsWith('http')){
-    avatarEl.innerHTML=`<img src="${val}" alt="Avatar" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;
-  }else{
-    avatarEl.textContent=val;
-    avatarEl.innerHTML=val;
-  }
 }
 function restartPreview(){
   prevNodes=nodes.filter(n=>n);prevIdx=0;
@@ -1297,28 +1380,73 @@ function restartPreview(){
 function showNextNode(){
   if(prevIdx>=prevNodes.length)return;
   const n=prevNodes[prevIdx++];
-  addPrevBubble(n.content||NC[n.type]?.lbl,'bot');
+  addPrevBubble(n,'bot');
   if(n.type==='question'){/* wait for user input */}
   else if(n.type==='delay'){setTimeout(()=>showNextNode(),Math.min((n.delay||2)*800,3000))}
   else if(n.type==='end'){/* flow done */}
-  else{setTimeout(()=>showNextNode(),600)}
+  else{setTimeout(()=>showNextNode(),700)}
 }
 function prevSend(){
   const inp=document.getElementById('prev-input');
   const msg=inp.value.trim();if(!msg)return;
-  addPrevBubble(msg,'usr');inp.value='';
+  addPrevBubble({type:'_user',content:msg},'usr');inp.value='';
   setTimeout(()=>showNextNode(),500);
 }
-function addPrevBubble(txt,who){
+function addPrevBubble(n,who){
   const c=document.getElementById('prev-msgs');
   const b=document.createElement('div');
-  b.className='pbub '+who;
-  const urlRegex=/(https?:\/\/[^\s]+)/g;
-  const htmlContent=txt.replace(urlRegex,'<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>');
-  b.innerHTML=htmlContent;
+  b.className='pbub '+(who==='usr'?'usr':'bot');
+  if(who==='usr'){
+    b.textContent=n.content||n;
+    // Wrap in row with user avatar
+    const row=document.createElement('div');
+    row.className='prev-msg-row usr-row';
+    const av=document.createElement('div');
+    av.className='prev-uav';
+    if(CU?.avatar){av.style.backgroundImage='url('+CU.avatar+')';av.style.backgroundSize='cover';}
+    else{av.textContent='👤';}
+    row.appendChild(b);row.appendChild(av);
+    c.appendChild(row);c.scrollTop=c.scrollHeight;return;
+  }
+  // Bot bubble — render by type
+  if(n.type==='image'){
+    const url=n.url||n.content;
+    if(url&&(url.startsWith('http')||url.startsWith('/'))){
+      const img=document.createElement('img');
+      img.src=url;img.style.cssText='max-width:100%;border-radius:8px;display:block;cursor:pointer';
+      img.onclick=()=>window.open(url,'_blank');
+      b.appendChild(img);
+    } else {b.textContent=n.content||'[Imagem]'}
+  } else if(n.type==='link'){
+    const url=n.url||n.content;
+    if(url&&url.startsWith('http')){
+      const a=document.createElement('a');
+      a.href=url;a.target='_blank';a.rel='noopener';
+      a.style.cssText='color:inherit;text-decoration:underline;word-break:break-all';
+      a.textContent=n.content||url;
+      b.appendChild(a);
+    } else {b.textContent=n.content||url}
+  } else if(n.type==='video'){
+    const url=n.url||n.content;
+    const a=document.createElement('a');
+    a.href=url||'#';a.target='_blank';a.rel='noopener';
+    a.style.cssText='color:inherit;text-decoration:underline;display:flex;align-items:center;gap:6px';
+    a.innerHTML='🎥 '+(n.content||'Assistir vídeo');
+    b.appendChild(a);
+  } else if(n.type==='condition'){
+    b.style.opacity='.7';b.style.fontStyle='italic';
+    b.textContent='[Condição: '+n.content+']';
+  } else {
+    // parse URLs in text and make them clickable
+    const txt=n.content||NC[n.type]?.lbl||'';
+    const urlRx=/(https?:\/\/[^\s]+)/g;
+    if(urlRx.test(txt)){
+      b.innerHTML=txt.replace(/(https?:\/\/[^\s]+)/g,'<a href="$1" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;word-break:break-all">$1</a>');
+    } else {b.textContent=txt}
+  }
   c.appendChild(b);c.scrollTop=c.scrollHeight;
 }
- 
+
 // ─── EXPORT ───
 function exportCurFlow(){
   const name=document.getElementById('flow-title').value||'fluxo';
@@ -1327,7 +1455,7 @@ function exportCurFlow(){
   const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=name.replace(/\s+/g,'-').toLowerCase()+'.json';a.click();
   toast('Exportado!','✓');
 }
- 
+
 // ─── TOAST ───
 let tt;
 function toast(msg,icon='ℹ'){
@@ -1337,7 +1465,7 @@ function toast(msg,icon='ℹ'){
   document.body.appendChild(el);
   tt=setTimeout(()=>{if(el.parentNode)el.parentNode.removeChild(el)},2800);
 }
- 
+
 // ─── KEYBOARD ───
 document.addEventListener('keydown',e=>{
   if(e.key==='Escape'){
@@ -1350,9 +1478,82 @@ document.addEventListener('keydown',e=>{
     if(document.activeElement.tagName!=='INPUT'&&document.activeElement.tagName!=='TEXTAREA')delSelNode();
   }
 });
- 
+
+// ─── PUBLIC FLOW LINK ───
+// Usage: open file with ?flow=FLOW_ID to show that flow's preview directly
+async function checkPublicFlow(){
+  const params=new URLSearchParams(location.search);
+  const fid=params.get('flow');
+  if(!fid)return false;
+  toast('Carregando fluxo...','ℹ');
+  const f=await sbGetPublicFlow(fid);
+  if(!f){
+    document.body.innerHTML='<div style="min-height:100vh;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;font-family:sans-serif;background:#050714;color:#e8ecff"><div style="font-size:48px">🔍</div><h2>Fluxo não encontrado</h2><p style="color:rgba(200,210,255,.55)">O link pode ter expirado ou sido removido.</p></div>';
+    return true;
+  }
+  nodes=f.nodes||[];edges=f.edges||[];
+  curFId=f.id;curChannel=f.channel||'wpp';
+  document.getElementById('flow-title').value=f.name;
+  openPreview();
+  return true;
+}
+
+// ─── AVATAR UPLOAD ───
+function triggerAvatarUpload(){
+  const inp=document.createElement('input');
+  inp.type='file';inp.accept='image/*';
+  inp.onchange=async e=>{
+    const file=e.target.files[0];if(!file)return;
+    if(file.size>2*1024*1024){toast('Imagem muito grande (max 2MB)','❌');return}
+    let url=null;
+    if(SB_TOKEN){
+      toast('Enviando foto...','ℹ');
+      url=await sbUploadAvatar(file,CU.id);
+    }
+    if(!url){
+      // fallback: base64 local
+      url=await new Promise(res=>{const r=new FileReader();r.onload=ev=>res(ev.target.result);r.readAsDataURL(file)});
+    }
+    if(url){CU.avatar=url;localStorage.setItem('mdk_session',JSON.stringify({u:CU,t:SB_TOKEN}));renderAvatarUI();toast('Foto atualizada!','✓')}
+    else toast('Erro ao enviar foto','❌');
+  };
+  inp.click();
+}
+function renderAvatarUI(){
+  // Update sidebar avatar
+  const uav=document.getElementById('uav');
+  if(CU?.avatar){
+    uav.style.backgroundImage='url('+CU.avatar+')';
+    uav.style.backgroundSize='cover';uav.style.backgroundPosition='center';
+    uav.textContent='';
+  } else {
+    uav.style.backgroundImage='';uav.textContent=(CU?.name||'U').split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+  }
+  // Update settings preview
+  const sav=document.getElementById('settings-avatar');
+  if(sav){
+    if(CU?.avatar){sav.style.backgroundImage='url('+CU.avatar+')';sav.style.backgroundSize='cover';sav.style.backgroundPosition='center';sav.textContent='';}
+    else{sav.style.backgroundImage='';sav.textContent=(CU?.name||'U').split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();}
+  }
+  // Update preview bar user avatar
+  updatePrevUserAvatar();
+}
+function updatePrevUserAvatar(){
+  const bar=document.getElementById('prev-user-av');
+  if(!bar)return;
+  if(CU?.avatar){bar.style.backgroundImage='url('+CU.avatar+')';bar.style.backgroundSize='cover';bar.style.backgroundPosition='center';bar.textContent='';}
+  else{bar.style.backgroundImage='';bar.textContent='👤';}
+}
+
 // ─── CANVAS EVENTS ───
-document.addEventListener('DOMContentLoaded',()=>{
+document.addEventListener('DOMContentLoaded',async()=>{
+  // Check if this is a public flow link
+  const isPublic=await checkPublicFlow();
+  if(isPublic)return;
+
+  // Normal session check
+  await checkSession();
+
   const wr=document.getElementById('ecanvas');
   // Double click = add message node
   wr.addEventListener('dblclick',e=>{
@@ -1371,17 +1572,6 @@ document.addEventListener('DOMContentLoaded',()=>{
   document.addEventListener('mousemove',e=>{if(panning){cOff.x=e.clientX-panSt.x;cOff.y=e.clientY-panSt.y;applyT();redrawEdges()}});
   document.addEventListener('mouseup',()=>{if(panning){panning=false;document.getElementById('ecanvas').style.cursor='default'}});
   wr.addEventListener('wheel',e=>{e.preventDefault();zoom(e.deltaY<0?.08:-.08)},{passive:false});
-  
-  // Inicializar Supabase com segurança
-  try {
-    if (window.supabase) {
-      supabase = window.supabase.createClient(SB_URL, SB_KEY);
-    }
-  } catch (e) {
-    console.error('Erro Supabase:', e);
-  }
-  
-  checkSession();
 });
 </script>
 </body>
