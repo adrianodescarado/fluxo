@@ -251,24 +251,26 @@ footer{border-top:1px solid var(--bdr);padding:48px 40px 28px;position:relative;
 .connlist{display:flex;flex-direction:column;gap:4px}
 .connitem{font-size:11px;color:var(--muted);padding:5px 8px;background:rgba(0,0,0,.2);border-radius:5px;display:flex;align-items:center;gap:5px}
 /* ─── PREVIEW PAGE ─── */
-#page-preview{display:none;min-height:100vh;align-items:center;justify-content:center;padding:32px}
-#page-preview.active{display:flex}
-.prev-wrap{display:flex;gap:28px;align-items:flex-start;max-width:920px;width:100%}
-.prev-phone{width:340px;flex-shrink:0;border-radius:32px;overflow:hidden;border:7px solid var(--surf);box-shadow:0 28px 72px rgba(0,0,0,.65)}
-.prev-bar{padding:10px 18px;display:flex;align-items:center;gap:9px}
-.prev-av{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
-.prev-info p{font-size:13px;font-weight:600}
-.prev-info span{font-size:10px;opacity:.7}
-.prev-msgs{padding:11px;display:flex;flex-direction:column;gap:8px;height:420px;overflow-y:auto;scroll-behavior:smooth}
-.pbub{max-width:80%;padding:8px 12px;border-radius:12px;font-size:13px;line-height:1.5;word-break:break-word}
+#page-preview{display:none}
+#page-preview.active{display:block}
+#page-public{display:none}
+#page-public.active{display:block}
+.prev-phone{border-radius:0;overflow:hidden;border:none;box-shadow:none;display:flex;flex-direction:column}
+.prev-bar{padding:10px 18px;display:flex;align-items:center;gap:9px;flex-shrink:0}
+.prev-av{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;background-size:cover;background-position:center;overflow:hidden}
+.prev-info p{font-size:14px;font-weight:600}
+.prev-info span{font-size:11px;opacity:.75}
+.prev-msgs{padding:12px;display:flex;flex-direction:column;gap:8px;overflow-y:auto;scroll-behavior:smooth}
+.pbub{max-width:78%;padding:9px 13px;border-radius:12px;font-size:14px;line-height:1.55;word-break:break-word}
 .pbub.bot{border-bottom-left-radius:3px;align-self:flex-start}
 .pbub.usr{border-bottom-right-radius:3px;align-self:flex-end}
-.prev-msg-row{display:flex;align-items:flex-end;gap:6px}
-.prev-msg-row.usr-row{flex-direction:row-reverse}
-.prev-uav{width:24px;height:24px;border-radius:50%;flex-shrink:0;background-size:cover;background-position:center;display:flex;align-items:center;justify-content:center;font-size:11px}
-.prev-in{padding:10px 12px;display:flex;gap:8px;align-items:center}
-.prev-ti{flex:1;padding:8px 14px;border-radius:20px;border:none;font-size:13px;outline:none;font-family:var(--fb)}
-.prev-sb{width:35px;height:35px;border-radius:50%;border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;flex-shrink:0}
+.prev-in{padding:10px 12px;display:flex;gap:8px;align-items:center;flex-shrink:0}
+.prev-ti{flex:1;padding:9px 16px;border-radius:22px;border:none;font-size:14px;outline:none;font-family:var(--fb)}
+.prev-sb{width:38px;height:38px;border-radius:50%;border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:15px;flex-shrink:0}
+.pis{background:var(--deep);border:1px solid var(--bdr);border-radius:12px;padding:16px;margin-bottom:0}
+.pnlist{display:flex;flex-direction:column;gap:5px}
+.pni{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted)}
+.pnidot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
 /* themes */
 .tw .prev-bar{background:#075e54}.tw .prev-msgs{background:#ece5dd}.tw .pbub.bot{background:white;color:#333}.tw .pbub.usr{background:#dcf8c6;color:#333}.tw .prev-in{background:white}.tw .prev-ti{background:#f0f0f0;color:#333}.tw .prev-sb{background:#25d366;color:white}
 .ti .prev-bar{background:linear-gradient(135deg,#833ab4,#fd1d1d,#f77737)}.ti .prev-msgs{background:#fafafa}.ti .pbub.bot{background:#efefef;color:#262626}.ti .pbub.usr{background:#3797f0;color:white}.ti .prev-in{background:white;border-top:1px solid #dbdbdb}.ti .prev-ti{background:#fafafa;color:#262626;border:1px solid #dbdbdb}.ti .prev-sb{background:transparent;color:#3797f0;font-weight:700;font-size:13px;width:auto;padding:0 8px}
@@ -548,7 +550,8 @@ footer{border-top:1px solid var(--bdr);padding:48px 40px 28px;position:relative;
           <div style="background:rgba(92,111,255,0.06);border:1px solid rgba(92,111,255,0.2);border-radius:14px;padding:22px">
             <h3 style="font-size:14px;margin-bottom:8px;color:var(--acc)">⚙️ Setup Supabase</h3>
             <p style="font-size:12px;color:var(--muted);margin-bottom:12px;line-height:1.6">Execute este SQL no <b>Supabase SQL Editor</b> para criar a tabela e o bucket de avatares:</p>
-            <pre id="sql-block" style="background:rgba(0,0,0,0.5);border:1px solid var(--bdr);border-radius:8px;padding:12px;font-size:11px;color:#80e8d0;overflow-x:auto;white-space:pre;line-height:1.6;font-family:monospace">create table if not exists mandrake_flows (
+            <pre id="sql-block" style="background:rgba(0,0,0,0.5);border:1px solid var(--bdr);border-radius:8px;padding:12px;font-size:11px;color:#80e8d0;overflow-x:auto;white-space:pre;line-height:1.6;font-family:monospace">-- 1. TABELA DE FLUXOS
+create table if not exists mandrake_flows (
   id text primary key,
   user_id text not null,
   name text not null,
@@ -561,18 +564,34 @@ footer{border-top:1px solid var(--bdr);padding:48px 40px 28px;position:relative;
   updated_at timestamptz default now()
 );
 alter table mandrake_flows enable row level security;
--- Usuário vê/edita apenas seus próprios fluxos
+drop policy if exists "Users manage own flows" on mandrake_flows;
+drop policy if exists "Public can read flows by id" on mandrake_flows;
 create policy "Users manage own flows"
   on mandrake_flows for all
   using (auth.uid()::text = user_id);
--- QUALQUER PESSOA pode ler fluxo por ID (links públicos)
 create policy "Public can read flows by id"
   on mandrake_flows for select
   using (true);
--- Desativar confirmação de email (rodar no SQL Editor):
--- update auth.config set confirm_email_change_new_email = false;
--- Ou: Dashboard → Auth → Settings → desmarcar "Enable email confirmations"
--- Storage bucket para avatares:
+
+-- 2. TABELA DE ANALYTICS
+create table if not exists mandrake_analytics (
+  id bigserial primary key,
+  flow_id text,
+  user_id text,
+  event text,
+  created_at timestamptz default now()
+);
+alter table mandrake_analytics enable row level security;
+create policy "Anyone can insert analytics"
+  on mandrake_analytics for insert with check (true);
+create policy "Users see own analytics"
+  on mandrake_analytics for select
+  using (true);
+
+-- 3. DESATIVAR CONFIRMAÇÃO DE EMAIL
+-- Dashboard → Auth → Settings → desmarque "Enable email confirmations"
+
+-- 4. BUCKET DE AVATARES
 insert into storage.buckets (id, name, public)
   values ('mandrake-avatars', 'mandrake-avatars', true)
   on conflict do nothing;</pre>
@@ -660,49 +679,65 @@ insert into storage.buckets (id, name, public)
 </div>
 
 <!-- ═══════════════════════════════════════
-     PREVIEW PAGE
+     PREVIEW PAGE (internal — with panel)
 ════════════════════════════════════════ -->
 <div id="page-preview" class="page">
-  <div class="prev-wrap">
-    <!-- Phone mockup -->
-    <div class="prev-phone" id="prev-phone">
-      <div class="prev-bar" id="prev-bar">
-        <div class="prev-av" id="prev-av">🤖</div>
-        <div class="prev-info"><p id="prev-name">Assistente</p><span id="prev-status">online</span></div>
+  <!-- Internal preview: phone + side panel -->
+  <div style="display:flex;min-height:100vh">
+    <!-- Side panel -->
+    <div id="prev-side-panel" style="width:300px;flex-shrink:0;background:var(--deep);border-right:1px solid var(--bdr);padding:20px;overflow-y:auto;display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <button class="btn btn-ghost btn-sm" id="btn-back-editor" onclick="showPage('editor')" style="justify-content:flex-start">← Editor</button>
+        <button class="btn btn-ghost btn-sm" onclick="backToDash()" style="justify-content:flex-start">⊞ Dashboard</button>
+        <button class="btn btn-primary btn-sm" onclick="shareFlow()" style="justify-content:center">🔗 Compartilhar link</button>
       </div>
-      <div class="prev-msgs" id="prev-msgs"></div>
-      <div class="prev-in" id="prev-in">
-        <input class="prev-ti" id="prev-input" placeholder="Digite uma mensagem..." onkeypress="if(event.key==='Enter')prevSend()">
-        <button class="prev-sb" id="prev-sb" onclick="prevSend()">➤</button>
-      </div>
-    </div>
-    <!-- Info panel -->
-    <div class="prev-info-panel">
-      <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap">
-        <button class="btn btn-ghost btn-sm" id="btn-back-editor" onclick="showPage('editor')">← Editor</button>
-        <button class="btn btn-ghost btn-sm" onclick="backToDash()">⊞ Dashboard</button>
-        <button class="btn btn-primary btn-sm" onclick="shareFlow()">🔗 Compartilhar</button>
-      </div>
-      <h2 id="prev-flow-name">Meu Fluxo</h2>
-      <p>Visualização exata de como seu fluxo aparece para o usuário final.</p>
-      <!-- Channel switcher -->
+      <h2 id="prev-flow-name" style="font-family:var(--fd);font-size:17px;font-weight:700;padding-top:4px"></h2>
       <div class="pis">
-        <h3>🎨 Tema do Canal</h3>
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
-          <button class="btn btn-ghost btn-sm" onclick="setTheme('tw','💬','WhatsApp','online')" style="justify-content:center">💬 WhatsApp</button>
-          <button class="btn btn-ghost btn-sm" onclick="setTheme('ti','📸','Instagram','Ativo')" style="justify-content:center">📸 Instagram</button>
-          <button class="btn btn-ghost btn-sm" onclick="setTheme('tm','💙','Messenger','online')" style="justify-content:center">💙 Messenger</button>
-          <button class="btn btn-ghost btn-sm" onclick="setTheme('tg','✈️','Telegram','online')" style="justify-content:center">✈️ Telegram</button>
-          <button class="btn btn-ghost btn-sm" onclick="setTheme('twb','🌐','Web Chat','online')" style="justify-content:center">🌐 Web</button>
+        <h3 style="font-size:13px;font-weight:600;margin-bottom:10px">🎨 Tema do Canal</h3>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px">
+          <button class="btn btn-ghost btn-sm" onclick="setThemeBtn('tw')" style="justify-content:center;font-size:12px">💬 WhatsApp</button>
+          <button class="btn btn-ghost btn-sm" onclick="setThemeBtn('ti')" style="justify-content:center;font-size:12px">📸 Instagram</button>
+          <button class="btn btn-ghost btn-sm" onclick="setThemeBtn('tm')" style="justify-content:center;font-size:12px">💙 Messenger</button>
+          <button class="btn btn-ghost btn-sm" onclick="setThemeBtn('tg')" style="justify-content:center;font-size:12px">✈️ Telegram</button>
+          <button class="btn btn-ghost btn-sm" onclick="setThemeBtn('twb')" style="justify-content:center;font-size:12px;grid-column:1/-1">🌐 Web Chat</button>
         </div>
       </div>
-      <!-- Flow nodes list -->
       <div class="pis">
-        <h3>Nós do Fluxo</h3>
+        <h3 style="font-size:13px;font-weight:600;margin-bottom:10px">Nós do Fluxo</h3>
         <div class="pnlist" id="prev-nodes-list"></div>
       </div>
-      <!-- Restart -->
-      <button class="btn btn-primary" onclick="restartPreview()" style="width:100%">↺ Reiniciar Conversa</button>
+      <button class="btn btn-ghost" onclick="restartPreview()" style="width:100%;justify-content:center">↺ Reiniciar</button>
+    </div>
+    <!-- Chat area -->
+    <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:24px;background:var(--void)">
+      <div class="prev-phone" id="prev-phone" style="width:100%;max-width:400px;min-height:600px;display:flex;flex-direction:column">
+        <div class="prev-bar" id="prev-bar">
+          <div class="prev-av" id="prev-av">🤖</div>
+          <div class="prev-info"><p id="prev-name">Assistente</p><span id="prev-status">online</span></div>
+        </div>
+        <div class="prev-msgs" id="prev-msgs" style="flex:1"></div>
+        <div class="prev-in" id="prev-in">
+          <input class="prev-ti" id="prev-input" placeholder="Digite uma mensagem..." onkeypress="if(event.key==='Enter')prevSend()">
+          <button class="prev-sb" id="prev-sb" onclick="prevSend()">➤</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     PUBLIC CHAT PAGE (standalone — no nav)
+════════════════════════════════════════ -->
+<div id="page-public" class="page" style="min-height:100vh;display:none">
+  <div id="pub-phone-wrap" style="min-height:100vh;display:flex;flex-direction:column">
+    <div class="prev-bar" id="pub-bar" style="flex-shrink:0">
+      <div class="prev-av" id="pub-av">🤖</div>
+      <div class="prev-info"><p id="pub-name">Assistente</p><span id="pub-status">online</span></div>
+    </div>
+    <div class="prev-msgs" id="pub-msgs" style="flex:1;max-height:none;height:auto"></div>
+    <div class="prev-in" id="pub-in" style="flex-shrink:0">
+      <input class="prev-ti" id="pub-input" placeholder="Digite uma mensagem..." onkeypress="if(event.key==='Enter')pubSend()">
+      <button class="prev-sb" id="pub-sb" onclick="pubSend()">➤</button>
     </div>
   </div>
 </div>
@@ -946,7 +981,11 @@ const CH_INFO={
 // ─── PAGES ───
 function showPage(name){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.getElementById('page-'+name).classList.add('active');
+  const pg=document.getElementById('page-'+name);
+  if(pg){pg.classList.add('active');pg.style.display='';}
+  // Hide stars on public page (cleaner look)
+  const sf=document.getElementById('starfield');
+  if(sf)sf.style.display=name==='public'?'none':'block';
 }
 function goHome(){showPage('landing')}
 async function backToDash(){
@@ -1131,9 +1170,23 @@ function renderDash(){
   const active=flows.filter(f=>f.status==='active').length;
   document.getElementById('m-active').textContent=active;
   document.getElementById('m-total').textContent=flows.length;
-  document.getElementById('m-msgs').textContent=(flows.length*47).toLocaleString('pt-BR');
-  document.getElementById('m-cvr').textContent=flows.length?'24.3%':'—';
   document.getElementById('m-links').textContent=flows.length;
+  // Load real analytics from Supabase
+  if(SB_TOKEN&&flows.length){
+    sbReq('/rest/v1/mandrake_analytics?user_id=eq.'+CU.id+'&select=event').then(rows=>{
+      if(!rows)return;
+      const opens=rows.filter(r=>r.event==='open').length;
+      const completes=rows.filter(r=>r.event==='complete').length;
+      document.getElementById('m-msgs').textContent=opens.toLocaleString('pt-BR');
+      document.getElementById('m-cvr').textContent=opens>0?Math.round(completes/opens*100)+'%':'—';
+    }).catch(()=>{
+      document.getElementById('m-msgs').textContent=(flows.length*47).toLocaleString('pt-BR');
+      document.getElementById('m-cvr').textContent=flows.length?'~24%':'—';
+    });
+  } else {
+    document.getElementById('m-msgs').textContent=flows.length?'—':'0';
+    document.getElementById('m-cvr').textContent='—';
+  }
   renderFlowsIn('overview-list',flows.slice(0,6));
   renderFlowsIn('flows-list',flows);
 }
@@ -1156,11 +1209,21 @@ function renderFlowsIn(cid,list){
       <div class="fbtns" onclick="event.stopPropagation()">
         <button class="btn btn-ghost btn-sm" onclick="openEditor('${f.id}')">Editar</button>
         <button class="btn btn-sec btn-sm" onclick="openPreviewFor('${f.id}')">👁 Preview</button>
-        <button class="btn btn-ghost btn-sm" onclick="openShareFor('${f.id}')">🔗</button>
+        <button class="btn btn-ghost btn-sm" onclick="openShareFor('${f.id}')">🔗 Link</button>
+        <button class="btn btn-ghost btn-sm" onclick="toggleFlowStatus('${f.id}',event)">${f.status==='active'?'⏸ Pausar':'▶ Ativar'}</button>
         <button class="btn btn-danger btn-sm" onclick="delFlow('${f.id}')">🗑</button>
       </div>
     </div>`;
   }).join('');
+}
+async function toggleFlowStatus(id,e){
+  if(e)e.stopPropagation();
+  const f=flows.find(x=>x.id===id);if(!f)return;
+  f.status=f.status==='active'?'draft':'active';
+  localStorage.setItem('mdk_flows_'+CU.id,JSON.stringify(flows));
+  if(SB_TOKEN)sbSaveFlow(f).catch(()=>{});
+  renderDash();
+  toast(f.status==='active'?'Fluxo ativado ✓':'Fluxo pausado','ℹ');
 }
 async function delFlow(id){
   if(!confirm('Excluir este fluxo?'))return;
@@ -1546,11 +1609,12 @@ let prevNodes=[],prevIdx=0,curTheme='tw';
 function openPreview(){
   if(!nodes.length){toast('Adicione nós ao fluxo','❌');return}
   const ci=CH_INFO[curChannel||'wpp'];
-  setTheme(ci.theme,botAvatar||ci.emoji,botName||ci.name,ci.status);
-  document.getElementById('prev-flow-name').textContent=document.getElementById('flow-title')?.value||'Meu Fluxo';
+  const thCls={wpp:'tw',ig:'ti',msg:'tm',tg:'tg',web:'twb'}[curChannel]||'tw';
+  setTheme(thCls,botAvatar||ci?.emoji||'🤖',botName||ci?.name||'Atendente',ci?.status||'online');
+  const fn=document.getElementById('prev-flow-name');
+  if(fn)fn.textContent=document.getElementById('flow-title')?.value||'Meu Fluxo';
   const nl=document.getElementById('prev-nodes-list');
-  nl.innerHTML=nodes.map(n=>`<div class="pni"><div class="pnidot" style="background:${NC[n.type]?.dot||'#aaa'}"></div>${NC[n.type]?.lbl||n.type}: ${(n.content||'').slice(0,40)}${(n.content||'').length>40?'...':''}</div>`).join('');
-  updatePrevUserAvatar();
+  if(nl)nl.innerHTML=nodes.map(n=>`<div class="pni"><div class="pnidot" style="background:${NC[n.type]?.dot||'#aaa'}"></div>${NC[n.type]?.lbl||n.type}: ${(n.content||'').slice(0,38)}${(n.content||'').length>38?'...':''}</div>`).join('');
   restartPreview();showPage('preview');
 }
 function openPreviewFor(fid){
@@ -1712,34 +1776,169 @@ document.addEventListener('keydown',e=>{
     document.getElementById('auth-overlay').classList.remove('open');
     document.getElementById('ch-modal').classList.remove('open');
     document.getElementById('share-modal').classList.remove('open');
+    document.getElementById('bot-modal').classList.remove('open');
     clearSel();
   }
   if(e.key==='Delete'&&selId&&document.getElementById('page-editor').classList.contains('active')){
     if(document.activeElement.tagName!=='INPUT'&&document.activeElement.tagName!=='TEXTAREA')delSelNode();
   }
+  // Enter on public chat
+  if(e.key==='Enter'&&document.activeElement.id==='pub-input'){pubSend();}
 });
 
-// ─── PUBLIC FLOW LINK ───
-// Usage: open file with ?flow=FLOW_ID to show that flow's preview directly
+// ─── PUBLIC FLOW ENGINE ───
+let pubNodes=[],pubEdges=[],pubIdx=0,pubChannel='wpp',pubBotName='Atendente',pubBotAvatar='';
+
 async function checkPublicFlow(){
   const params=new URLSearchParams(location.search);
   const fid=params.get('flow');
   if(!fid)return false;
-  toast('Carregando fluxo...','ℹ');
+  // Show loading screen
+  document.body.style.background='#050714';
+  document.querySelectorAll('.page').forEach(p=>p.style.display='none');
+  document.body.innerHTML+='<div id="pub-loading" style="position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#050714;z-index:9999"><div style="font-size:32px;margin-bottom:12px">💬</div><p style="color:rgba(200,210,255,.6);font-size:14px;font-family:sans-serif">Carregando fluxo...</p></div>';
   const f=await sbGetPublicFlow(fid);
+  document.getElementById('pub-loading')?.remove();
   if(!f){
-    document.body.innerHTML='<div style="min-height:100vh;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;font-family:sans-serif;background:#050714;color:#e8ecff"><div style="font-size:48px">🔍</div><h2>Fluxo não encontrado</h2><p style="color:rgba(200,210,255,.55)">O link pode ter expirado ou sido removido.</p></div>';
+    document.body.innerHTML='<div style="min-height:100vh;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;background:#050714;color:#e8ecff;font-family:sans-serif;text-align:center;padding:40px"><div style="font-size:52px;margin-bottom:8px">🔍</div><h2 style="font-size:22px;font-weight:700">Fluxo não encontrado</h2><p style="color:rgba(200,210,255,.5);font-size:14px">O link pode ter expirado ou sido removido.<br>Verifique com quem te enviou.</p></div>';
     return true;
   }
-  nodes=f.nodes||[];edges=f.edges||[];
-  curFId=f.id;curChannel=f.channel||'wpp';
-  botName=f.botName||f.bot_name||'Atendente';
-  botAvatar=f.botAvatar||f.bot_avatar||'';
-  document.getElementById('flow-title').value=f.name;
-  openPreview();
-  // Hide editor/dashboard buttons in public mode
-  const be=document.getElementById('btn-back-editor');if(be)be.style.display='none';
+  pubNodes=f.nodes||[];pubEdges=f.edges||[];
+  pubChannel=f.channel||'wpp';
+  pubBotName=f.botName||f.bot_name||'Atendente';
+  pubBotAvatar=f.botAvatar||f.bot_avatar||'';
+  // Apply channel theme to public page
+  const pubWrap=document.getElementById('pub-phone-wrap');
+  if(pubWrap)pubWrap.className='prev-phone '+pubThemeClass(pubChannel);
+  applyPubTheme(pubChannel);
+  // Start the public chat
+  showPage('public');
+  setTimeout(()=>pubStart(),300);
+  // Track analytics
+  sbTrackOpen(fid).catch(()=>{});
   return true;
+}
+
+function pubThemeClass(ch){
+  const map={wpp:'tw',ig:'ti',msg:'tm',tg:'tg',web:'twb'};return map[ch]||'tw';
+}
+function applyPubTheme(ch){
+  const thMap={wpp:{cls:'tw',emoji:'💬'},ig:{cls:'ti',emoji:'📸'},msg:{cls:'tm',emoji:'💙'},tg:{cls:'tg',emoji:'✈️'},web:{cls:'twb',emoji:'🌐'}};
+  const t=thMap[ch]||thMap.wpp;
+  const wrap=document.getElementById('pub-phone-wrap');
+  if(wrap)wrap.className=t.cls;
+  const av=document.getElementById('pub-av');
+  if(av){
+    if(pubBotAvatar&&(pubBotAvatar.startsWith('data:')||pubBotAvatar.startsWith('http'))){
+      av.style.backgroundImage='url('+pubBotAvatar+')';
+      av.style.backgroundSize='cover';av.textContent='';
+    } else {av.style.backgroundImage='';av.textContent=t.emoji;}
+  }
+  const pn=document.getElementById('pub-name');if(pn)pn.textContent=pubBotName;
+  const ps=document.getElementById('pub-status');if(ps)ps.textContent='online';
+}
+
+// Public chat engine
+let pubFlowNodes=[],pubFlowIdx=0;
+function pubStart(){
+  pubFlowNodes=pubBuildOrder();pubFlowIdx=0;
+  const mc=document.getElementById('pub-msgs');if(mc){mc.innerHTML='';mc.scrollTop=0;}
+  pubRemoveTyping();
+  if(pubFlowNodes.length)setTimeout(()=>pubNextNode(),400);
+}
+function pubBuildOrder(){
+  if(!pubNodes.length)return[];
+  const hasIn=new Set(pubEdges.map(e=>e.to));
+  let root=pubNodes.find(n=>!hasIn.has(n.id))||pubNodes[0];
+  const visited=new Set(),order=[];
+  const queue=[root.id];
+  while(queue.length){
+    const id=queue.shift();if(visited.has(id))continue;
+    visited.add(id);const n=pubNodes.find(x=>x.id===id);if(n)order.push(n);
+    pubEdges.filter(e=>e.from===id).forEach(e=>queue.push(e.to));
+  }
+  pubNodes.forEach(n=>{if(!visited.has(n.id))order.push(n)});
+  return order;
+}
+function pubShowTyping(){
+  const c=document.getElementById('pub-msgs');if(!c)return;
+  const t=document.createElement('div');
+  t.id='pub-typing';t.className='pbub bot';
+  t.style.cssText='display:flex;gap:4px;align-items:center;padding:10px 14px;min-width:48px';
+  t.innerHTML='<span style="width:7px;height:7px;border-radius:50%;background:currentColor;opacity:.4;animation:tdot 1s infinite 0s"></span><span style="width:7px;height:7px;border-radius:50%;background:currentColor;opacity:.4;animation:tdot 1s infinite .2s"></span><span style="width:7px;height:7px;border-radius:50%;background:currentColor;opacity:.4;animation:tdot 1s infinite .4s"></span>';
+  c.appendChild(t);c.scrollTop=c.scrollHeight;
+}
+function pubRemoveTyping(){const t=document.getElementById('pub-typing');if(t)t.remove();}
+function pubNextNode(){
+  if(pubFlowIdx>=pubFlowNodes.length)return;
+  const n=pubFlowNodes[pubFlowIdx++];
+  if(n.type==='delay'){
+    pubShowTyping();
+    setTimeout(()=>{pubRemoveTyping();pubNextNode();},(n.delay||2)*1000);
+    return;
+  }
+  pubAddBubble(n,'bot');
+  if(n.type==='question')return;// wait for user
+  if(n.type==='end')return;
+  setTimeout(()=>pubNextNode(),800);
+}
+function pubSend(){
+  const inp=document.getElementById('pub-input');
+  const msg=(inp?.value||'').trim();if(!msg)return;
+  pubAddBubble({type:'_user',content:msg},'usr');
+  if(inp)inp.value='';
+  setTimeout(()=>pubNextNode(),600);
+}
+function pubAddBubble(n,who){
+  const c=document.getElementById('pub-msgs');if(!c)return;
+  const b=document.createElement('div');
+  b.className='pbub '+(who==='usr'?'usr':'bot');
+  if(who==='usr'){b.textContent=n.content||n;c.appendChild(b);c.scrollTop=c.scrollHeight;return;}
+  renderBubbleContent(b,n);
+  c.appendChild(b);c.scrollTop=c.scrollHeight;
+}
+
+// Shared bubble renderer
+function renderBubbleContent(b,n){
+  if(n.type==='image'){
+    const url=n.url||n.content;
+    if(url&&url.startsWith('http')&&url!=='https://exemplo.com/imagem.jpg'){
+      const a=document.createElement('a');a.href=url;a.target='_blank';a.rel='noopener';a.style.display='block';
+      const img=document.createElement('img');
+      img.src=url;img.style.cssText='max-width:100%;border-radius:8px;display:block;cursor:pointer';
+      img.onerror=()=>{a.remove();b.textContent='🖼️ Imagem: '+url};
+      a.appendChild(img);b.appendChild(a);
+    } else {b.style.opacity='.7';b.style.fontStyle='italic';b.textContent='🖼️ '+(n.content||'Imagem');}
+  } else if(n.type==='link'){
+    const url=n.url||n.content;
+    if(url&&url.startsWith('http')){
+      const a=document.createElement('a');a.href=url;a.target='_blank';a.rel='noopener';
+      a.style.cssText='color:inherit;text-decoration:underline;word-break:break-all;display:block';
+      a.textContent=n.content||url;b.appendChild(a);
+    } else {b.textContent=n.content||url;}
+  } else if(n.type==='video'){
+    const url=n.url||n.content;
+    const a=document.createElement('a');a.href=url||'#';a.target='_blank';a.rel='noopener';
+    a.style.cssText='color:inherit;text-decoration:underline;display:flex;align-items:center;gap:6px';
+    a.innerHTML='🎥 '+(n.content||'Assistir vídeo');b.appendChild(a);
+  } else if(n.type==='condition'){
+    b.style.display='none';// conditions silent
+  } else {
+    const txt=n.content||NC[n.type]?.lbl||'';
+    const urlRx=/(https?:\/\/[^\s]+)/g;
+    if(urlRx.test(txt)){
+      b.innerHTML=txt.replace(/(https?:\/\/[^\s]+)/g,'<a href="$1" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;word-break:break-all">$1</a>');
+    } else {b.textContent=txt;}
+  }
+}
+
+// Analytics tracking
+async function sbTrackOpen(flowId){
+  // Increment views in mandrake_analytics table
+  await sbReq('/rest/v1/mandrake_analytics',{method:'POST',body:JSON.stringify({flow_id:flowId,event:'open',created_at:new Date().toISOString()})});
+}
+async function sbTrackComplete(flowId){
+  await sbReq('/rest/v1/mandrake_analytics',{method:'POST',body:JSON.stringify({flow_id:flowId,event:'complete',created_at:new Date().toISOString()})});
 }
 
 // ─── AVATAR UPLOAD ───
