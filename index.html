@@ -217,7 +217,7 @@ footer{border-top:1px solid var(--bdr);padding:48px 40px 28px;position:relative;
 .edot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
 /* Canvas */
 .ecanvas{position:relative;flex:1;overflow:hidden;background:var(--void);background-image:radial-gradient(rgba(100,120,255,0.07) 1px,transparent 1px);background-size:28px 28px}
-#esvg{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:all;z-index:1}
+#esvg{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:5}
 #enodes{position:absolute;top:0;left:0;width:100%;height:100%;z-index:2;transform-origin:0 0}
 .chint{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;z-index:0;text-align:center}
 .chint p{font-size:13px;color:var(--dim);margin-top:6px}
@@ -259,7 +259,7 @@ footer{border-top:1px solid var(--bdr);padding:48px 40px 28px;position:relative;
 .prev-av{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
 .prev-info p{font-size:13px;font-weight:600}
 .prev-info span{font-size:10px;opacity:.7}
-.prev-msgs{padding:11px;display:flex;flex-direction:column;gap:8px;min-height:400px;max-height:480px;overflow-y:auto}
+.prev-msgs{padding:11px;display:flex;flex-direction:column;gap:8px;height:420px;overflow-y:auto;scroll-behavior:smooth}
 .pbub{max-width:80%;padding:8px 12px;border-radius:12px;font-size:13px;line-height:1.5;word-break:break-word}
 .pbub.bot{border-bottom-left-radius:3px;align-self:flex-start}
 .pbub.usr{border-bottom-right-radius:3px;align-self:flex-end}
@@ -453,9 +453,13 @@ footer{border-top:1px solid var(--bdr);padding:48px 40px 28px;position:relative;
       <div class="dni" id="nav-settings" onclick="showPanel('settings',this)"><span class="ni">⚙️</span>Configurações</div>
     </nav>
     <div class="dside-bot">
-      <div class="uchip" onclick="logout()">
+      <div class="uchip" onclick="toggleUserMenu()" id="uchip-btn" style="position:relative">
         <div class="uav" id="uav">U</div>
         <div class="uinfo"><p id="uname">Usuário</p><span id="uemail">email@exemplo.com</span></div>
+      </div>
+      <div id="user-menu" style="display:none;position:absolute;bottom:70px;left:10px;right:10px;background:var(--mid);border:1px solid var(--bdr2);border-radius:10px;overflow:hidden;z-index:100;box-shadow:0 8px 24px rgba(0,0,0,.5)">
+        <div onclick="showPanel('settings',document.getElementById('nav-settings'));toggleUserMenu()" style="padding:11px 14px;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:8px;transition:background .2s" onmouseover="this.style.background='rgba(255,255,255,.05)'" onmouseout="this.style.background=''">⚙️ Configurações</div>
+        <div onclick="logout()" style="padding:11px 14px;font-size:13px;cursor:pointer;color:var(--red);display:flex;align-items:center;gap:8px;border-top:1px solid var(--bdr);transition:background .2s" onmouseover="this.style.background='rgba(255,91,91,.08)'" onmouseout="this.style.background=''">🚪 Sair da conta</div>
       </div>
     </div>
   </div>
@@ -668,16 +672,16 @@ insert into storage.buckets (id, name, public)
       </div>
       <div class="prev-msgs" id="prev-msgs"></div>
       <div class="prev-in" id="prev-in">
-        <div id="prev-user-av" style="width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;background-size:cover;background-position:center">👤</div>
         <input class="prev-ti" id="prev-input" placeholder="Digite uma mensagem..." onkeypress="if(event.key==='Enter')prevSend()">
         <button class="prev-sb" id="prev-sb" onclick="prevSend()">➤</button>
       </div>
     </div>
     <!-- Info panel -->
     <div class="prev-info-panel">
-      <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
-        <button class="btn btn-ghost btn-sm" onclick="showPage('editor')">← Editor</button>
-        <button class="btn btn-ghost btn-sm" onclick="shareFlow()">🔗 Compartilhar</button>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap">
+        <button class="btn btn-ghost btn-sm" id="btn-back-editor" onclick="showPage('editor')">← Editor</button>
+        <button class="btn btn-ghost btn-sm" onclick="backToDash()">⊞ Dashboard</button>
+        <button class="btn btn-primary btn-sm" onclick="shareFlow()">🔗 Compartilhar</button>
       </div>
       <h2 id="prev-flow-name">Meu Fluxo</h2>
       <p>Visualização exata de como seu fluxo aparece para o usuário final.</p>
@@ -716,7 +720,10 @@ insert into storage.buckets (id, name, public)
       <div>
         <p style="font-size:13px;font-weight:500;margin-bottom:4px">Foto do Atendente</p>
         <p style="font-size:12px;color:var(--muted);margin-bottom:8px">Aparece na barra do chat no preview</p>
-        <button class="btn btn-ghost btn-sm" onclick="triggerBotAvatarUpload()">📷 Alterar foto</button>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-ghost btn-sm" onclick="triggerBotAvatarUpload()">📷 Alterar foto</button>
+          <button class="btn btn-danger btn-sm" onclick="removeBotAvatar()">🗑 Remover</button>
+        </div>
       </div>
     </div>
     <div class="fg">
@@ -877,15 +884,25 @@ async function sbDeleteFlow(id){
   return sbReq('/rest/v1/mandrake_flows?id=eq.'+id,{method:'DELETE'});
 }
 async function sbGetPublicFlow(id){
-  // Try Supabase first (needs public SELECT policy — see SQL in Settings)
+  // 1) Try dedicated public key (set by shareFlow)
   try{
-    const r=await fetch(SB_URL+'/rest/v1/mandrake_flows?id=eq.'+id+'&select=*',{headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY}});
-    if(r.ok){const d=await r.json();if(d&&d.length){const f=d[0];return{...f,nodes:JSON.parse(f.nodes_json||'[]'),edges:JSON.parse(f.edges_json||'[]')};}}
-  }catch(e){console.log('SB public fetch failed:',e)}
-  // Fallback: search all localStorage sessions for this flow id
+    const pub=localStorage.getItem('mdk_pub_'+id)||sessionStorage.getItem('mdk_pub_'+id);
+    if(pub){const f=JSON.parse(pub);if(f&&f.id)return f;}
+  }catch{}
+  // 2) Try Supabase (requires public SELECT policy in SQL Editor)
+  try{
+    const r=await fetch(SB_URL+'/rest/v1/mandrake_flows?id=eq.'+id+'&select=*',{
+      headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':'application/json'}
+    });
+    if(r.ok){const d=await r.json();if(d&&d.length){
+      const f=d[0];
+      return{...f,nodes:JSON.parse(f.nodes_json||'[]'),edges:JSON.parse(f.edges_json||'[]')};
+    }}
+  }catch(e){console.warn('Supabase public fetch:',e)}
+  // 3) Search all user flow lists in localStorage
   for(let i=0;i<localStorage.length;i++){
     const k=localStorage.key(i);
-    if(k&&k.startsWith('mdk_flows_')){
+    if(k&&(k.startsWith('mdk_flows_')||k.startsWith('nbf_'))){
       try{
         const fs=JSON.parse(localStorage.getItem(k)||'[]');
         const f=fs.find(x=>x.id===id);
@@ -932,7 +949,15 @@ function showPage(name){
   document.getElementById('page-'+name).classList.add('active');
 }
 function goHome(){showPage('landing')}
-function backToDash(){showPage('dashboard');renderDash()}
+async function backToDash(){
+  // Auto-save before leaving editor
+  if(nodes.length>0&&curFId){
+    await saveFlow();
+  }
+  await loadFlows();
+  renderDash();
+  showPage('dashboard');
+}
 
 // ─── AUTH MODAL ───
 function openModal(t){
@@ -1020,6 +1045,15 @@ function loginUser(u){
   closeModal();loadFlows().then(()=>{renderDash();showPage('dashboard')});
   toast('Bem-vindo, '+u.name.split(' ')[0]+'! 🚀','✓');
 }
+function toggleUserMenu(){
+  const m=document.getElementById('user-menu');
+  m.style.display=m.style.display==='none'?'block':'none';
+  if(m.style.display==='block'){
+    setTimeout(()=>document.addEventListener('click',function close(e){
+      if(!document.getElementById('uchip-btn').contains(e.target)){m.style.display='none';document.removeEventListener('click',close)}
+    }),10);
+  }
+}
 async function logout(){
   if(SB_TOKEN)await fetch(SB_URL+'/auth/v1/logout',{method:'POST',headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_TOKEN}});
   CU=null;SB_TOKEN=null;localStorage.removeItem('mdk_session');
@@ -1043,10 +1077,21 @@ async function checkSession(){
 // ─── FLOWS DATA ───
 async function loadFlows(){
   if(!CU)return;
+  // Always load from localStorage first (instant, never fails)
+  const local=JSON.parse(localStorage.getItem('mdk_flows_'+CU.id)||'[]');
+  flows=local;
+  // Then try Supabase to get latest (merge)
   if(SB_TOKEN){
-    try{flows=await sbLoadFlows(CU.id)||[];}catch{flows=[];}
-  } else {
-    flows=JSON.parse(localStorage.getItem('mdk_flows_'+CU.id)||'[]');
+    try{
+      const remote=await sbLoadFlows(CU.id)||[];
+      if(remote.length){
+        // Merge: remote wins for same IDs
+        const map=new Map(local.map(f=>[f.id,f]));
+        remote.forEach(f=>map.set(f.id,f));
+        flows=[...map.values()];
+        localStorage.setItem('mdk_flows_'+CU.id,JSON.stringify(flows));
+      }
+    }catch(e){console.warn('Supabase load failed, using local:',e)}
   }
 }
 async function saveFlows(){
@@ -1177,14 +1222,25 @@ async function saveFlow(){
     createdAt:ex>=0?flows[ex].createdAt:new Date().toISOString()
   };
   if(ex>=0)flows[ex]=f;else flows.push(f);
-  if(SB_TOKEN){await sbSaveFlow(f);}
-  else{localStorage.setItem('mdk_flows_'+CU.id,JSON.stringify(flows));}
+  // Always save locally as backup (never lose data)
+  localStorage.setItem('mdk_flows_'+CU.id,JSON.stringify(flows));
+  // Also save to Supabase if logged in
+  if(SB_TOKEN){
+    sbSaveFlow(f).catch(e=>console.warn('Supabase save failed:',e));
+  }
   toast('Fluxo salvo!','✓');
 }
 
 // ─── SHARE ───
 async function shareFlow(){
   await saveFlow();
+  // Also persist flow in sessionStorage so public link works even without Supabase table
+  const fData=flows.find(f=>f.id===curFId);
+  if(fData){
+    try{sessionStorage.setItem('mdk_pub_'+curFId,JSON.stringify(fData));}catch{}
+    // Also store in a cross-tab accessible way
+    try{localStorage.setItem('mdk_pub_'+curFId,JSON.stringify(fData));}catch{}
+  }
   const baseUrl=location.href.split('?')[0];
   const link=baseUrl+'?flow='+curFId;
   document.getElementById('share-link-field').textContent=link;
@@ -1232,6 +1288,12 @@ function saveBotConfig(){
   botName=document.getElementById('bot-name-input').value.trim()||'Atendente';
   document.getElementById('bot-modal').classList.remove('open');
   toast('Atendente configurado!','✓');
+}
+function removeBotAvatar(){
+  botAvatar='';
+  const bap=document.getElementById('bot-avatar-preview');
+  bap.style.backgroundImage='';bap.textContent='🤖';
+  toast('Foto do atendente removida','ℹ');
 }
 function triggerBotAvatarUpload(){
   const inp=document.createElement('input');inp.type='file';inp.accept='image/*';
@@ -1427,6 +1489,7 @@ function startConn(e,nid,dir){
 }
 function redrawEdges(){
   const svg=document.getElementById('esvg');svg.innerHTML='';
+  svg.style.pointerEvents='none'; // SVG itself transparent, only hit paths catch events
   const defs=document.createElementNS('http://www.w3.org/2000/svg','defs');
   const mk=document.createElementNS('http://www.w3.org/2000/svg','marker');
   mk.setAttribute('id','arr');mk.setAttribute('markerWidth','8');mk.setAttribute('markerHeight','8');
@@ -1434,8 +1497,6 @@ function redrawEdges(){
   const poly=document.createElementNS('http://www.w3.org/2000/svg','polygon');
   poly.setAttribute('points','0 0, 8 3, 0 6');poly.setAttribute('fill','rgba(92,111,255,.7)');
   mk.appendChild(poly);defs.appendChild(mk);svg.appendChild(defs);
-  // pointer-events must be on SVG
-  svg.style.pointerEvents='all';
   const wr=document.getElementById('ecanvas').getBoundingClientRect();
   edges.forEach(ed=>{
     const fe=document.getElementById('out-'+ed.from);
@@ -1445,21 +1506,30 @@ function redrawEdges(){
     const fx=fr.left+fr.width/2-wr.left,fy=fr.top+fr.height/2-wr.top;
     const tx=tr.left+tr.width/2-wr.left,ty=tr.top+tr.height/2-wr.top;
     const mx=(fx+tx)/2;
-    const d=`M${fx},${fy} C${mx},${fy} ${mx},${ty} ${tx},${ty}`;
-    // Invisible fat hit area
-    const hit=document.createElementNS('http://www.w3.org/2000/svg','path');
-    hit.setAttribute('d',d);hit.setAttribute('stroke','transparent');
-    hit.setAttribute('stroke-width','12');hit.setAttribute('fill','none');
-    hit.style.cursor='pointer';
-    hit.addEventListener('mouseenter',()=>{vis.setAttribute('stroke','rgba(255,91,91,.8)');vis.setAttribute('stroke-width','2.5')});
-    hit.addEventListener('mouseleave',()=>{vis.setAttribute('stroke','rgba(92,111,255,.55)');vis.setAttribute('stroke-width','1.5')});
-    hit.addEventListener('click',()=>{if(confirm('Excluir esta conexão?')){edges=edges.filter(x=>x.id!==ed.id);redrawEdges();if(selId)showProps(nodes.find(n=>n.id===selId));toast('Conexão removida','ℹ')}});
-    // Visible line
+    const dp=`M${fx},${fy} C${mx},${fy} ${mx},${ty} ${tx},${ty}`;
+    // Visible line (declared first so hit can reference it)
     const vis=document.createElementNS('http://www.w3.org/2000/svg','path');
-    vis.setAttribute('d',d);vis.setAttribute('stroke','rgba(92,111,255,.55)');
+    vis.setAttribute('d',dp);vis.setAttribute('stroke','rgba(92,111,255,.55)');
     vis.setAttribute('stroke-width','1.5');vis.setAttribute('fill','none');
     vis.setAttribute('marker-end','url(#arr)');vis.style.pointerEvents='none';
-    svg.appendChild(vis);svg.appendChild(hit);
+    svg.appendChild(vis);
+    // Fat invisible hit area on top
+    const hit=document.createElementNS('http://www.w3.org/2000/svg','path');
+    hit.setAttribute('d',dp);hit.setAttribute('stroke','transparent');
+    hit.setAttribute('stroke-width','16');hit.setAttribute('fill','none');
+    hit.style.cursor='pointer';hit.style.pointerEvents='stroke';
+    hit.addEventListener('mouseenter',()=>{vis.setAttribute('stroke','rgba(255,91,91,.85)');vis.setAttribute('stroke-width','2.5');hit.setAttribute('stroke','rgba(255,91,91,.15)')});
+    hit.addEventListener('mouseleave',()=>{vis.setAttribute('stroke','rgba(92,111,255,.55)');vis.setAttribute('stroke-width','1.5');hit.setAttribute('stroke','transparent')});
+    hit.addEventListener('click',(e)=>{
+      e.stopPropagation();
+      if(confirm('Remover esta conexão?')){
+        edges=edges.filter(x=>x.id!==ed.id);
+        redrawEdges();
+        if(selId)showProps(nodes.find(n=>n.id===selId));
+        toast('Conexão removida','ℹ');
+      }
+    });
+    svg.appendChild(hit);
   });
 }
 // Zoom / pan
@@ -1524,9 +1594,11 @@ function buildFlowOrder(){
 }
 function restartPreview(){
   prevNodes=buildFlowOrder();prevIdx=0;
-  document.getElementById('prev-msgs').innerHTML='';
+  const mc=document.getElementById('prev-msgs');
+  mc.innerHTML='';mc.scrollTop=0;
   removeTyping();
-  if(prevNodes.length)setTimeout(()=>showNextNode(),400);
+  // Start immediately so first messages are visible
+  if(prevNodes.length)setTimeout(()=>showNextNode(),300);
 }
 function showTyping(){
   const c=document.getElementById('prev-msgs');
@@ -1569,15 +1641,7 @@ function addPrevBubble(n,who){
   b.className='pbub '+(who==='usr'?'usr':'bot');
   if(who==='usr'){
     b.textContent=n.content||n;
-    // Wrap in row with user avatar
-    const row=document.createElement('div');
-    row.className='prev-msg-row usr-row';
-    const av=document.createElement('div');
-    av.className='prev-uav';
-    if(CU?.avatar){av.style.backgroundImage='url('+CU.avatar+')';av.style.backgroundSize='cover';}
-    else{av.textContent='👤';}
-    row.appendChild(b);row.appendChild(av);
-    c.appendChild(row);c.scrollTop=c.scrollHeight;return;
+    c.appendChild(b);c.scrollTop=c.scrollHeight;return;
   }
   // Bot bubble — render by type
   if(n.type==='image'){
@@ -1673,6 +1737,8 @@ async function checkPublicFlow(){
   botAvatar=f.botAvatar||f.bot_avatar||'';
   document.getElementById('flow-title').value=f.name;
   openPreview();
+  // Hide editor/dashboard buttons in public mode
+  const be=document.getElementById('btn-back-editor');if(be)be.style.display='none';
   return true;
 }
 
@@ -1717,10 +1783,8 @@ function renderAvatarUI(){
   updatePrevUserAvatar();
 }
 function updatePrevUserAvatar(){
-  const bar=document.getElementById('prev-user-av');
-  if(!bar)return;
-  if(CU?.avatar){bar.style.backgroundImage='url('+CU.avatar+')';bar.style.backgroundSize='cover';bar.style.backgroundPosition='center';bar.textContent='';}
-  else{bar.style.backgroundImage='';bar.textContent='👤';}
+  // User avatar appears only in message bubbles (right side)
+  // Bot avatar is set in setTheme via botAvatar
 }
 
 // ─── CANVAS EVENTS ───
