@@ -195,7 +195,7 @@ footer{border-top:1px solid var(--bdr);padding:48px 40px 28px;position:relative;
 .fcard p{color:var(--muted);font-size:12px;margin-bottom:12px;font-weight:300}
 .fmeta{display:flex;gap:14px}
 .fmeta span{font-size:11px;color:var(--dim)}
-.fbtns{display:flex;gap:7px;margin-top:12px;padding-top:12px;border-top:1px solid var(--bdr)}
+.fbtns{display:flex;gap:6px;margin-top:12px;padding-top:12px;border-top:1px solid var(--bdr);flex-wrap:wrap}
 .fch-badge{display:inline-flex;align-items:center;gap:5px;font-size:10px;padding:2px 8px;border-radius:100px;background:rgba(92,111,255,.1);color:var(--acc);border:1px solid rgba(92,111,255,.2);margin-bottom:6px}
 /* EMPTY */
 .empty{text-align:center;padding:70px 20px;color:var(--muted)}
@@ -254,7 +254,9 @@ footer{border-top:1px solid var(--bdr);padding:48px 40px 28px;position:relative;
 #page-preview{display:none}
 #page-preview.active{display:block}
 #page-public{display:none}
-#page-public.active{display:block}
+#page-public.active{display:flex;flex-direction:column;min-height:100vh}
+#pub-phone-wrap{flex:1;display:flex;flex-direction:column;min-height:100vh}
+#pub-msgs{flex:1;overflow-y:auto}
 .prev-phone{border-radius:0;overflow:hidden;border:none;box-shadow:none;display:flex;flex-direction:column}
 .prev-bar{padding:10px 18px;display:flex;align-items:center;gap:9px;flex-shrink:0}
 .prev-av{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;background-size:cover;background-position:center;overflow:hidden}
@@ -717,7 +719,7 @@ insert into storage.buckets (id, name, public)
         </div>
         <div class="prev-msgs" id="prev-msgs" style="flex:1"></div>
         <div class="prev-in" id="prev-in">
-          <input class="prev-ti" id="prev-input" placeholder="Digite uma mensagem..." onkeypress="if(event.key==='Enter')prevSend()">
+          <input class="prev-ti" id="prev-input" placeholder="Digite uma mensagem..." autocomplete="off" autocorrect="off" name="chat-preview" onkeypress="if(event.key==='Enter')prevSend()">
           <button class="prev-sb" id="prev-sb" onclick="prevSend()">➤</button>
         </div>
       </div>
@@ -736,7 +738,7 @@ insert into storage.buckets (id, name, public)
     </div>
     <div class="prev-msgs" id="pub-msgs" style="flex:1;max-height:none;height:auto"></div>
     <div class="prev-in" id="pub-in" style="flex-shrink:0">
-      <input class="prev-ti" id="pub-input" placeholder="Digite uma mensagem..." onkeypress="if(event.key==='Enter')pubSend()">
+      <input class="prev-ti" id="pub-input" placeholder="Digite uma mensagem..." autocomplete="off" autocorrect="off" autocapitalize="off" name="chat-msg" onkeypress="if(event.key==='Enter')pubSend()">
       <button class="prev-sb" id="pub-sb" onclick="pubSend()">➤</button>
     </div>
   </div>
@@ -905,46 +907,70 @@ async function sbLoadFlows(userId){
   return(d||[]).map(f=>({...f,nodes:JSON.parse(f.nodes_json||'[]'),edges:JSON.parse(f.edges_json||'[]')}));
 }
 async function sbSaveFlow(flow){
-  const body={user_id:CU.id,name:flow.name,channel:flow.channel||'wpp',status:flow.status||'draft',
-    nodes_json:JSON.stringify(flow.nodes||[]),edges_json:JSON.stringify(flow.edges||[]),
-    updated_at:new Date().toISOString(),desc:flow.desc||''};
-  // try patch first
-  const patch=await sbReq('/rest/v1/mandrake_flows?id=eq.'+flow.id,{method:'PATCH',body:JSON.stringify(body)});
-  if(patch&&patch.length)return patch;
-  // insert
-  body.id=flow.id;body.created_at=flow.createdAt||new Date().toISOString();
-  return sbReq('/rest/v1/mandrake_flows',{method:'POST',body:JSON.stringify(body)});
+  const body={
+    user_id:CU.id,
+    name:flow.name,
+    channel:flow.channel||'wpp',
+    status:flow.status||'draft',
+    nodes_json:JSON.stringify(flow.nodes||[]),
+    edges_json:JSON.stringify(flow.edges||[]),
+    updated_at:new Date().toISOString(),
+    desc:flow.desc||''
+  };
+  // try PATCH (update existing)
+  try{
+    const patch=await sbReq('/rest/v1/mandrake_flows?id=eq.'+flow.id,{method:'PATCH',body:JSON.stringify(body)});
+    if(patch&&patch.length)return patch;
+  }catch(e){console.warn('PATCH failed',e)}
+  // INSERT new
+  body.id=flow.id;
+  body.created_at=flow.createdAt||new Date().toISOString();
+  try{
+    return await sbReq('/rest/v1/mandrake_flows',{method:'POST',body:JSON.stringify(body)});
+  }catch(e){console.warn('INSERT failed',e);return null;}
 }
 async function sbDeleteFlow(id){
   return sbReq('/rest/v1/mandrake_flows?id=eq.'+id,{method:'DELETE'});
 }
 async function sbGetPublicFlow(id){
-  // 1) Try dedicated public key (set by shareFlow)
+  console.log('[Mandrake] Loading public flow:', id);
+  // 1) Try Supabase FIRST (works across all devices/browsers)
+  try{
+    const url=SB_URL+'/rest/v1/mandrake_flows?id=eq.'+id+'&select=id,name,channel,nodes_json,edges_json,status';
+    console.log('[Mandrake] Fetching from Supabase:', url);
+    const r=await fetch(url,{
+      headers:{'apikey':SB_KEY,'Content-Type':'application/json'}
+    });
+    console.log('[Mandrake] Supabase response status:', r.status);
+    if(r.ok){
+      const d=await r.json();
+      console.log('[Mandrake] Supabase data:', d);
+      if(d&&d.length){
+        const f=d[0];
+        return{...f,nodes:JSON.parse(f.nodes_json||'[]'),edges:JSON.parse(f.edges_json||'[]')};
+      }
+    } else {
+      const errText=await r.text();
+      console.warn('[Mandrake] Supabase error:', errText);
+    }
+  }catch(e){console.warn('[Mandrake] Supabase fetch exception:',e)}
+  // 2) Fallback: localStorage (same browser only)
+  console.log('[Mandrake] Falling back to localStorage...');
   try{
     const pub=localStorage.getItem('mdk_pub_'+id)||sessionStorage.getItem('mdk_pub_'+id);
-    if(pub){const f=JSON.parse(pub);if(f&&f.id)return f;}
+    if(pub){const f=JSON.parse(pub);if(f&&f.id){console.log('[Mandrake] Found in localStorage pub key');return f;}}
   }catch{}
-  // 2) Try Supabase (requires public SELECT policy in SQL Editor)
-  try{
-    const r=await fetch(SB_URL+'/rest/v1/mandrake_flows?id=eq.'+id+'&select=*',{
-      headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':'application/json'}
-    });
-    if(r.ok){const d=await r.json();if(d&&d.length){
-      const f=d[0];
-      return{...f,nodes:JSON.parse(f.nodes_json||'[]'),edges:JSON.parse(f.edges_json||'[]')};
-    }}
-  }catch(e){console.warn('Supabase public fetch:',e)}
-  // 3) Search all user flow lists in localStorage
   for(let i=0;i<localStorage.length;i++){
     const k=localStorage.key(i);
     if(k&&(k.startsWith('mdk_flows_')||k.startsWith('nbf_'))){
       try{
         const fs=JSON.parse(localStorage.getItem(k)||'[]');
         const f=fs.find(x=>x.id===id);
-        if(f)return f;
+        if(f){console.log('[Mandrake] Found in localStorage flows');return f;}
       }catch{}
     }
   }
+  console.error('[Mandrake] Flow not found anywhere for id:', id);
   return null;
 }
 async function sbUploadAvatar(file,userId){
@@ -1207,11 +1233,11 @@ function renderFlowsIn(cid,list){
       <p>${f.desc||'Sem descrição'}</p>
       <div class="fmeta"><span>⊙ ${f.nodes?.length||0} nós</span><span>↔ ${f.edges?.length||0} conexões</span></div>
       <div class="fbtns" onclick="event.stopPropagation()">
-        <button class="btn btn-ghost btn-sm" onclick="openEditor('${f.id}')">Editar</button>
-        <button class="btn btn-sec btn-sm" onclick="openPreviewFor('${f.id}')">👁 Preview</button>
-        <button class="btn btn-ghost btn-sm" onclick="openShareFor('${f.id}')">🔗 Link</button>
-        <button class="btn btn-ghost btn-sm" onclick="toggleFlowStatus('${f.id}',event)">${f.status==='active'?'⏸ Pausar':'▶ Ativar'}</button>
-        <button class="btn btn-danger btn-sm" onclick="delFlow('${f.id}')">🗑</button>
+        <button class="btn btn-ghost btn-sm" onclick="openEditor('${f.id}')" title="Editar">✏️ Editar</button>
+        <button class="btn btn-sec btn-sm" onclick="openPreviewFor('${f.id}')" title="Preview">👁</button>
+        <button class="btn btn-ghost btn-sm" onclick="openShareFor('${f.id}')" title="Copiar link">🔗</button>
+        <button class="btn btn-ghost btn-sm" onclick="toggleFlowStatus('${f.id}',event)" title="${f.status==='active'?'Pausar':'Ativar'}">${f.status==='active'?'⏸':'▶'}</button>
+        <button class="btn btn-danger btn-sm" onclick="delFlow('${f.id}')" title="Excluir fluxo">🗑</button>
       </div>
     </div>`;
   }).join('');
@@ -1274,6 +1300,11 @@ async function saveFlow(){
   if(!CU){toast('Faça login para salvar','❌');return}
   const name=document.getElementById('flow-title').value.trim()||'Sem título';
   const ex=flows.findIndex(f=>f.id===curFId);
+  // Embed bot config as _meta so it survives in Supabase nodes_json
+  const nodesWithMeta=[
+    {id:'_meta',type:'_meta',botName:botName||'Atendente',botAvatar:botAvatar||''},
+    ...JSON.parse(JSON.stringify(nodes))
+  ];
   const f={
     id:curFId,name,channel:curChannel,
     botName:botName||'Atendente',botAvatar:botAvatar||'',
@@ -1284,26 +1315,21 @@ async function saveFlow(){
     updatedAt:new Date().toISOString(),
     createdAt:ex>=0?flows[ex].createdAt:new Date().toISOString()
   };
+  // For Supabase, use nodes_with_meta
+  const fForSB={...f,nodes:nodesWithMeta};
   if(ex>=0)flows[ex]=f;else flows.push(f);
   // Always save locally as backup (never lose data)
   localStorage.setItem('mdk_flows_'+CU.id,JSON.stringify(flows));
-  // Also save to Supabase if logged in
+  // Save to Supabase with meta embedded in nodes_json
   if(SB_TOKEN){
-    sbSaveFlow(f).catch(e=>console.warn('Supabase save failed:',e));
+    sbSaveFlow(fForSB).catch(e=>console.warn('Supabase save failed:',e));
   }
-  toast('Fluxo salvo!','✓');
+  toast('Fluxo salvo! 💾','✓');
 }
 
 // ─── SHARE ───
 async function shareFlow(){
   await saveFlow();
-  // Also persist flow in sessionStorage so public link works even without Supabase table
-  const fData=flows.find(f=>f.id===curFId);
-  if(fData){
-    try{sessionStorage.setItem('mdk_pub_'+curFId,JSON.stringify(fData));}catch{}
-    // Also store in a cross-tab accessible way
-    try{localStorage.setItem('mdk_pub_'+curFId,JSON.stringify(fData));}catch{}
-  }
   const baseUrl=location.href.split('?')[0];
   const link=baseUrl+'?flow='+curFId;
   document.getElementById('share-link-field').textContent=link;
@@ -1625,13 +1651,29 @@ function openPreviewFor(fid){
   document.getElementById('flow-title').value=f.name;
   openPreview();
 }
-function setTheme(theme,emoji,name,status){
+function setTheme(theme,emojiOrUrl,name,status){
   curTheme=theme;
   const ph=document.getElementById('prev-phone');
-  ph.className='prev-phone '+theme;
-  document.getElementById('prev-av').textContent=emoji||'🤖';
-  document.getElementById('prev-name').textContent=name||'Assistente';
-  document.getElementById('prev-status').textContent=status||'online';
+  if(ph)ph.className='prev-phone '+theme;
+  const av=document.getElementById('prev-av');
+  if(av){
+    const isImg=emojiOrUrl&&(emojiOrUrl.startsWith('data:')||emojiOrUrl.startsWith('http'));
+    if(isImg){
+      av.style.cssText='width:36px;height:36px;border-radius:50%;flex-shrink:0;background-image:url('+emojiOrUrl+');background-size:cover;background-position:center;overflow:hidden';
+      av.textContent='';
+    } else {
+      av.style.cssText='width:36px;height:36px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:18px;overflow:hidden';
+      av.textContent=emojiOrUrl||'🤖';
+    }
+  }
+  const pn=document.getElementById('prev-name');if(pn)pn.textContent=name||'Atendente';
+  const ps=document.getElementById('prev-status');if(ps)ps.textContent=status||'online';
+}
+function setThemeBtn(cls){
+  const m={tw:{e:'💬',n:'WhatsApp'},ti:{e:'📸',n:'Instagram'},tm:{e:'💙',n:'Messenger'},tg:{e:'✈️',n:'Telegram'},twb:{e:'🌐',n:'Web Chat'}};
+  const t=m[cls]||m.tw;
+  setTheme(cls,botAvatar||t.e,botName||t.n,'online');
+  restartPreview();
 }
 function buildFlowOrder(){
   // Build execution order from edges (graph traversal)
@@ -1989,10 +2031,10 @@ function updatePrevUserAvatar(){
 // ─── CANVAS EVENTS ───
 document.addEventListener('DOMContentLoaded',async()=>{
   // Check if this is a public flow link
+  // Check if this is a public flow link (?flow=ID)
   const isPublic=await checkPublicFlow();
   if(isPublic)return;
-
-  // Normal session check
+  // Normal app: check saved session
   await checkSession();
 
   const wr=document.getElementById('ecanvas');
