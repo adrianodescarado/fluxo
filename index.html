@@ -217,7 +217,7 @@ footer{border-top:1px solid var(--bdr);padding:48px 40px 28px;position:relative;
 .edot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
 /* Canvas */
 .ecanvas{position:relative;flex:1;overflow:hidden;background:var(--void);background-image:radial-gradient(rgba(100,120,255,0.07) 1px,transparent 1px);background-size:28px 28px}
-#esvg{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1}
+#esvg{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:all;z-index:1}
 #enodes{position:absolute;top:0;left:0;width:100%;height:100%;z-index:2;transform-origin:0 0}
 .chint{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;z-index:0;text-align:center}
 .chint p{font-size:13px;color:var(--dim);margin-top:6px}
@@ -557,9 +557,17 @@ footer{border-top:1px solid var(--bdr);padding:48px 40px 28px;position:relative;
   updated_at timestamptz default now()
 );
 alter table mandrake_flows enable row level security;
-create policy "Users see own flows"
+-- Usuário vê/edita apenas seus próprios fluxos
+create policy "Users manage own flows"
   on mandrake_flows for all
   using (auth.uid()::text = user_id);
+-- QUALQUER PESSOA pode ler fluxo por ID (links públicos)
+create policy "Public can read flows by id"
+  on mandrake_flows for select
+  using (true);
+-- Desativar confirmação de email (rodar no SQL Editor):
+-- update auth.config set confirm_email_change_new_email = false;
+-- Ou: Dashboard → Auth → Settings → desmarcar "Enable email confirmations"
 -- Storage bucket para avatares:
 insert into storage.buckets (id, name, public)
   values ('mandrake-avatars', 'mandrake-avatars', true)
@@ -585,6 +593,7 @@ insert into storage.buckets (id, name, public)
     </div>
     <div style="display:flex;gap:8px;align-items:center">
       <span id="flow-ch-badge" style="font-size:11px;padding:3px 10px;border-radius:100px;background:rgba(92,111,255,.1);color:var(--acc);border:1px solid rgba(92,111,255,.2)"></span>
+      <button class="btn btn-ghost btn-sm" onclick="configureBotModal()" title="Configurar atendente">🤖 Atendente</button>
       <button class="btn btn-ghost btn-sm" onclick="openPreview()">👁 Preview</button>
       <button class="btn btn-ghost btn-sm" onclick="shareFlow()">🔗 Compartilhar</button>
       <button class="btn btn-primary btn-sm" onclick="saveFlow()">💾 Salvar</button>
@@ -608,7 +617,11 @@ insert into storage.buckets (id, name, public)
       <svg id="esvg"></svg>
       <div id="enodes"></div>
       <div class="chint" id="chint">
-        <div><div style="font-size:30px;opacity:.25">⊕</div><p>Arraste nós da barra lateral<br>ou duplo clique no canvas</p></div>
+        <div>
+          <div style="font-size:30px;opacity:.25">⊕</div>
+          <p>Arraste nós da barra lateral ou clique neles<br>Duplo clique no canvas também adiciona</p>
+          <p style="font-size:11px;margin-top:8px;opacity:.6">Conecte OUT → IN para definir a ordem<br>Clique na linha de conexão para removê-la</p>
+        </div>
       </div>
       <div class="ezoom">
         <button onclick="zoom(-0.15)">−</button>
@@ -691,6 +704,30 @@ insert into storage.buckets (id, name, public)
 </div>
 
 <!-- ═══════════════════════════════════════
+     BOT CONFIG MODAL
+════════════════════════════════════════ -->
+<div class="overlay" id="bot-modal" onclick="if(event.target===this)document.getElementById('bot-modal').classList.remove('open')">
+  <div class="mbox">
+    <button class="mclose" onclick="document.getElementById('bot-modal').classList.remove('open')">✕</button>
+    <div class="mtitle">🤖 Configurar Atendente</div>
+    <div class="msub">Foto e nome que aparecem no preview e no link público.</div>
+    <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px">
+      <div id="bot-avatar-preview" onclick="triggerBotAvatarUpload()" style="width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,var(--acc),var(--grn));display:flex;align-items:center;justify-content:center;font-size:26px;cursor:pointer;border:2px solid var(--bdr2);flex-shrink:0;background-size:cover;background-position:center">🤖</div>
+      <div>
+        <p style="font-size:13px;font-weight:500;margin-bottom:4px">Foto do Atendente</p>
+        <p style="font-size:12px;color:var(--muted);margin-bottom:8px">Aparece na barra do chat no preview</p>
+        <button class="btn btn-ghost btn-sm" onclick="triggerBotAvatarUpload()">📷 Alterar foto</button>
+      </div>
+    </div>
+    <div class="fg">
+      <label class="fl">Nome do Atendente</label>
+      <input type="text" class="fi" id="bot-name-input" placeholder="Ex: Suporte, Ana, Vendas..." value="Atendente">
+    </div>
+    <button class="btn btn-primary" style="width:100%;margin-top:4px" onclick="saveBotConfig()">Salvar configuração</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
      AUTH MODAL
 ════════════════════════════════════════ -->
 <div class="overlay" id="auth-overlay" onclick="if(event.target===this)closeModal()">
@@ -700,11 +737,24 @@ insert into storage.buckets (id, name, public)
       <div class="mtitle">Entrar na Mandrake</div>
       <div class="msub">Bem-vindo de volta.</div>
       <div class="fg"><label class="fl">Email</label><input type="email" class="fi" id="lg-email" placeholder="seu@email.com"></div>
-      <div class="fg"><label class="fl">Senha</label><input type="password" class="fi" id="lg-pass" placeholder="••••••••" onkeypress="if(event.key==='Enter')doLogin()"></div>
+      <div class="fg">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px">
+          <label class="fl" style="margin:0">Senha</label>
+          <a style="font-size:11px;color:var(--acc);cursor:pointer" onclick="switchModal('forgot')">Esqueci a senha</a>
+        </div>
+        <input type="password" class="fi" id="lg-pass" placeholder="••••••••" onkeypress="if(event.key==='Enter')doLogin()">
+      </div>
       <button class="btn btn-primary" style="width:100%;margin-top:7px" onclick="doLogin()">Entrar →</button>
       <div class="mdiv">ou</div>
       <button class="btn btn-ghost" style="width:100%" onclick="doDemo()">Entrar com conta demo</button>
       <div class="mfooter">Não tem conta? <a onclick="switchModal('su')">Criar grátis</a></div>
+    </div>
+    <div id="mforgot" style="display:none">
+      <div class="mtitle">Recuperar senha</div>
+      <div class="msub">Enviaremos um link para redefinir sua senha.</div>
+      <div class="fg"><label class="fl">Email</label><input type="email" class="fi" id="forgot-email" placeholder="seu@email.com" onkeypress="if(event.key==='Enter')doForgot()"></div>
+      <button class="btn btn-primary" style="width:100%;margin-top:7px" onclick="doForgot()">Enviar link →</button>
+      <div class="mfooter"><a onclick="switchModal('lg')">← Voltar para login</a></div>
     </div>
     <div id="msu" style="display:none">
       <div class="mtitle">Criar conta grátis</div>
@@ -827,11 +877,23 @@ async function sbDeleteFlow(id){
   return sbReq('/rest/v1/mandrake_flows?id=eq.'+id,{method:'DELETE'});
 }
 async function sbGetPublicFlow(id){
-  // public read — no token needed
-  const r=await fetch(SB_URL+'/rest/v1/mandrake_flows?id=eq.'+id+'&select=*',{headers:{'apikey':SB_KEY}});
-  if(!r.ok)return null;const d=await r.json();
-  if(!d||!d.length)return null;
-  return{...d[0],nodes:JSON.parse(d[0].nodes_json||'[]'),edges:JSON.parse(d[0].edges_json||'[]')};
+  // Try Supabase first (needs public SELECT policy — see SQL in Settings)
+  try{
+    const r=await fetch(SB_URL+'/rest/v1/mandrake_flows?id=eq.'+id+'&select=*',{headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY}});
+    if(r.ok){const d=await r.json();if(d&&d.length){const f=d[0];return{...f,nodes:JSON.parse(f.nodes_json||'[]'),edges:JSON.parse(f.edges_json||'[]')};}}
+  }catch(e){console.log('SB public fetch failed:',e)}
+  // Fallback: search all localStorage sessions for this flow id
+  for(let i=0;i<localStorage.length;i++){
+    const k=localStorage.key(i);
+    if(k&&k.startsWith('mdk_flows_')){
+      try{
+        const fs=JSON.parse(localStorage.getItem(k)||'[]');
+        const f=fs.find(x=>x.id===id);
+        if(f)return f;
+      }catch{}
+    }
+  }
+  return null;
 }
 async function sbUploadAvatar(file,userId){
   const ext=file.name.split('.').pop();const path='avatars/'+userId+'.'+ext;
@@ -843,7 +905,8 @@ async function sbUploadAvatar(file,userId){
 
 let CU=null,SB_TOKEN=null,flows=[],curFId=null,nodes=[],edges=[],selId=null;
 let dragType=null,conFrom=null,cZoom=1,cOff={x:0,y:0},panning=false,panSt={x:0,y:0};
-let curChannel='wpp'; // default channel
+let curChannel='wpp';
+let botName='Atendente',botAvatar=''; // default channel
 
 const NC={
   message:{dot:'#a3b1ff',lbl:'Mensagem'},
@@ -880,6 +943,19 @@ function closeModal(){document.getElementById('auth-overlay').classList.remove('
 function switchModal(t){
   document.getElementById('mlg').style.display=t==='lg'?'block':'none';
   document.getElementById('msu').style.display=t==='su'?'block':'none';
+  const mf=document.getElementById('mforgot');if(mf)mf.style.display=t==='forgot'?'block':'none';
+}
+async function doForgot(){
+  const e=document.getElementById('forgot-email').value.trim();
+  if(!e){toast('Digite seu email','❌');return}
+  toast('Enviando link...','ℹ');
+  const r=await fetch(SB_URL+'/auth/v1/recover',{method:'POST',
+    headers:{'apikey':SB_KEY,'Content-Type':'application/json'},
+    body:JSON.stringify({email:e})});
+  if(r.ok){
+    toast('Link enviado para '+e,'✓');
+    switchModal('lg');
+  } else {toast('Erro ao enviar. Verifique o email.','❌')}
 }
 async function doLogin(){
   const e=document.getElementById('lg-email').value.trim();
@@ -902,14 +978,38 @@ async function doSignup(){
   toast('Criando conta...','ℹ');
   const res=await sbSignUp(e,p,n);
   if(res.error){toast(res.error.message||'Erro ao criar conta','❌');return}
+  // If token returned immediately (email confirmation disabled in Supabase)
   if(res.access_token){
     SB_TOKEN=res.access_token;
     const u={id:res.user.id,name:n,email:e,avatar:''};
     loginUser(u);
-  } else {
-    toast('Conta criada! Verifique seu email para confirmar.','✓');
-    switchModal('lg');
+    return;
   }
+  // Email confirmation required — auto-login after signup by signing in immediately
+  toast('Finalizando cadastro...','ℹ');
+  const login=await sbSignIn(e,p);
+  if(login.access_token){
+    SB_TOKEN=login.access_token;
+    const u={id:login.user.id,name:n,email:e,avatar:''};
+    loginUser(u);
+  } else {
+    // Account created but email needs confirmation — show friendly message
+    document.getElementById('msu').style.display='none';
+    document.getElementById('mlg').style.display='none';
+    document.getElementById('mbox').innerHTML=`
+      <button class="mclose" onclick="closeModal()">✕</button>
+      <div style="text-align:center;padding:20px 0">
+        <div style="font-size:48px;margin-bottom:16px">📬</div>
+        <div class="mtitle">Confirme seu email</div>
+        <p style="color:var(--muted);font-size:14px;line-height:1.6;margin:12px 0 20px">Enviamos um link de confirmação para <b>${e}</b>.<br>Clique no link e volte aqui para entrar.</p>
+        <button class="btn btn-primary" style="width:100%" onclick="switchModal('lg');document.getElementById('lg-email').value='${e}'">Já confirmei → Entrar</button>
+        <div style="margin-top:12px;font-size:12px;color:var(--dim)">Não recebeu? Verifique o spam ou <a style="color:var(--acc);cursor:pointer" onclick="resendConfirmation('${e}')">reenviar</a></div>
+      </div>`;
+  }
+}
+async function resendConfirmation(email){
+  await fetch(SB_URL+'/auth/v1/resend',{method:'POST',headers:{'apikey':SB_KEY,'Content-Type':'application/json'},body:JSON.stringify({type:'signup',email})});
+  toast('Email reenviado!','✓');
 }
 function doDemo(){
   SB_TOKEN=null;
@@ -1068,6 +1168,7 @@ async function saveFlow(){
   const ex=flows.findIndex(f=>f.id===curFId);
   const f={
     id:curFId,name,channel:curChannel,
+    botName:botName||'Atendente',botAvatar:botAvatar||'',
     desc:[...new Set(nodes.map(n=>NC[n.type]?.lbl))].filter(Boolean).slice(0,3).join(', ')||'Fluxo conversacional',
     status:ex>=0?flows[ex].status:'draft',
     nodes:JSON.parse(JSON.stringify(nodes)),
@@ -1119,6 +1220,31 @@ function copyLink(){
   toast('Link copiado!','✓');
 }
 function shareWpp(){const l=document.getElementById('share-link-field').textContent;window.open('https://wa.me/?text='+encodeURIComponent('Acesse meu fluxo: '+l),'_blank')}
+// ─── BOT CONFIG ───
+function configureBotModal(){
+  document.getElementById('bot-name-input').value=botName;
+  const bap=document.getElementById('bot-avatar-preview');
+  if(botAvatar){bap.style.backgroundImage='url('+botAvatar+')';bap.style.backgroundSize='cover';bap.textContent='';}
+  else{bap.style.backgroundImage='';bap.textContent='🤖';}
+  document.getElementById('bot-modal').classList.add('open');
+}
+function saveBotConfig(){
+  botName=document.getElementById('bot-name-input').value.trim()||'Atendente';
+  document.getElementById('bot-modal').classList.remove('open');
+  toast('Atendente configurado!','✓');
+}
+function triggerBotAvatarUpload(){
+  const inp=document.createElement('input');inp.type='file';inp.accept='image/*';
+  inp.onchange=async e=>{
+    const file=e.target.files[0];if(!file)return;
+    if(file.size>2*1024*1024){toast('Imagem muito grande (max 2MB)','❌');return}
+    const url=await new Promise(res=>{const r=new FileReader();r.onload=ev=>res(ev.target.result);r.readAsDataURL(file)});
+    botAvatar=url;
+    const bap=document.getElementById('bot-avatar-preview');
+    bap.style.backgroundImage='url('+url+')';bap.style.backgroundSize='cover';bap.textContent='';
+    toast('Foto do atendente atualizada!','✓');
+  };inp.click();
+}
 function shareIG(){copyLink();toast('Link copiado! Cole na bio do Instagram.','✓')}
 function shareTG(){const l=document.getElementById('share-link-field').textContent;window.open('https://t.me/share/url?url='+encodeURIComponent(l),'_blank')}
 
@@ -1350,7 +1476,7 @@ let prevNodes=[],prevIdx=0,curTheme='tw';
 function openPreview(){
   if(!nodes.length){toast('Adicione nós ao fluxo','❌');return}
   const ci=CH_INFO[curChannel||'wpp'];
-  setTheme(ci.theme,ci.emoji,ci.name,ci.status);
+  setTheme(ci.theme,botAvatar||ci.emoji,botName||ci.name,ci.status);
   document.getElementById('prev-flow-name').textContent=document.getElementById('flow-title')?.value||'Meu Fluxo';
   const nl=document.getElementById('prev-nodes-list');
   nl.innerHTML=nodes.map(n=>`<div class="pni"><div class="pnidot" style="background:${NC[n.type]?.dot||'#aaa'}"></div>${NC[n.type]?.lbl||n.type}: ${(n.content||'').slice(0,40)}${(n.content||'').length>40?'...':''}</div>`).join('');
@@ -1361,6 +1487,7 @@ function openPreviewFor(fid){
   const f=flows.find(x=>x.id===fid);if(!f)return;
   nodes=f.nodes||[];edges=f.edges||[];
   curFId=f.id;curChannel=f.channel||'wpp';
+  botName=f.botName||'Atendente';botAvatar=f.botAvatar||'';
   document.getElementById('flow-title').value=f.name;
   openPreview();
 }
@@ -1372,19 +1499,63 @@ function setTheme(theme,emoji,name,status){
   document.getElementById('prev-name').textContent=name||'Assistente';
   document.getElementById('prev-status').textContent=status||'online';
 }
+function buildFlowOrder(){
+  // Build execution order from edges (graph traversal)
+  if(!nodes.length)return[];
+  // Find root node: node with no incoming edges
+  const hasIncoming=new Set(edges.map(e=>e.to));
+  let root=nodes.find(n=>!hasIncoming.has(n.id));
+  if(!root)root=nodes[0]; // fallback to first
+  // BFS following edges
+  const visited=new Set(),order=[];
+  const queue=[root.id];
+  while(queue.length){
+    const id=queue.shift();
+    if(visited.has(id))continue;
+    visited.add(id);
+    const n=nodes.find(x=>x.id===id);
+    if(n)order.push(n);
+    // follow outgoing edges in order they were created
+    edges.filter(e=>e.from===id).forEach(e=>queue.push(e.to));
+  }
+  // append any disconnected nodes
+  nodes.forEach(n=>{if(!visited.has(n.id))order.push(n)});
+  return order;
+}
 function restartPreview(){
-  prevNodes=nodes.filter(n=>n);prevIdx=0;
+  prevNodes=buildFlowOrder();prevIdx=0;
   document.getElementById('prev-msgs').innerHTML='';
+  removeTyping();
   if(prevNodes.length)setTimeout(()=>showNextNode(),400);
 }
+function showTyping(){
+  const c=document.getElementById('prev-msgs');
+  const t=document.createElement('div');
+  t.id='typing-indicator';t.className='pbub bot';
+  t.style.cssText='display:flex;gap:4px;align-items:center;padding:10px 14px;min-width:48px';
+  t.innerHTML='<span style="width:7px;height:7px;border-radius:50%;background:currentColor;opacity:.5;animation:tdot 1s infinite 0s"></span><span style="width:7px;height:7px;border-radius:50%;background:currentColor;opacity:.5;animation:tdot 1s infinite .2s"></span><span style="width:7px;height:7px;border-radius:50%;background:currentColor;opacity:.5;animation:tdot 1s infinite .4s"></span>';
+  if(!document.getElementById('tdot-style')){
+    const st=document.createElement('style');st.id='tdot-style';
+    st.textContent='@keyframes tdot{0%,80%,100%{opacity:.2;transform:scale(.8)}40%{opacity:1;transform:scale(1)}}';
+    document.head.appendChild(st);
+  }
+  c.appendChild(t);c.scrollTop=c.scrollHeight;
+}
+function removeTyping(){const t=document.getElementById('typing-indicator');if(t)t.remove();}
 function showNextNode(){
   if(prevIdx>=prevNodes.length)return;
   const n=prevNodes[prevIdx++];
+  if(n.type==='delay'){
+    // Show typing indicator for exact delay duration (seconds * 1000ms)
+    showTyping();
+    const ms=(n.delay||2)*1000;
+    setTimeout(()=>{removeTyping();showNextNode();},ms);
+    return;
+  }
   addPrevBubble(n,'bot');
-  if(n.type==='question'){/* wait for user input */}
-  else if(n.type==='delay'){setTimeout(()=>showNextNode(),Math.min((n.delay||2)*800,3000))}
-  else if(n.type==='end'){/* flow done */}
-  else{setTimeout(()=>showNextNode(),700)}
+  if(n.type==='question'){/* wait for user reply */}
+  else if(n.type==='end'){/* flow finished */}
+  else{setTimeout(()=>showNextNode(),800)}
 }
 function prevSend(){
   const inp=document.getElementById('prev-input');
@@ -1411,12 +1582,17 @@ function addPrevBubble(n,who){
   // Bot bubble — render by type
   if(n.type==='image'){
     const url=n.url||n.content;
-    if(url&&(url.startsWith('http')||url.startsWith('/'))){
+    if(url&&(url.startsWith('http')||url.startsWith('/'))&&url!=='https://exemplo.com/imagem.jpg'){
+      const wrap=document.createElement('a');
+      wrap.href=url;wrap.target='_blank';wrap.rel='noopener';wrap.style.display='block';
       const img=document.createElement('img');
       img.src=url;img.style.cssText='max-width:100%;border-radius:8px;display:block;cursor:pointer';
-      img.onclick=()=>window.open(url,'_blank');
-      b.appendChild(img);
-    } else {b.textContent=n.content||'[Imagem]'}
+      img.onerror=()=>{wrap.remove();b.textContent='[Imagem não carregada: '+url+']'};
+      wrap.appendChild(img);b.appendChild(wrap);
+    } else {
+      b.style.opacity='.7';b.style.fontStyle='italic';
+      b.textContent='🖼️ '+(n.content||'Imagem não configurada');
+    }
   } else if(n.type==='link'){
     const url=n.url||n.content;
     if(url&&url.startsWith('http')){
@@ -1493,6 +1669,8 @@ async function checkPublicFlow(){
   }
   nodes=f.nodes||[];edges=f.edges||[];
   curFId=f.id;curChannel=f.channel||'wpp';
+  botName=f.botName||f.bot_name||'Atendente';
+  botAvatar=f.botAvatar||f.bot_avatar||'';
   document.getElementById('flow-title').value=f.name;
   openPreview();
   return true;
