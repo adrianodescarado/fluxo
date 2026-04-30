@@ -1960,13 +1960,24 @@ async function checkPublicFlow(){
   const fid=params.get('flow');
   if(!fid)return false;
   // Show loading screen
-  document.body.style.background='#050714';
-  document.querySelectorAll('.page').forEach(p=>p.style.display='none');
-  document.body.innerHTML+='<div id="pub-loading" style="position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#050714;z-index:9999"><div style="font-size:32px;margin-bottom:12px">💬</div><p style="color:rgba(200,210,255,.6);font-size:14px;font-family:sans-serif">Carregando fluxo...</p></div>';
+  // IMPORTANT: never use innerHTML+= on body (destroys event listeners)
+  let loadDiv=document.getElementById('pub-loading');
+  if(!loadDiv){
+    loadDiv=document.createElement('div');
+    loadDiv.id='pub-loading';
+    loadDiv.style.cssText='position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#050714;z-index:9999';
+    loadDiv.innerHTML='<div style="font-size:32px;margin-bottom:12px">💬</div><p style="color:rgba(200,210,255,.6);font-size:14px;font-family:sans-serif">Carregando fluxo...</p>';
+    document.body.appendChild(loadDiv);
+  }
   const f=await sbGetPublicFlow(fid);
   document.getElementById('pub-loading')?.remove();
   if(!f){
-    document.body.innerHTML='<div style="min-height:100vh;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;background:#050714;color:#e8ecff;font-family:sans-serif;text-align:center;padding:40px"><div style="font-size:52px;margin-bottom:8px">🔍</div><h2 style="font-size:22px;font-weight:700">Fluxo não encontrado</h2><p style="color:rgba(200,210,255,.5);font-size:14px">O link pode ter expirado ou sido removido.<br>Verifique com quem te enviou.</p></div>';
+    // Show not found without destroying DOM
+    const nf=document.getElementById('pub-loading')||document.createElement('div');
+    nf.id='pub-loading';
+    nf.style.cssText='position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#050714;color:#e8ecff;font-family:sans-serif;text-align:center;padding:40px;z-index:9999';
+    nf.innerHTML='<div style="font-size:52px;margin-bottom:8px">🔍</div><h2 style="font-size:22px;font-weight:700">Fluxo não encontrado</h2><p style="color:rgba(200,210,255,.5);font-size:14px">O link pode ter expirado ou sido removido.<br>Verifique com quem te enviou.</p>';
+    if(!nf.parentNode)document.body.appendChild(nf);
     return true;
   }
   pubNodes=f.nodes||[];pubEdges=f.edges||[];
