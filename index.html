@@ -789,7 +789,7 @@ insert into storage.buckets (id, name, public)
      AUTH MODAL
 ════════════════════════════════════════ -->
 <div class="overlay" id="auth-overlay" onclick="if(event.target===this)closeModal()">
-  <div class="mbox">
+  <div class="mbox" id="mbox">
     <button class="mclose" onclick="closeModal()">✕</button>
     <div id="mlg">
       <div class="mtitle">Entrar na Mandrake</div>
@@ -905,12 +905,28 @@ async function sbReq(path,opts={}){
   const txt=await r.text();return txt?JSON.parse(txt):null;
 }
 async function sbSignUp(email,password,name){
-  const r=await fetch(SB_URL+'/auth/v1/signup',{method:'POST',headers:{'apikey':SB_KEY,'Content-Type':'application/json'},body:JSON.stringify({email,password,options:{data:{name}}})});
-  return r.json();
+  try{
+    const r=await fetch(SB_URL+'/auth/v1/signup',{
+      method:'POST',
+      headers:{'apikey':SB_KEY,'Content-Type':'application/json'},
+      body:JSON.stringify({email,password,options:{data:{name}}})
+    });
+    const data=await r.json();
+    if(!r.ok&&!data.error)data.error={message:'Erro '+r.status};
+    return data;
+  }catch(e){return{error:{message:'Sem conexão com o servidor'}};}
 }
 async function sbSignIn(email,password){
-  const r=await fetch(SB_URL+'/auth/v1/token?grant_type=password',{method:'POST',headers:{'apikey':SB_KEY,'Content-Type':'application/json'},body:JSON.stringify({email,password})});
-  return r.json();
+  try{
+    const r=await fetch(SB_URL+'/auth/v1/token?grant_type=password',{
+      method:'POST',
+      headers:{'apikey':SB_KEY,'Content-Type':'application/json'},
+      body:JSON.stringify({email,password})
+    });
+    const data=await r.json();
+    if(!r.ok&&!data.error)data.error={message:'Erro '+r.status};
+    return data;
+  }catch(e){return{error:{message:'Sem conexão com o servidor'}};}
 }
 async function sbGetUser(token){
   const r=await fetch(SB_URL+'/auth/v1/user',{headers:{'apikey':SB_KEY,'Authorization':'Bearer '+token}});
@@ -1062,53 +1078,85 @@ async function doForgot(){
   } else {toast('Erro ao enviar. Verifique o email.','❌')}
 }
 async function doLogin(){
-  const e=document.getElementById('lg-email').value.trim();
-  const p=document.getElementById('lg-pass').value;
+  const eEl=document.getElementById('lg-email');
+  const pEl=document.getElementById('lg-pass');
+  if(!eEl||!pEl)return;
+  const e=eEl.value.trim();
+  const p=pEl.value;
   if(!e||!p){toast('Preencha email e senha','❌');return}
-  toast('Entrando...','ℹ');
-  const res=await sbSignIn(e,p);
-  if(res.error||!res.access_token){toast(res.error?.message||'Email ou senha incorretos','❌');return}
-  SB_TOKEN=res.access_token;
-  const meta=res.user?.user_metadata||{};
-  const u={id:res.user.id,name:meta.name||e.split('@')[0],email:res.user.email,avatar:meta.avatar||''};
-  loginUser(u);
+  const btn=document.querySelector('#mlg .btn-primary');
+  if(btn){btn.disabled=true;btn.textContent='Entrando...';}
+  try{
+    const res=await sbSignIn(e,p);
+    if(res.error||!res.access_token){
+      toast(res.error?.message||'Email ou senha incorretos','❌');
+      if(btn){btn.disabled=false;btn.textContent='Entrar →';}
+      return;
+    }
+    SB_TOKEN=res.access_token;
+    const meta=res.user?.user_metadata||{};
+    const u={id:res.user.id,name:meta.name||e.split('@')[0],email:res.user.email,avatar:meta.avatar||''};
+    loginUser(u);
+  }catch(err){
+    toast('Erro de conexão. Tente novamente.','❌');
+    if(btn){btn.disabled=false;btn.textContent='Entrar →';}
+  }
 }
 async function doSignup(){
-  const n=document.getElementById('su-name').value.trim();
-  const e=document.getElementById('su-email').value.trim();
-  const p=document.getElementById('su-pass').value;
+  const n=(document.getElementById('su-name')?.value||'').trim();
+  const e=(document.getElementById('su-email')?.value||'').trim();
+  const p=document.getElementById('su-pass')?.value||'';
   if(!n||!e||!p){toast('Preencha todos os campos','❌');return}
   if(p.length<6){toast('Senha mínimo 6 caracteres','❌');return}
-  toast('Criando conta...','ℹ');
-  const res=await sbSignUp(e,p,n);
-  if(res.error){toast(res.error.message||'Erro ao criar conta','❌');return}
-  // If token returned immediately (email confirmation disabled in Supabase)
-  if(res.access_token){
-    SB_TOKEN=res.access_token;
-    const u={id:res.user.id,name:n,email:e,avatar:''};
-    loginUser(u);
-    return;
+  const btn=document.querySelector('#msu .btn-primary');
+  if(btn){btn.disabled=true;btn.textContent='Criando...';}
+  try{
+    const res=await sbSignUp(e,p,n);
+    if(res.error){
+      toast(res.error.message||'Erro ao criar conta','❌');
+      if(btn){btn.disabled=false;btn.textContent='Criar conta →';}
+      return;
+    }
+    // Token returned = email confirmation disabled (ideal)
+    if(res.access_token){
+      SB_TOKEN=res.access_token;
+      loginUser({id:res.user.id,name:n,email:e,avatar:''});
+      return;
+    }
+    // Try auto-login right after signup
+    const login=await sbSignIn(e,p);
+    if(login.access_token){
+      SB_TOKEN=login.access_token;
+      loginUser({id:login.user.id,name:n,email:e,avatar:''});
+      return;
+    }
+    // Email confirmation required
+    if(btn){btn.disabled=false;btn.textContent='Criar conta →';}
+    showEmailConfirmScreen(e);
+  }catch(err){
+    toast('Erro de conexão. Tente novamente.','❌');
+    if(btn){btn.disabled=false;btn.textContent='Criar conta →';}
   }
-  // Email confirmation required — auto-login after signup by signing in immediately
-  toast('Finalizando cadastro...','ℹ');
-  const login=await sbSignIn(e,p);
-  if(login.access_token){
-    SB_TOKEN=login.access_token;
-    const u={id:login.user.id,name:n,email:e,avatar:''};
-    loginUser(u);
-  } else {
-    // Account created but email needs confirmation — show friendly message
-    document.getElementById('msu').style.display='none';
-    document.getElementById('mlg').style.display='none';
-    document.getElementById('mbox').innerHTML=`
-      <button class="mclose" onclick="closeModal()">✕</button>
-      <div style="text-align:center;padding:20px 0">
-        <div style="font-size:48px;margin-bottom:16px">📬</div>
-        <div class="mtitle">Confirme seu email</div>
-        <p style="color:var(--muted);font-size:14px;line-height:1.6;margin:12px 0 20px">Enviamos um link de confirmação para <b>${e}</b>.<br>Clique no link e volte aqui para entrar.</p>
-        <button class="btn btn-primary" style="width:100%" onclick="switchModal('lg');document.getElementById('lg-email').value='${e}'">Já confirmei → Entrar</button>
-        <div style="margin-top:12px;font-size:12px;color:var(--dim)">Não recebeu? Verifique o spam ou <a style="color:var(--acc);cursor:pointer" onclick="resendConfirmation('${e}')">reenviar</a></div>
-      </div>`;
+}
+function showEmailConfirmScreen(email){
+  const box=document.getElementById('mbox');
+  if(!box)return;
+  box.innerHTML=
+    '<button class="mclose" onclick="closeModal()">✕</button>'+
+    '<div style="text-align:center;padding:20px 0">'+
+    '<div style="font-size:48px;margin-bottom:16px">📬</div>'+
+    '<div class="mtitle">Confirme seu email</div>'+
+    '<p style="color:var(--muted);font-size:14px;line-height:1.6;margin:12px 0 20px">Enviamos um link para <b>'+email+'</b>.<br>Clique no link e volte aqui para entrar.</p>'+
+    '<button class="btn btn-primary" style="width:100%" onclick="resetModalHTML();switchModal('lg')">Já confirmei → Entrar</button>'+
+    '<div style="margin-top:12px;font-size:12px;color:var(--dim)">Não recebeu? <a style="color:var(--acc);cursor:pointer" onclick="resendConfirmation(''+email+'')">Reenviar email</a></div>'+
+    '</div>';
+}
+function resetModalHTML(){
+  // Restore original modal structure if needed
+  const box=document.getElementById('mbox');
+  if(!box)return;
+  if(!document.getElementById('mlg')){
+    location.reload(); // fallback
   }
 }
 async function resendConfirmation(email){
@@ -1116,12 +1164,24 @@ async function resendConfirmation(email){
   toast('Email reenviado!','✓');
 }
 function doDemo(){
+  // Demo mode: works 100% offline with localStorage
   SB_TOKEN=null;
-  loginUser({id:'demo-'+Date.now(),name:'Usuário Demo',email:'demo@mandrake.app',avatar:''});
+  const demoId='demo-'+Date.now();
+  loginUser({id:demoId,name:'Usuário Demo',email:'demo@mandrake.app',avatar:''});
 }
 function loginUser(u){
-  CU=u;localStorage.setItem('mdk_session',JSON.stringify({u,t:SB_TOKEN}));
-  closeModal();loadFlows().then(()=>{renderDash();showPage('dashboard')});
+  CU=u;
+  try{localStorage.setItem('mdk_session',JSON.stringify({u,t:SB_TOKEN}));}catch(e){console.warn('session save failed',e)}
+  closeModal();
+  loadFlows().then(()=>{
+    try{renderDash();}catch(e){console.error('renderDash failed',e);}
+    showPage('dashboard');
+  }).catch(err=>{
+    console.error('loadFlows failed',err);
+    flows=[];
+    try{renderDash();}catch(e){}
+    showPage('dashboard');
+  });
   toast('Bem-vindo, '+u.name.split(' ')[0]+'! 🚀','✓');
 }
 async function checkSupabaseStatus(){
@@ -1168,18 +1228,37 @@ async function logout(){
   showPage('landing');toast('Você saiu','ℹ');
 }
 async function checkSession(){
-  const s=localStorage.getItem('mdk_session');
+  let s=null;
+  try{s=localStorage.getItem('mdk_session');}catch{}
   if(!s)return;
   try{
-    const {u,t}=JSON.parse(s);
+    const parsed=JSON.parse(s);
+    const u=parsed.u;const t=parsed.t;
+    if(!u||!u.id){localStorage.removeItem('mdk_session');return;}
     if(t){
-      const fresh=await sbGetUser(t);
-      if(!fresh){localStorage.removeItem('mdk_session');return}
-      SB_TOKEN=t;CU={...u,...(fresh.user_metadata||{})};
-      if(fresh.user_metadata?.avatar)CU.avatar=fresh.user_metadata.avatar;
-    } else {CU=u;}
-    await loadFlows();renderDash();renderAvatarUI();showPage('dashboard');
-  }catch(e){console.error(e);localStorage.removeItem('mdk_session')}
+      // Validate token with Supabase
+      try{
+        const fresh=await sbGetUser(t);
+        if(fresh&&fresh.id){
+          SB_TOKEN=t;CU={...u};
+          if(fresh.user_metadata?.name)CU.name=fresh.user_metadata.name;
+          if(fresh.user_metadata?.avatar)CU.avatar=fresh.user_metadata.avatar;
+        } else {
+          // Token expired — use local data without SB_TOKEN
+          CU=u;SB_TOKEN=null;
+        }
+      }catch{CU=u;SB_TOKEN=null;}
+    } else {
+      CU=u;SB_TOKEN=null;
+    }
+    await loadFlows();
+    renderDash();
+    renderAvatarUI();
+    showPage('dashboard');
+  }catch(e){
+    console.warn('Session restore failed:',e);
+    try{localStorage.removeItem('mdk_session');}catch{}
+  }
 }
 
 // ─── FLOWS DATA ───
