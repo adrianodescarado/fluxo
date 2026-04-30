@@ -483,9 +483,10 @@ footer{border-top:1px solid var(--bdr);padding:48px 40px 28px;position:relative;
       <div class="dpanel on" id="panel-overview">
         <div class="mgrid">
           <div class="mcard"><div class="mlbl">Fluxos Ativos</div><div class="mval" style="color:var(--acc)" id="m-active">0</div><div class="mdelta">de <span id="m-total">0</span> criados</div></div>
-          <div class="mcard"><div class="mlbl">Mensagens Enviadas</div><div class="mval" style="color:var(--grn)" id="m-msgs">0</div><div class="mdelta">↑ Este mês</div></div>
-          <div class="mcard"><div class="mlbl">Taxa de Conversão</div><div class="mval" style="color:var(--warn)" id="m-cvr">—</div><div class="mdelta">Baseado nos fluxos</div></div>
+          <div class="mcard"><div class="mlbl">Aberturas de Link</div><div class="mval" style="color:var(--grn)" id="m-msgs">0</div><div class="mdelta">↑ Acessos ao fluxo</div></div>
+          <div class="mcard"><div class="mlbl">Taxa de Conclusão</div><div class="mval" style="color:var(--warn)" id="m-cvr">—</div><div class="mdelta">Completaram o fluxo</div></div>
           <div class="mcard"><div class="mlbl">Links Gerados</div><div class="mval" id="m-links">0</div><div class="mdelta">compartilháveis</div></div>
+          <div class="mcard" style="border-color:rgba(0,229,195,0.25)"><div class="mlbl">Backup Supabase</div><div class="mval" style="color:var(--grn);font-size:18px" id="m-sb-status">⏳</div><div class="mdelta" id="m-sb-detail">Verificando...</div></div>
         </div>
         <div class="fhdr"><h2>Fluxos Recentes</h2><button class="btn btn-primary btn-sm" onclick="openChannelSelector()">+ Criar Fluxo</button></div>
         <div id="overview-list"></div>
@@ -551,15 +552,23 @@ footer{border-top:1px solid var(--bdr);padding:48px 40px 28px;position:relative;
           </div>
           <div style="background:rgba(92,111,255,0.06);border:1px solid rgba(92,111,255,0.2);border-radius:14px;padding:22px">
             <h3 style="font-size:14px;margin-bottom:8px;color:var(--acc)">⚙️ Setup Supabase</h3>
-            <p style="font-size:12px;color:var(--muted);margin-bottom:12px;line-height:1.6">Execute este SQL no <b>Supabase SQL Editor</b> para criar a tabela e o bucket de avatares:</p>
-            <pre id="sql-block" style="background:rgba(0,0,0,0.5);border:1px solid var(--bdr);border-radius:8px;padding:12px;font-size:11px;color:#80e8d0;overflow-x:auto;white-space:pre;line-height:1.6;font-family:monospace">-- 1. TABELA DE FLUXOS
+            <div style="background:rgba(245,166,35,0.1);border:1px solid rgba(245,166,35,0.3);border-radius:8px;padding:12px;margin-bottom:14px;font-size:12px;line-height:1.6;color:var(--warn)">
+              <b>⚠️ Para desativar confirmação de email:</b><br>
+              Supabase → Authentication → Providers → Email → desative <b>"Confirm email"</b>
+            </div>
+            <p style="font-size:12px;color:var(--muted);margin-bottom:12px;line-height:1.6">Execute este SQL no <b>Supabase SQL Editor</b> para criar as tabelas:</p>
+            <pre id="sql-block" style="background:rgba(0,0,0,0.5);border:1px solid var(--bdr);border-radius:8px;padding:12px;font-size:11px;color:#80e8d0;overflow-x:auto;white-space:pre;line-height:1.6;font-family:monospace">-- ══════════════════════════════════════════
+-- COLE TODO ESTE SQL NO SUPABASE SQL EDITOR
+-- ══════════════════════════════════════════
+
+-- 1. TABELA DE FLUXOS
 create table if not exists mandrake_flows (
   id text primary key,
   user_id text not null,
   name text not null,
   channel text default 'wpp',
   status text default 'draft',
-  desc text default '',
+  description text default '',
   nodes_json text default '[]',
   edges_json text default '[]',
   created_at timestamptz default now(),
@@ -571,6 +580,7 @@ drop policy if exists "Public can read flows by id" on mandrake_flows;
 create policy "Users manage own flows"
   on mandrake_flows for all
   using (auth.uid()::text = user_id);
+-- ESSENCIAL: permite leitura pública por ID (links de venda)
 create policy "Public can read flows by id"
   on mandrake_flows for select
   using (true);
@@ -584,19 +594,23 @@ create table if not exists mandrake_analytics (
   created_at timestamptz default now()
 );
 alter table mandrake_analytics enable row level security;
+drop policy if exists "Anyone can insert analytics" on mandrake_analytics;
+drop policy if exists "Users see own analytics" on mandrake_analytics;
 create policy "Anyone can insert analytics"
   on mandrake_analytics for insert with check (true);
-create policy "Users see own analytics"
-  on mandrake_analytics for select
-  using (true);
+create policy "Anyone can read analytics"
+  on mandrake_analytics for select using (true);
 
--- 3. DESATIVAR CONFIRMAÇÃO DE EMAIL
--- Dashboard → Auth → Settings → desmarque "Enable email confirmations"
-
--- 4. BUCKET DE AVATARES
+-- 3. BUCKET DE AVATARES
 insert into storage.buckets (id, name, public)
   values ('mandrake-avatars', 'mandrake-avatars', true)
-  on conflict do nothing;</pre>
+  on conflict do nothing;
+
+-- ══════════════════════════════════════════
+-- APÓS RODAR O SQL:
+-- Auth → Email Templates → desmarque "Confirm email"
+-- OU: Authentication → Providers → Email → desabilite "Confirm email"
+-- ══════════════════════════════════════════</pre>
             <button class="btn btn-ghost btn-sm" style="margin-top:10px" onclick="navigator.clipboard.writeText(document.getElementById('sql-block').textContent);toast('SQL copiado!','✓')">📋 Copiar SQL</button>
           </div>
         </div>
@@ -915,7 +929,7 @@ async function sbSaveFlow(flow){
     nodes_json:JSON.stringify(flow.nodes||[]),
     edges_json:JSON.stringify(flow.edges||[]),
     updated_at:new Date().toISOString(),
-    desc:flow.desc||''
+    description:flow.desc||''
   };
   // try PATCH (update existing)
   try{
@@ -1110,6 +1124,35 @@ function loginUser(u){
   closeModal();loadFlows().then(()=>{renderDash();showPage('dashboard')});
   toast('Bem-vindo, '+u.name.split(' ')[0]+'! 🚀','✓');
 }
+async function checkSupabaseStatus(){
+  const statusEl=document.getElementById('m-sb-status');
+  const detailEl=document.getElementById('m-sb-detail');
+  if(!statusEl)return;
+  if(!SB_TOKEN){
+    statusEl.textContent='⚠️';statusEl.style.color='var(--warn)';
+    detailEl.textContent='Login sem conta Supabase';return;
+  }
+  try{
+    // Test if table exists by querying it
+    const r=await fetch(SB_URL+'/rest/v1/mandrake_flows?limit=1',{
+      headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_TOKEN}
+    });
+    if(r.ok){
+      const remote=await sbLoadFlows(CU.id);
+      statusEl.textContent='✓';statusEl.style.color='var(--grn)';
+      detailEl.textContent=(remote?.length||0)+' fluxos no banco';
+    } else if(r.status===404||r.status===400){
+      statusEl.textContent='❌';statusEl.style.color='var(--red)';
+      detailEl.innerHTML='Tabela não criada. <a onclick="showPanel('settings',document.getElementById('nav-settings'))" style="color:var(--acc);cursor:pointer">Ver SQL →</a>';
+    } else {
+      statusEl.textContent='⚠️';statusEl.style.color='var(--warn)';
+      detailEl.textContent='Erro '+r.status+' no Supabase';
+    }
+  }catch(e){
+    statusEl.textContent='❌';statusEl.style.color='var(--red)';
+    detailEl.textContent='Sem conexão com Supabase';
+  }
+}
 function toggleUserMenu(){
   const m=document.getElementById('user-menu');
   m.style.display=m.style.display==='none'?'block':'none';
@@ -1197,20 +1240,22 @@ function renderDash(){
   document.getElementById('m-active').textContent=active;
   document.getElementById('m-total').textContent=flows.length;
   document.getElementById('m-links').textContent=flows.length;
-  // Load real analytics from Supabase
-  if(SB_TOKEN&&flows.length){
-    sbReq('/rest/v1/mandrake_analytics?user_id=eq.'+CU.id+'&select=event').then(rows=>{
+  // Check Supabase status
+  checkSupabaseStatus();
+  // Load analytics
+  if(SB_TOKEN){
+    sbReq('/rest/v1/mandrake_analytics?select=event').then(rows=>{
       if(!rows)return;
       const opens=rows.filter(r=>r.event==='open').length;
       const completes=rows.filter(r=>r.event==='complete').length;
       document.getElementById('m-msgs').textContent=opens.toLocaleString('pt-BR');
       document.getElementById('m-cvr').textContent=opens>0?Math.round(completes/opens*100)+'%':'—';
     }).catch(()=>{
-      document.getElementById('m-msgs').textContent=(flows.length*47).toLocaleString('pt-BR');
-      document.getElementById('m-cvr').textContent=flows.length?'~24%':'—';
+      document.getElementById('m-msgs').textContent='—';
+      document.getElementById('m-cvr').textContent='—';
     });
   } else {
-    document.getElementById('m-msgs').textContent=flows.length?'—':'0';
+    document.getElementById('m-msgs').textContent='—';
     document.getElementById('m-cvr').textContent='—';
   }
   renderFlowsIn('overview-list',flows.slice(0,6));
